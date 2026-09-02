@@ -1,0 +1,20 @@
+Starting project at C:\Users\Fernandes\OneDrive\Documentos\ProjetoBiblia\BibliaApp
+Starting Metro Bundler
+
+Waiting on http://localhost:8087
+
+Logs for your project will appear below.
+Web Bundled 8371ms App.js (599 modules)
+Web Bundled 1149ms App.js (1 module)
+Web Bundled 6320ms index.js (646 modules)
+Web  INFO  %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+Web  LOG  Running application "main" with appParams:
+ {"hydrate": undefined, "rootTag": "#root"} 
+Development-level warnings: ON.
+Performance optimizations: OFF.
+Web  WARN  props.pointerEvents is deprecated. Use style.pointerEvents
+Web Bundled 453ms src\data\books\gn.json (1 module)
+Android Bundled 66925ms App.js (1505 modules)
+Android Bundled 94524ms index.js (1493 modules)
+Android Bundled 1848ms src\data\books\gn.json (1 module)
+Android Bundled 5944ms App.js (1 module)
