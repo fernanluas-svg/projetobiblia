@@ -15,46 +15,108 @@ export const HIGHLIGHT_COLORS = {
 export const HIGHLIGHT_ORDER = ['Amarelo', 'Roxo', 'Verde', 'Rosa', 'Azul', 'Laranja'];
 
 export const HOME_THEMES = {
-  branca: { name: 'Branco', bg: '#FFFFFF', dark: false },
-  creme: { name: 'Creme', bg: '#F7F4EE', dark: false },
-  preto: { name: 'Preto', bg: '#121212', dark: true },
-  azul_escuro: { name: 'Azul Escuro', bg: '#1E293B', dark: true },
-  verde_escuro: { name: 'Verde Escuro', bg: '#1B3B2B', dark: true },
+  branca: {
+    name: 'Branco',
+    dark: false,
+    colors: {
+      background: '#FFFFFF',
+      surface: '#F7F7F7',
+      text: '#222222',
+      textMuted: '#666666',
+      border: '#E2E8F0',
+      primary: '#2f6f4f',
+      highlight: '#FFF3B0',
+      selection: '#E6EFEA',
+      activeGreen: '#2E7D32',
+      bar: '#F0F0F0',
+      cardVerseBg: '#23523B',
+      dark: false,
+    },
+  },
+  creme: {
+    name: 'Creme',
+    dark: false,
+    colors: {
+      background: '#F7F4EE',
+      surface: '#FFFFFF',
+      text: '#222222',
+      textMuted: '#6B6560',
+      border: '#E4DACC',
+      primary: '#2f6f4f',
+      highlight: '#FFF3B0',
+      selection: '#E3EEE6',
+      activeGreen: '#2E7D32',
+      bar: '#EFE9DD',
+      cardVerseBg: '#2A5540',
+      dark: false,
+    },
+  },
+  preto: {
+    name: 'Preto',
+    dark: true,
+    colors: {
+      background: '#121212',
+      surface: '#1E1E1E',
+      text: '#EEEEEE',
+      textMuted: '#AAAAAA',
+      border: '#333333',
+      primary: '#4CAF7D',
+      highlight: '#8A7F2F',
+      selection: '#274B3A',
+      activeGreen: '#66BB6A',
+      bar: '#1A1A1A',
+      cardVerseBg: '#182C22',
+      dark: true,
+    },
+  },
+  azul_escuro: {
+    name: 'Azul Escuro',
+    dark: true,
+    colors: {
+      background: '#1E293B',
+      surface: '#27364D',
+      text: '#E8EEF5',
+      textMuted: '#9FB2C7',
+      border: '#3B4A5E',
+      primary: '#66BB8F',
+      highlight: '#8A7F2F',
+      selection: '#33465F',
+      activeGreen: '#66BB6A',
+      bar: '#182230',
+      cardVerseBg: '#142030',
+      dark: true,
+    },
+  },
+  verde_escuro: {
+    name: 'Verde Escuro',
+    dark: true,
+    colors: {
+      background: '#1B3B2B',
+      surface: '#22503A',
+      text: '#E6F0EA',
+      textMuted: '#9DB8A9',
+      border: '#2F5543',
+      primary: '#66BB8F',
+      highlight: '#8A7F2F',
+      selection: '#2E5C44',
+      activeGreen: '#66BB6A',
+      bar: '#143025',
+      cardVerseBg: '#12261C',
+      dark: true,
+    },
+  },
 };
 
-const lightColors = {
-  background: '#f5f5f5',
-  surface: '#ffffff',
-  text: '#222222',
-  textMuted: '#666666',
-  border: '#cccccc',
-  primary: '#2f6f4f',
-  highlight: '#fff3b0',
-  selection: '#cde8da',
-  activeGreen: '#2e7d32',
-  bar: '#f0f0f0',
-};
-
-const darkColors = {
-  background: '#121212',
-  surface: '#1e1e1e',
-  text: '#eeeeee',
-  textMuted: '#aaaaaa',
-  border: '#333333',
-  primary: '#4caf7d',
-  highlight: '#8a7f2f',
-  selection: '#274b3a',
-  activeGreen: '#66bb6a',
-  bar: '#1a1a1a',
-};
+export function getThemeConfig(themeKey) {
+  return HOME_THEMES[themeKey] ?? HOME_THEMES.creme;
+}
 
 export function AppProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
   const [readChapters, setReadChapters] = useState([]);
   const [highlights, setHighlights] = useState({});
-  const [darkMode, setDarkMode] = useState(false);
   const [fontSize, setFontSize] = useState(16);
-  const [homeTheme, setHomeTheme] = useState('creme');
+  const [themeKey, setThemeKeyState] = useState('creme');
   const [lastRead, setLastReadState] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -73,7 +135,7 @@ export function AppProvider({ children }) {
           setLastReadState(JSON.parse(raw));
         }
         if (active && themeRaw && HOME_THEMES[themeRaw]) {
-          setHomeTheme(themeRaw);
+          setThemeKeyState(themeRaw);
         }
       } catch (e) {
         // ignora falhas de leitura
@@ -95,8 +157,8 @@ export function AppProvider({ children }) {
     }
   };
 
-  const updateHomeTheme = (value) => {
-    setHomeTheme(value);
+  const updateTheme = (value) => {
+    setThemeKeyState(value);
     try {
       AsyncStorage.setItem(HOME_THEME_KEY, value);
     } catch (e) {
@@ -104,7 +166,7 @@ export function AppProvider({ children }) {
     }
   };
 
-  const theme = darkMode ? darkColors : lightColors;
+  const theme = getThemeConfig(themeKey).colors;
 
   const toggleFavorite = (verse) => {
     setFavorites((prev) => {
@@ -160,9 +222,8 @@ export function AppProvider({ children }) {
       favorites,
       readChapters,
       highlights,
-      darkMode,
+      themeKey,
       fontSize,
-      homeTheme,
       lastRead,
       loaded,
       theme,
@@ -174,11 +235,10 @@ export function AppProvider({ children }) {
       getHighlight,
       setHighlight,
       setLastRead,
-      setDarkMode,
+      updateTheme,
       setFontSize,
-      updateHomeTheme,
     }),
-    [favorites, readChapters, highlights, darkMode, fontSize, homeTheme, lastRead, loaded, theme]
+    [favorites, readChapters, highlights, themeKey, fontSize, lastRead, loaded, theme]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

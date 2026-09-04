@@ -205,7 +205,7 @@ export default function HomeScreen({ navigation }) {
         </View>
 
         <TouchableOpacity
-          style={styles.verseCard}
+          style={[styles.verseCard, { backgroundColor: theme.cardVerseBg ?? '#2f6f4f' }]}
           activeOpacity={0.85}
           onPress={openVerseOfTheDay}
         >
