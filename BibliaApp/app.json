@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Biblia Sagrada",
-    "slug": "Biblia Sagrada",
+    "slug": "BibliaApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/BibliaIcon2.png",
@@ -11,7 +11,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/BibliaIcon2.png",
+        "foregroundImage": "./assets/bibliaicon3.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lucaodevelop2.bibliasagrada"
@@ -37,6 +37,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/06f9b5f1-7df5-4d34-b054-b35cd79bf5c7"
-    }
+    },
+    "owner": "lucaodevelop2"
   }
 }
