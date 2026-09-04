@@ -1,11 +1,51 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import LottieView from 'lottie-react-native';
 
-import { HOME_THEMES, useApp } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
+import versiculosData from '../data/versiculosPopulares.json';
+import { getBooks } from '../data/books';
+
+const SPECIAL_DATES = {
+  '01-01': 12,   // Ano Novo → João 3:16
+  '02-14': 6,    // Dia dos Namorados → Cantares 8:7
+  '03-10': 106,  // Dia do wooded → Gálatas 5:22-23 (fruto do Espírito)
+  '04-21': 20,   // Tiradentes → Filipenses 4:13
+  '05-12': 13,   // Dia das Mães → Filipenses 4:6-7
+  '06-12': 18,   // Dia dos Namorados → Josué 1:9
+  '09-07': 21,   // Independência → Salmo 27:1
+  '10-12': 43,   // Padroeiro → Mateus 28:19-20
+  '11-02': 50,   // Finados → Apocalipse 21:4
+  '11-15': 45,   // Proclamação → Efésios 2:10
+  '12-25': 93,   // Natal → Mateus 11:28-29
+  '12-31': 90,   // Ano Novo → Hebreus 13:8
+};
+
+function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = date - start;
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function getVerseOfTheDay() {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dateKey = `${mm}-${dd}`;
+
+  if (SPECIAL_DATES[dateKey]) {
+    const id = SPECIAL_DATES[dateKey];
+    return versiculosData.versiculos.find((v) => v.id === id) || versiculosData.versiculos[0];
+  }
+
+  const dayOfYear = getDayOfYear(today);
+  const index = dayOfYear % versiculosData.versiculos.length;
+  return versiculosData.versiculos[index];
+}
 
 function ShimmerTitle({ isDark }) {
   const animatedValue = useRef(new Animated.Value(-150)).current;
@@ -65,8 +105,6 @@ function ShimmerTitle({ isDark }) {
 
 const startReadingMeta = { abbrev: 'gn', name: 'Gênesis', chapters: 50 };
 
-const verseOfTheDayMeta = { abbrev: 'gn', name: 'Gênesis', chapters: 50 };
-
 function getGreeting() {
   const hour = new Date().getHours();
   if (hour >= 0 && hour < 12) return 'Bom dia!';
@@ -75,23 +113,31 @@ function getGreeting() {
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, loaded, homeTheme } = useApp();
+  const { lastRead, loaded, theme } = useApp();
+  const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
 
-  const homeThemeMeta = HOME_THEMES[homeTheme] || HOME_THEMES.creme;
-  const homeBg = homeThemeMeta.bg;
-  const isDarkBg = homeThemeMeta.dark;
-  const textColor = isDarkBg ? '#eeeeee' : '#222222';
-  const textMutedColor = isDarkBg ? '#aaaaaa' : '#666666';
-  const barColor = isDarkBg ? '#222222' : '#e0e0e0';
-  const cardColor = isDarkBg ? '#1e1e1e' : '#ffffff';
-  const accentColor = isDarkBg ? '#4ADE80' : '#1B4D3E';
-  const subtitleColor = isDarkBg ? '#E2E8F0' : '#666666';
+  const horaAtual = new Date().getHours();
+  const isNight = horaAtual >= 19 || horaAtual < 5;
+  const verseIcon = isNight
+    ? require('../../assets/moon.json')
+    : require('../../assets/sun.json');
+
+  const homeBg = theme.background;
+  const isDarkBg = theme.dark;
+  const textColor = theme.text;
+  const textMutedColor = theme.textMuted;
+  const barColor = theme.bar;
+  const cardColor = theme.surface;
+  const accentColor = isDarkBg ? '#A7F3D0' : theme.primary;
+  const subtitleColor = isDarkBg ? '#FFFFFF' : theme.textMuted;
 
   const openVerseOfTheDay = () => {
+    const book = getBooks().find((b) => b.abbrev === verseOfTheDay.abbrev);
+    if (!book) return;
     navigation.navigate('Read', {
-      book: verseOfTheDayMeta,
-      chapter: 0,
-      verse: 0,
+      book,
+      chapter: verseOfTheDay.capitulo - 1,
+      verse: verseOfTheDay.versiculo - 1,
     });
   };
 
@@ -100,6 +146,8 @@ export default function HomeScreen({ navigation }) {
   };
 
   const hasProgress = loaded && lastRead?.book;
+
+  const progressAnim = useRef(new Animated.Value(0)).current;
 
   const continueTitle = hasProgress ? lastRead.book.name : 'Comece sua leitura';
   const continueChapter = hasProgress
@@ -111,6 +159,17 @@ export default function HomeScreen({ navigation }) {
   const continuePercent = hasProgress && lastRead.book.chapters
     ? Math.min(100, Math.round(((lastRead.chapter + 1) / lastRead.book.chapters) * 100))
     : 0;
+
+  useEffect(() => {
+    if (hasProgress) {
+      progressAnim.setValue(0);
+      Animated.timing(progressAnim, {
+        toValue: continuePercent,
+        duration: 800,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [hasProgress, continuePercent]);
 
   const openContinueReading = () => {
     navigation.navigate('Read', {
@@ -133,7 +192,7 @@ export default function HomeScreen({ navigation }) {
         <ShimmerTitle isDark={isDarkBg} />
 
         <TouchableOpacity onPress={openSettings} hitSlop={8} style={[styles.menuCircle, { backgroundColor: cardColor }]}>
-          <Ionicons name="settings-outline" size={22} color={textColor} />
+          <Ionicons name="settings-outline" size={22} color={isDarkBg ? '#FFFFFF' : textColor} />
         </TouchableOpacity>
       </View>
 
@@ -151,14 +210,19 @@ export default function HomeScreen({ navigation }) {
           onPress={openVerseOfTheDay}
         >
           <View style={styles.verseHeader}>
-            <Ionicons name="bookmark" size={18} color="#2f6f4f" />
+            <LottieView
+              source={verseIcon}
+              autoPlay
+              loop
+              style={styles.sunLottie}
+            />
             <Text style={styles.verseLabel}>Versículo do Dia</Text>
             <Ionicons name="chevron-forward" size={16} color="#cde8da" style={styles.verseChevron} />
           </View>
           <Text style={styles.verseQuote}>
-            “No princípio, criou Deus os céus e a terra.”
+            "{verseOfTheDay.texto}"
           </Text>
-          <Text style={styles.verseRef}>Gênesis 1:1</Text>
+          <Text style={styles.verseRef}>{verseOfTheDay.referencia}</Text>
         </TouchableOpacity>
 
         <View style={styles.sectionHeaderRow}>
@@ -192,7 +256,17 @@ export default function HomeScreen({ navigation }) {
           </View>
           {hasProgress ? (
             <View style={[styles.progressTrack, { backgroundColor: isDarkBg ? '#333' : '#e5e5e5' }]}>
-              <View style={styles.progressFill} />
+              <Animated.View
+                style={[
+                  styles.progressFill,
+                  {
+                    width: progressAnim.interpolate({
+                      inputRange: [0, 100],
+                      outputRange: ['0%', '100%'],
+                    }),
+                  },
+                ]}
+              />
             </View>
           ) : null}
         </TouchableOpacity>
@@ -317,6 +391,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
+  sunLottie: {
+    width: 46,
+    height: 46,
+    marginRight: 10,
+  },
   verseChevron: {
     marginLeft: 'auto',
   },
@@ -324,7 +403,6 @@ const styles = StyleSheet.create({
     color: '#eafff2',
     fontSize: 14,
     fontWeight: '600',
-    marginLeft: 8,
     letterSpacing: 0.3,
   },
   verseQuote: {
