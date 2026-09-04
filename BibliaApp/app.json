@@ -4,14 +4,14 @@
     "slug": "Biblia Sagrada",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/biblialogo.png",
+    "icon": "./assets/BibliaIcon2.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/biblialogo.png",
+        "foregroundImage": "./assets/BibliaIcon2.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.lucaodevelop2.bibliasagrada"
