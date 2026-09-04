@@ -12,7 +12,7 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 
-import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, HOME_THEMES } from '../context/AppContext';
+import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER } from '../context/AppContext';
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
 import { makeChapterKey } from '../utils/chapterKey';
@@ -237,12 +237,14 @@ function CompletionButton({ chapterRead, onToggle, theme }) {
 }
 
 export default function ReadScreen({ navigation, route }) {
-  const meta = route?.params?.book;
+  const metaRaw = route?.params?.book;
+  const meta = metaRaw?.name
+    ? metaRaw
+    : getBooks().find((b) => b.abbrev === metaRaw?.abbrev) ?? metaRaw;
   const insets = useSafeAreaInsets();
   const {
     theme,
     fontSize,
-    homeTheme,
     isFavorite,
     toggleFavorite,
     isChapterRead,
@@ -252,10 +254,9 @@ export default function ReadScreen({ navigation, route }) {
     setLastRead,
   } = useApp();
 
-  const homeThemeMeta = HOME_THEMES[homeTheme] || HOME_THEMES.creme;
-  const isHomeDark = homeThemeMeta.dark;
-  const verseNumColor = isHomeDark ? '#A0AEC0' : '#4A5568';
-  const sectionTitleColor = isHomeDark ? '#CBD5E0' : '#2D3748';
+  const isReaderDark = theme.dark;
+  const verseNumColor = isReaderDark ? '#FFFFFF' : '#4A5568';
+  const sectionTitleColor = isReaderDark ? '#FFFFFF' : '#2D3748';
   const [chapterIndex, setChapterIndex] = useState(route?.params?.chapter ?? 0);
   const chapterIndexRef = useRef(chapterIndex);
   useEffect(() => {
@@ -454,16 +455,10 @@ export default function ReadScreen({ navigation, route }) {
   useEffect(() => {
     const verseToScroll = scrollToVerse ?? null;
     if (verseToScroll == null || verseToScroll < 0) return;
-    const targetRef = verseRefs.current[verseToScroll];
-    if (!targetRef || !scrollViewRef.current) return;
+    const targetY = verseRefs.current[verseToScroll];
+    if (targetY == null || !scrollViewRef.current) return;
     const timer = setTimeout(() => {
-      targetRef.measureLayout(
-        scrollViewRef.current,
-        (x, y) => {
-          scrollViewRef.current?.scrollTo({ y, animated: true });
-        },
-        () => {}
-      );
+      scrollViewRef.current?.scrollTo({ y: targetY, animated: true });
     }, 120);
     return () => clearTimeout(timer);
   }, [scrollToVerse, scrollNonce, fullBook, chapterIndex]);
@@ -611,16 +606,18 @@ export default function ReadScreen({ navigation, route }) {
             const displayTitle = index === 0 ? (verseTitle || `Capítulo ${chapterIndex + 1}`) : verseTitle;
 
             return (
-              <View key={index}>
+              <View
+                key={index}
+                onLayout={(e) => {
+                  verseRefs.current[index] = e.nativeEvent.layout.y;
+                }}
+              >
                 {displayTitle ? (
                   <Text style={[styles.pericopeTitle, { color: theme.text, marginTop: index === 0 ? 4 : 24, marginBottom: 12 }]}>
                     {displayTitle}
                   </Text>
                 ) : null}
                 <TouchableOpacity
-                  ref={(el) => {
-                    verseRefs.current[index] = el;
-                  }}
                   style={[
                     styles.verseContainer,
                     highlight && { backgroundColor: highlight.bg },
@@ -652,7 +649,7 @@ export default function ReadScreen({ navigation, route }) {
       {/* Botões flutuantes circulares de navegação de capítulo */}
       <Animated.View pointerEvents="box-none" style={[styles.fabRow, fabAnimatedStyle]}>
         <TouchableOpacity
-          style={[styles.fab, { backgroundColor: isHomeDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === 0 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === 0 && styles.fabDisabled]}
           onPress={goToPreviousChapter}
           disabled={chapterIndex === 0}
           activeOpacity={0.7}
@@ -661,7 +658,7 @@ export default function ReadScreen({ navigation, route }) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.fab, { backgroundColor: isHomeDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === totalChapters - 1 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === totalChapters - 1 && styles.fabDisabled]}
           onPress={goToNextChapter}
           disabled={chapterIndex === totalChapters - 1}
           activeOpacity={0.7}
@@ -691,20 +688,25 @@ export default function ReadScreen({ navigation, route }) {
                 style={[
                   styles.modalNavButton,
                   { borderColor: theme.border },
+                  theme.dark && styles.modalNavButtonDark,
                   modalBookIndex === 0 && styles.modalNavButtonDisabled,
                 ]}
                 onPress={goToPrevModalBook}
                 disabled={modalBookIndex === 0}
               >
-                <Text style={[styles.modalNavText, { color: theme.primary }]}>{'<'}</Text>
+                <Text style={[styles.modalNavText, { color: theme.dark ? '#FFFFFF' : theme.primary }]}>{'<'}</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={[styles.fullModalTitleButton, { borderColor: theme.border }]}
+                style={[
+                  styles.fullModalTitleButton,
+                  { borderColor: theme.dark ? '#333333' : theme.border },
+                  theme.dark && styles.fullModalTitleButtonDark,
+                ]}
                 onPress={goToBooksList}
                 activeOpacity={0.7}
               >
-                <Text style={[styles.fullModalTitle, { color: theme.text }]} numberOfLines={1}>
+                <Text style={[styles.fullModalTitle, { color: theme.dark ? '#FFFFFF' : theme.text }]} numberOfLines={1}>
                   {selectedMeta?.name}
                 </Text>
               </TouchableOpacity>
@@ -713,12 +715,13 @@ export default function ReadScreen({ navigation, route }) {
                 style={[
                   styles.modalNavButton,
                   { borderColor: theme.border },
+                  theme.dark && styles.modalNavButtonDark,
                   modalBookIndex === books.length - 1 && styles.modalNavButtonDisabled,
                 ]}
                 onPress={goToNextModalBook}
                 disabled={modalBookIndex === books.length - 1}
               >
-                <Text style={[styles.modalNavText, { color: theme.primary }]}>{'>'}</Text>
+                <Text style={[styles.modalNavText, { color: theme.dark ? '#FFFFFF' : theme.primary }]}>{'>'}</Text>
               </TouchableOpacity>
             </View>
             {modalStep === 'verses' ? (
@@ -791,7 +794,7 @@ export default function ReadScreen({ navigation, route }) {
                 <TouchableOpacity
                   style={[
                     styles.chapterCell,
-                    { borderColor: theme.border },
+                    { borderColor: theme.dark ? '#CCCCCC' : theme.border },
                     selectedMeta?.abbrev === meta?.abbrev &&
                       index === chapterIndex &&
                       styles.chapterCellActive,
@@ -801,7 +804,7 @@ export default function ReadScreen({ navigation, route }) {
                   <Text
                     style={[
                       styles.chapterCellText,
-                      { color: theme.text },
+                      { color: theme.dark ? '#333333' : theme.text },
                       selectedMeta?.abbrev === meta?.abbrev &&
                         index === chapterIndex &&
                         styles.chapterCellTextActive,
@@ -823,10 +826,10 @@ export default function ReadScreen({ navigation, route }) {
               columnWrapperStyle={styles.fullModalGridRow}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
-                  style={[styles.chapterCell, { borderColor: theme.border }]}
+                  style={[styles.chapterCell, { borderColor: theme.dark ? '#CCCCCC' : theme.border }]}
                   onPress={() => selectModalVerse(index)}
                 >
-                  <Text style={[styles.chapterCellText, { color: theme.text }]}>
+                  <Text style={[styles.chapterCellText, { color: theme.dark ? '#333333' : theme.text }]}>
                     {index + 1}
                   </Text>
                 </TouchableOpacity>
@@ -1114,6 +1117,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
+  fullModalTitleButtonDark: {
+    backgroundColor: '#2A2A2A',
+  },
   backChaptersButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -1144,6 +1150,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 3,
     elevation: 3,
+  },
+  modalNavButtonDark: {
+    backgroundColor: '#2A2A2A',
   },
   modalNavButtonDisabled: {
     opacity: 0.3,
@@ -1224,6 +1233,7 @@ const styles = StyleSheet.create({
   },
   bookCellText: {
     fontSize: 13,
+    fontWeight: 'bold',
   },
   bookCellTextActive: {
     color: '#fff',
