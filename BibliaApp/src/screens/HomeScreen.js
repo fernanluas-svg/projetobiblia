@@ -229,9 +229,6 @@ export default function HomeScreen({ navigation }) {
           <Text style={[styles.sectionTitle, { color: textColor }]}>
             Continue a sua leitura
           </Text>
-          <TouchableOpacity hitSlop={8}>
-            <Text style={[styles.seeAll, { color: accentColor }]}>Ver tudo</Text>
-          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
