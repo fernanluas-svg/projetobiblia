@@ -1189,6 +1189,7 @@ const styles = StyleSheet.create({
   },
   chapterCellText: {
     fontSize: 15,
+    fontWeight: 'bold',
   },
   chapterCellTextActive: {
     color: '#fff',
