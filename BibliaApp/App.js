@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppProvider, useApp } from './src/context/AppContext';
 import HomeScreen from './src/screens/HomeScreen';
+import BookListScreen from './src/screens/BookListScreen';
 import ReadScreen from './src/screens/ReadScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
 import ProgressScreen from './src/screens/ProgressScreen';
@@ -28,27 +29,41 @@ const webFrameStyle =
       }
     : {};
 
-function Hamburger({ onPress, color }) {
+function Hamburger({ onPress, color, backgroundColor }) {
   return (
-    <Pressable onPress={onPress} style={styles.hamburger} hitSlop={8}>
-      <View style={[styles.bar, { backgroundColor: color }]} />
-      <View style={[styles.bar, { backgroundColor: color }]} />
-      <View style={[styles.bar, { backgroundColor: color }]} />
+    <Pressable
+      onPress={onPress}
+      style={[styles.menuCircle, { backgroundColor: backgroundColor ?? '#FFFFFF' }]}
+      hitSlop={8}
+    >
+      <View style={[styles.menuBar, { backgroundColor: color }]} />
+      <View style={[styles.menuBar, { backgroundColor: color }]} />
+      <View style={[styles.menuBar, { backgroundColor: color }]} />
     </Pressable>
   );
 }
 
 function HomeStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Screen
+        name="Welcome"
+        component={HomeScreen}
+        options={({ navigation, theme }) => ({
+          headerShown: false,
+          headerLeft: () => (
+            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
+          ),
+        })}
+      />
       <Stack.Screen
         name="Livros"
-        component={HomeScreen}
+        component={BookListScreen}
         options={({ navigation, theme }) => ({
           title: 'Bíblia',
           headerTitleAlign: 'center',
           headerLeft: () => (
-            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} />
+            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
           ),
         })}
       />
@@ -59,7 +74,7 @@ function HomeStack() {
           title: 'Leitura',
           headerTitleAlign: 'center',
           headerLeft: () => (
-            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} />
+            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
           ),
         })}
       />
@@ -106,7 +121,7 @@ title: 'Favoritos',
               <Ionicons name={focused ? 'star' : 'star-outline'} color="#FFC107" size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -124,7 +139,7 @@ title: 'Progresso de Leitura',
               />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -138,7 +153,7 @@ title: 'Progresso de Leitura',
               <Ionicons name={focused ? 'settings' : 'settings-outline'} color={color} size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -152,7 +167,7 @@ title: 'Progresso de Leitura',
               <Ionicons name={focused ? 'search' : 'search-outline'} color={color} size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -167,7 +182,7 @@ title: 'Progresso de Leitura',
               <Ionicons name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -182,7 +197,7 @@ title: 'Progresso de Leitura',
               <Ionicons name={focused ? 'help-circle' : 'help-circle-outline'} color={color} size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -197,7 +212,7 @@ title: 'Progresso de Leitura',
               <Ionicons name={focused ? 'heart' : 'heart-outline'} color={color} size={size} />
             ),
             headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} />
+              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
             ),
           })}
         />
@@ -221,14 +236,24 @@ const styles = StyleSheet.create({
   frame: {
     flex: 1,
   },
-  hamburger: {
-    width: 26,
-    height: 20,
-    justifyContent: 'space-between',
-    marginLeft: 6,
+  menuCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    marginLeft: 12,
   },
-  bar: {
-    height: 3,
-    borderRadius: 1.5,
+  menuBar: {
+    width: 16,
+    height: 2.5,
+    borderRadius: 1.25,
+    marginVertical: 1.5,
   },
 });

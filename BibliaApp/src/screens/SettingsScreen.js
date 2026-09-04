@@ -1,11 +1,19 @@
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 
-import { useApp } from '../context/AppContext';
+import { HOME_THEMES, useApp } from '../context/AppContext';
 
 const FONT_OPTIONS = [14, 16, 18, 20, 22];
 
 export default function SettingsScreen() {
-  const { theme, darkMode, setDarkMode, fontSize, setFontSize } = useApp();
+  const {
+    theme,
+    darkMode,
+    setDarkMode,
+    fontSize,
+    setFontSize,
+    homeTheme,
+    updateHomeTheme,
+  } = useApp();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -49,6 +57,37 @@ export default function SettingsScreen() {
                   ]}
                 >
                   {size}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+
+      <View style={[styles.group, { backgroundColor: theme.surface }]}>
+        <Text style={[styles.groupTitle, { color: theme.textMuted }]}>Tema da Home</Text>
+        <View style={styles.themeRow}>
+          {Object.entries(HOME_THEMES).map(([key, value]) => {
+            const active = key === homeTheme;
+            return (
+              <TouchableOpacity
+                key={key}
+                style={styles.themeOption}
+                onPress={() => updateHomeTheme(key)}
+              >
+                <View
+                  style={[
+                    styles.themeSwatch,
+                    { backgroundColor: value.bg },
+                    active && styles.themeSwatchActive,
+                  ]}
+                >
+                  {active ? <View style={styles.themeCheck} /> : null}
+                </View>
+                <Text
+                  style={[styles.themeLabel, { color: active ? theme.primary : theme.text }]}
+                >
+                  {value.name}
                 </Text>
               </TouchableOpacity>
             );
@@ -109,5 +148,40 @@ const styles = StyleSheet.create({
   fontSizeText: {
     fontSize: 12,
     marginTop: 2,
+  },
+  themeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  themeOption: {
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 4,
+  },
+  themeSwatch: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  themeSwatchActive: {
+    borderColor: '#2f6f4f',
+    borderWidth: 3,
+  },
+  themeCheck: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    backgroundColor: '#2f6f4f',
+  },
+  themeLabel: {
+    fontSize: 11,
+    marginTop: 6,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

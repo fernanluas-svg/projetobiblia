@@ -4,24 +4,33 @@
     "slug": "BibliaApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/biblialogo.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+        "foregroundImage": "./assets/biblialogo.png",
+        "backgroundColor": "#0a0a0a"
+      },
+      "package": "com.lucaodevelop2.BibliaApp"
+    },
+    "splash": {
+      "image": "./assets/biblialogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0a0a"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "06f9b5f1-7df5-4d34-b054-b35cd79bf5c7"
+      }
+    }
   }
 }

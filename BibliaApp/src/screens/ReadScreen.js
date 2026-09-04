@@ -12,7 +12,7 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 
-import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER } from '../context/AppContext';
+import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, HOME_THEMES } from '../context/AppContext';
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
 import { makeChapterKey } from '../utils/chapterKey';
@@ -242,13 +242,20 @@ export default function ReadScreen({ navigation, route }) {
   const {
     theme,
     fontSize,
+    homeTheme,
     isFavorite,
     toggleFavorite,
     isChapterRead,
     toggleChapterRead,
     getHighlight,
     setHighlight,
+    setLastRead,
   } = useApp();
+
+  const homeThemeMeta = HOME_THEMES[homeTheme] || HOME_THEMES.creme;
+  const isHomeDark = homeThemeMeta.dark;
+  const verseNumColor = isHomeDark ? '#A0AEC0' : '#4A5568';
+  const sectionTitleColor = isHomeDark ? '#CBD5E0' : '#2D3748';
   const [chapterIndex, setChapterIndex] = useState(route?.params?.chapter ?? 0);
   const chapterIndexRef = useRef(chapterIndex);
   useEffect(() => {
@@ -411,6 +418,16 @@ export default function ReadScreen({ navigation, route }) {
     }
   }, [navigation, meta]);
 
+  useEffect(() => {
+    if (meta && !loading) {
+      setLastRead({
+        book: meta,
+        chapter: chapterIndex,
+        verse: route?.params?.verse ?? 0,
+      });
+    }
+  }, [meta, chapterIndex, loading]);
+
   const buildVerse = (verseIndex) => ({
     key: `${chapterKey}:${verseIndex}`,
     bookName: meta.name,
@@ -555,7 +572,6 @@ export default function ReadScreen({ navigation, route }) {
             <Text style={[styles.headerTitleText, { color: theme.text }]} numberOfLines={1}>
               {meta ? `${meta.name}` : ''}
             </Text>
-            <Ionicons name="chevron-down" size={18} color={theme.textMuted} />
           </TouchableOpacity>
 
           {/* Slot direito: reserva de espaço para futuros ícones (versão, busca, etc.) */}
@@ -613,7 +629,7 @@ export default function ReadScreen({ navigation, route }) {
                   onPress={() => toggleSelection(index)}
                   activeOpacity={0.6}
                 >
-                  <Text style={[styles.verseNumber, { color: '#000000' }]}>{index + 1}</Text>
+                  <Text style={[styles.verseNumber, { color: verseNumColor }]}>{index + 1}</Text>
                   <Text style={[styles.verseText, { color: theme.text, fontSize }]}>
                     {verseText}
                   </Text>
@@ -636,7 +652,7 @@ export default function ReadScreen({ navigation, route }) {
       {/* Botões flutuantes circulares de navegação de capítulo */}
       <Animated.View pointerEvents="box-none" style={[styles.fabRow, fabAnimatedStyle]}>
         <TouchableOpacity
-          style={[styles.fab, chapterIndex === 0 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isHomeDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === 0 && styles.fabDisabled]}
           onPress={goToPreviousChapter}
           disabled={chapterIndex === 0}
           activeOpacity={0.7}
@@ -645,7 +661,7 @@ export default function ReadScreen({ navigation, route }) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.fab, chapterIndex === totalChapters - 1 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isHomeDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === totalChapters - 1 && styles.fabDisabled]}
           onPress={goToNextChapter}
           disabled={chapterIndex === totalChapters - 1}
           activeOpacity={0.7}
@@ -927,11 +943,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 20,
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   headerTitleText: {
     fontSize: 17,
     fontWeight: '700',
-    marginRight: 4,
     flexShrink: 1,
   },
   fabRow: {
@@ -980,6 +1000,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 12,
+    display: 'none',
   },
   pericopeTitle: {
     fontSize: 21,

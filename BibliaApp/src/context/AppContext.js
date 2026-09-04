@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppContext = createContext(null);
 
@@ -12,6 +13,14 @@ export const HIGHLIGHT_COLORS = {
 };
 
 export const HIGHLIGHT_ORDER = ['Amarelo', 'Roxo', 'Verde', 'Rosa', 'Azul', 'Laranja'];
+
+export const HOME_THEMES = {
+  branca: { name: 'Branco', bg: '#FFFFFF', dark: false },
+  creme: { name: 'Creme', bg: '#F7F4EE', dark: false },
+  preto: { name: 'Preto', bg: '#121212', dark: true },
+  azul_escuro: { name: 'Azul Escuro', bg: '#1E293B', dark: true },
+  verde_escuro: { name: 'Verde Escuro', bg: '#1B3B2B', dark: true },
+};
 
 const lightColors = {
   background: '#f5f5f5',
@@ -45,6 +54,55 @@ export function AppProvider({ children }) {
   const [highlights, setHighlights] = useState({});
   const [darkMode, setDarkMode] = useState(false);
   const [fontSize, setFontSize] = useState(16);
+  const [homeTheme, setHomeTheme] = useState('creme');
+  const [lastRead, setLastReadState] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+
+  const LAST_READ_KEY = '@bibliaapp/lastRead';
+  const HOME_THEME_KEY = '@bibliaapp/homeTheme';
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const [raw, themeRaw] = await Promise.all([
+          AsyncStorage.getItem(LAST_READ_KEY),
+          AsyncStorage.getItem(HOME_THEME_KEY),
+        ]);
+        if (active && raw) {
+          setLastReadState(JSON.parse(raw));
+        }
+        if (active && themeRaw && HOME_THEMES[themeRaw]) {
+          setHomeTheme(themeRaw);
+        }
+      } catch (e) {
+        // ignora falhas de leitura
+      } finally {
+        if (active) setLoaded(true);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const setLastRead = (value) => {
+    setLastReadState(value);
+    try {
+      AsyncStorage.setItem(LAST_READ_KEY, JSON.stringify(value));
+    } catch (e) {
+      // ignora falhas de escrita
+    }
+  };
+
+  const updateHomeTheme = (value) => {
+    setHomeTheme(value);
+    try {
+      AsyncStorage.setItem(HOME_THEME_KEY, value);
+    } catch (e) {
+      // ignora falhas de escrita
+    }
+  };
 
   const theme = darkMode ? darkColors : lightColors;
 
@@ -104,6 +162,9 @@ export function AppProvider({ children }) {
       highlights,
       darkMode,
       fontSize,
+      homeTheme,
+      lastRead,
+      loaded,
       theme,
       toggleFavorite,
       isFavorite,
@@ -112,10 +173,12 @@ export function AppProvider({ children }) {
       toggleHighlight,
       getHighlight,
       setHighlight,
+      setLastRead,
       setDarkMode,
       setFontSize,
+      updateHomeTheme,
     }),
-    [favorites, readChapters, highlights, darkMode, fontSize, theme]
+    [favorites, readChapters, highlights, darkMode, fontSize, homeTheme, lastRead, loaded, theme]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

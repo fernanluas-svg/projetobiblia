@@ -1,21 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApp } from '../context/AppContext';
 import { getBooks, getBook } from '../data/books';
 
 const RECENT_SEARCHES_KEY = '@biblia_recent_searches';
 const MAX_RECENT = 8;
+const PAGE_SIZE = 20;
+
+// Remove acentos e normaliza para minúsculas (busca insensível a maiúsculas e acentos)
+const normalizeText = (text) => {
+  const str = String(text ?? '').toLowerCase();
+  try {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  } catch (e) {
+    // Fallback: se normalize() não estiver disponível, retorna o texto como está
+    return str;
+  }
+};
+
+// Escapa caracteres especiais para uso seguro dentro de uma Regex
+const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+// Divide o texto do versículo em partes, destacando cada ocorrência isolada da palavra.
+// O texto é quebrado em tokens de palavra e separadores preservados; um token é marcado
+// como "highlight" quando sua forma normalizada (sem acentos) é igual ao termo buscado.
+function splitHighlight(verseText, normalizedTerm) {
+  const parts = [];
+  const tokenRegex = /([\p{L}\p{N}]+)|([^\p{L}\p{N}]+)/gu;
+  let match;
+
+  while ((match = tokenRegex.exec(verseText)) !== null) {
+    const word = match[1];
+    const separator = match[2];
+    if (word) {
+      const isMatch = normalizeText(word) === normalizedTerm;
+      parts.push({ text: word, highlight: isMatch });
+    } else if (separator) {
+      parts.push({ text: separator, highlight: false });
+    }
+  }
+
+  return parts;
+}
 
 export default function SearchScreen({ navigation }) {
-  const insets = useSafeAreaInsets();
   const { theme, darkMode } = useApp();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [allResults, setAllResults] = useState([]);
+  const [visibleResults, setVisibleResults] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [bibleData, setBibleData] = useState([]);
 
@@ -60,21 +97,32 @@ export default function SearchScreen({ navigation }) {
   const loadAllBibleData = async () => {
     try {
       const bookList = getBooks();
-      const allBooksPromises = bookList.map(async (b) => {
-        const full = await getBook(b.abbrev);
-        return { meta: b, full };
-      });
-      const resolved = await Promise.all(allBooksPromises);
+      // Carrega cada livro individualmente; falhas isoladas não derrubam o restante.
+      const settled = await Promise.allSettled(
+        bookList.map(async (b) => {
+          const full = await getBook(b.abbrev);
+          return { meta: b, full };
+        })
+      );
+      const resolved = settled
+        .filter((r) => r.status === 'fulfilled')
+        .map((r) => r.value);
       setBibleData(resolved);
+      return resolved;
     } catch (e) {
       // erro ao carregar livros
+      return [];
+    } finally {
+      setDataReady(true);
     }
   };
 
-  const performSearch = async (searchTerm) => {
-    const term = (searchTerm ?? query).trim().toLowerCase();
+  const performSearch = async (searchTerm, clearPaginate = true) => {
+    const rawTerm = (searchTerm ?? query).trim();
+    const term = normalizeText(rawTerm);
     if (!term) {
-      setResults([]);
+      setAllResults([]);
+      setVisibleResults([]);
       setHasSearched(false);
       return;
     }
@@ -82,17 +130,38 @@ export default function SearchScreen({ navigation }) {
     setLoading(true);
     setHasSearched(true);
     Keyboard.dismiss();
-    saveRecentSearch(term);
+    if (clearPaginate) saveRecentSearch(rawTerm);
+
+    // Garante que os dados da Bíblia estejam carregados antes de buscar
+    const data = bibleData.length > 0
+      ? bibleData
+      : await loadAllBibleData();
+
+    // Busca exata por palavras usando word boundary (\b) e sem distinção de maiúsculas/acentos
+    const escapedTerm = escapeRegExp(term);
+    const termRegex = new RegExp(`\\b${escapedTerm}\\b`, 'g');
 
     const foundVerses = [];
 
-    for (const item of bibleData) {
+    for (const item of data) {
       const { meta, full } = item;
       if (!full || !full.chapters) continue;
 
+      // Percorre capítulos e versículos procurando o termo exato no texto
       full.chapters.forEach((chapter, cIndex) => {
-        chapter.forEach((verseText, vIndex) => {
-          if (verseText.toLowerCase().includes(term)) {
+        chapter.forEach((verseObj, vIndex) => {
+          const verseText =
+            typeof verseObj === 'object'
+              ? verseObj.text || verseObj.verse || ''
+              : verseObj;
+          if (!verseText) return;
+
+          // A verificação com Regex ocorre EXCLUSIVAMENTE sobre o texto do versículo.
+          const normalizedVerse = normalizeText(verseText);
+          termRegex.lastIndex = 0;
+          const verseMatch = termRegex.test(normalizedVerse);
+
+          if (verseMatch) {
             foundVerses.push({
               key: `${meta.abbrev}:${cIndex}:${vIndex}`,
               bookMeta: meta,
@@ -101,18 +170,30 @@ export default function SearchScreen({ navigation }) {
               verseIndex: vIndex,
               reference: `${meta.name} ${cIndex + 1}:${vIndex + 1}`,
               text: verseText,
+              normalizedTerm: term,
             });
           }
         });
       });
     }
 
-    setResults(foundVerses);
+    // Guarda todo o array em memória, mas renderiza apenas o primeiro PAGE_SIZE
+    setAllResults(foundVerses);
+    setVisibleResults(foundVerses.slice(0, PAGE_SIZE));
     setLoading(false);
   };
 
+  const loadMore = useCallback(() => {
+    setVisibleResults((prev) => {
+      if (prev.length >= allResults.length) return prev;
+      return allResults.slice(0, prev.length + PAGE_SIZE);
+    });
+  }, [allResults]);
+
   const handleSelectVerse = (item) => {
-    navigation.navigate('Livros', {
+    // A tela "Read" fica dentro do HomeStack, aninhada no drawer "Início".
+    // Navegamos para o drawer e depois para a tela de leitura dentro do stack.
+    navigation.navigate('Início', {
       screen: 'Read',
       params: {
         book: item.bookMeta,
@@ -127,6 +208,47 @@ export default function SearchScreen({ navigation }) {
     performSearch(term);
   };
 
+  const renderItem = useCallback(
+    ({ item }) => {
+      const parts = splitHighlight(item.text, item.normalizedTerm);
+
+      return (
+        <TouchableOpacity
+          style={[styles.verseCard, { backgroundColor: theme.surface, borderColor: theme.border }]}
+          onPress={() => handleSelectVerse(item)}
+          activeOpacity={0.7}
+        >
+          <Text style={[styles.verseReference, { color: darkMode ? '#6EE7B7' : '#2E7D32' }]}>
+            {item.reference}
+          </Text>
+          <Text style={[styles.verseText, { color: theme.text }]} numberOfLines={3}>
+            {parts.map((part, index) =>
+              part.highlight ? (
+                <Text
+                  key={index}
+                  style={[
+                    styles.highlightedTerm,
+                    {
+                      backgroundColor: darkMode ? '#3F6212' : '#DCFCE7',
+                      color: theme.text,
+                    },
+                  ]}
+                >
+                  {part.text}
+                </Text>
+              ) : (
+                <Text key={index}>{part.text}</Text>
+              )
+            )}
+          </Text>
+        </TouchableOpacity>
+      );
+    },
+    [theme, darkMode]
+  );
+
+  const keyExtractor = useCallback((item) => item.key, []);
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Barra de Pesquisa */}
@@ -138,13 +260,20 @@ export default function SearchScreen({ navigation }) {
             placeholder="Pesquisar versículos ou palavras..."
             placeholderTextColor={theme.textMuted}
             value={query}
-            onChangeText={setQuery}
+            onChangeText={(text) => {
+              setQuery(text);
+              if (!text.trim()) {
+                setAllResults([]);
+                setVisibleResults([]);
+                setHasSearched(false);
+              }
+            }}
             onSubmitEditing={() => performSearch()}
             returnKeyType="search"
             autoCapitalize="none"
           />
           {query.length > 0 ? (
-            <TouchableOpacity onPress={() => { setQuery(''); setResults([]); setHasSearched(false); }} hitSlop={8}>
+            <TouchableOpacity onPress={() => { setQuery(''); setAllResults([]); setVisibleResults([]); setHasSearched(false); }} hitSlop={8}>
               <Ionicons name="close-circle" size={20} color={theme.textMuted} style={styles.clearIcon} />
             </TouchableOpacity>
           ) : null}
@@ -192,10 +321,24 @@ export default function SearchScreen({ navigation }) {
       ) : (
         <View style={styles.resultsContainer}>
           <Text style={[styles.resultsCount, { color: darkMode ? '#9CA3AF' : '#6B7280' }]}>
-            {results.length} versículo{results.length === 1 ? '' : 's'} encontrado{results.length === 1 ? '' : 's'}
+            {allResults.length} versículo{allResults.length === 1 ? '' : 's'} encontrado{allResults.length === 1 ? '' : 's'}
           </Text>
 
-          {results.length === 0 ? (
+          {loading ? (
+            <View style={styles.emptyState}>
+              <Ionicons name="hourglass-outline" size={56} color={theme.textMuted} />
+              <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
+                Pesquisando...
+              </Text>
+            </View>
+          ) : !dataReady || bibleData.length === 0 ? (
+            <View style={styles.emptyState}>
+              <Ionicons name="server-outline" size={56} color={theme.textMuted} />
+              <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
+                Carregando a Bíblia para pesquisa, aguarde...
+              </Text>
+            </View>
+          ) : allResults.length === 0 ? (
             <View style={styles.emptyState}>
               <Ionicons name="alert-circle-outline" size={56} color={theme.textMuted} />
               <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
@@ -204,23 +347,16 @@ export default function SearchScreen({ navigation }) {
             </View>
           ) : (
             <FlatList
-              data={results}
-              keyExtractor={(item) => item.key}
+              data={visibleResults}
+              keyExtractor={keyExtractor}
               contentContainerStyle={styles.listContent}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={[styles.verseCard, { backgroundColor: theme.surface, borderColor: theme.border }]}
-                  onPress={() => handleSelectVerse(item)}
-                  activeOpacity={0.7}
-                >
-                  <Text style={[styles.verseReference, { color: darkMode ? '#6EE7B7' : '#2E7D32' }]}>
-                    {item.reference}
-                  </Text>
-                  <Text style={[styles.verseText, { color: theme.text }]} numberOfLines={3}>
-                    {item.text}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              renderItem={renderItem}
+              keyboardShouldPersistTaps="handled"
+              initialNumToRender={PAGE_SIZE}
+              maxToRenderPerBatch={PAGE_SIZE}
+              windowSize={10}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.5}
             />
           )}
         </View>
@@ -337,6 +473,10 @@ const styles = StyleSheet.create({
   verseText: {
     fontSize: 15,
     lineHeight: 22,
+  },
+  highlightedTerm: {
+    fontWeight: 'bold',
+    borderRadius: 3,
   },
   emptyState: {
     flex: 1,
