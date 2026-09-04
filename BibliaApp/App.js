@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
@@ -15,6 +15,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import StubScreen from './src/screens/StubScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -83,8 +84,19 @@ function HomeStack() {
 }
 
 function RootNavigator() {
-  const { darkMode } = useApp();
-  const navigationTheme = darkMode ? DarkTheme : DefaultTheme;
+  const { theme } = useApp();
+  const navigationTheme = {
+    ...DefaultTheme,
+    dark: theme.dark,
+    colors: {
+      primary: theme.primary,
+      background: theme.background,
+      card: theme.surface,
+      text: theme.text,
+      border: theme.border,
+      notification: theme.primary,
+    },
+  };
 
   return (
     <NavigationContainer theme={navigationTheme}>
@@ -95,7 +107,7 @@ function RootNavigator() {
           drawerType: 'front',
           drawerPosition: 'left',
           drawerStyle: {
-            backgroundColor: darkMode ? '#121212' : '#FFFFFF',
+            backgroundColor: theme.background,
             width: 290,
           },
         }}
@@ -217,18 +229,27 @@ title: 'Progresso de Leitura',
           })}
         />
       </Drawer.Navigator>
-      <StatusBar style={darkMode ? 'light' : 'dark'} />
+      <StatusBar style={theme.dark ? 'light' : 'dark'} />
     </NavigationContainer>
+  );
+}
+
+function AppFrame() {
+  const { theme } = useApp();
+  return (
+    <View style={[styles.frame, { backgroundColor: theme.background }, webFrameStyle]}>
+      <RootNavigator />
+    </View>
   );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <View style={[styles.frame, { backgroundColor: '#f5f5f5' }, webFrameStyle]}>
-        <RootNavigator />
-      </View>
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <AppFrame />
+      </AppProvider>
+    </ErrorBoundary>
   );
 }
 
