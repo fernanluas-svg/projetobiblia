@@ -105,6 +105,42 @@ export const HOME_THEMES = {
       dark: true,
     },
   },
+  marrom: {
+    name: 'Marrom',
+    dark: true,
+    colors: {
+      background: '#2C1D14',
+      surface: '#3E2A1E',
+      text: '#F5EBE1',
+      textMuted: '#C2B2A3',
+      border: '#543D2D',
+      primary: '#D4A373',
+      highlight: '#8A7F2F',
+      selection: '#4E3728',
+      activeGreen: '#D4A373',
+      bar: '#22150E',
+      cardVerseBg: '#1D120B',
+      dark: true,
+    },
+  },
+  rosa: {
+    name: 'Rosa',
+    dark: false,
+    colors: {
+      background: '#FDF2F4',
+      surface: '#FFFFFF',
+      text: '#4A2E35',
+      textMuted: '#8C6871',
+      border: '#E8C5CE',
+      primary: '#C94A6E',
+      highlight: '#FFF3B0',
+      selection: '#FAD2DA',
+      activeGreen: '#C94A6E',
+      bar: '#F7E4E9',
+      cardVerseBg: '#A83253',
+      dark: false,
+    },
+  },
 };
 
 export function getThemeConfig(themeKey) {

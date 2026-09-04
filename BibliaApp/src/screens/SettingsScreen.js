@@ -1,4 +1,4 @@
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { HOME_THEMES, useApp } from '../context/AppContext';
 
@@ -7,27 +7,16 @@ const FONT_OPTIONS = [14, 16, 18, 20, 22];
 export default function SettingsScreen() {
   const {
     theme,
-    darkMode,
-    setDarkMode,
+    themeKey,
+    updateTheme,
     fontSize,
     setFontSize,
-    homeTheme,
-    updateHomeTheme,
   } = useApp();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <View style={[styles.group, { backgroundColor: theme.surface }]}>
+      <View style={[styles.group, { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 1 }]}>
         <Text style={[styles.groupTitle, { color: theme.textMuted }]}>Aparência</Text>
-
-        <View style={[styles.row, { borderBottomColor: theme.border }]}>
-          <Text style={[styles.rowLabel, { color: theme.text }]}>Tema Escuro</Text>
-          <Switch
-            value={darkMode}
-            onValueChange={setDarkMode}
-            trackColor={{ true: theme.primary, false: theme.border }}
-          />
-        </View>
 
         <Text style={[styles.fontLabel, { color: theme.text }]}>Tamanho da fonte</Text>
         <View style={styles.fontRow}>
@@ -38,14 +27,15 @@ export default function SettingsScreen() {
                 key={size}
                 style={[
                   styles.fontOption,
-                  active && { backgroundColor: theme.primary },
+                  { borderColor: active ? theme.primary : theme.border, borderWidth: active ? 2 : 1 },
+                  active && { backgroundColor: theme.selection },
                 ]}
                 onPress={() => setFontSize(size)}
               >
                 <Text
                   style={[
                     styles.fontOptionText,
-                    { color: active ? '#fff' : theme.text },
+                    { color: active ? theme.primary : theme.text, fontWeight: active ? 'bold' : '600' },
                   ]}
                 >
                   Aa
@@ -53,7 +43,7 @@ export default function SettingsScreen() {
                 <Text
                   style={[
                     styles.fontSizeText,
-                    { color: active ? '#fff' : theme.textMuted },
+                    { color: active ? theme.primary : theme.textMuted, fontWeight: active ? '700' : 'normal' },
                   ]}
                 >
                   {size}
@@ -64,28 +54,28 @@ export default function SettingsScreen() {
         </View>
       </View>
 
-      <View style={[styles.group, { backgroundColor: theme.surface }]}>
-        <Text style={[styles.groupTitle, { color: theme.textMuted }]}>Tema da Home</Text>
+      <View style={[styles.group, { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 1 }]}>
+        <Text style={[styles.groupTitle, { color: theme.textMuted }]}>Tema do App</Text>
         <View style={styles.themeRow}>
           {Object.entries(HOME_THEMES).map(([key, value]) => {
-            const active = key === homeTheme;
+            const active = key === themeKey;
             return (
               <TouchableOpacity
                 key={key}
                 style={styles.themeOption}
-                onPress={() => updateHomeTheme(key)}
+                onPress={() => updateTheme(key)}
               >
                 <View
                   style={[
                     styles.themeSwatch,
-                    { backgroundColor: value.bg },
+                    { backgroundColor: value.colors.background, borderColor: active ? value.colors.primary : theme.border },
                     active && styles.themeSwatchActive,
                   ]}
                 >
-                  {active ? <View style={styles.themeCheck} /> : null}
+                  {active ? <View style={[styles.themeCheck, { backgroundColor: value.colors.primary }]} /> : null}
                 </View>
                 <Text
-                  style={[styles.themeLabel, { color: active ? theme.primary : theme.text }]}
+                  style={[styles.themeLabel, { color: active ? value.colors.primary : theme.text, fontWeight: active ? 'bold' : '500' }]}
                 >
                   {value.name}
                 </Text>
@@ -104,24 +94,20 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   group: {
-    borderRadius: 12,
+    borderRadius: 14,
     padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
   },
   groupTitle: {
     fontSize: 13,
     fontWeight: '600',
     marginBottom: 12,
     textTransform: 'uppercase',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  rowLabel: {
-    fontSize: 16,
   },
   fontLabel: {
     fontSize: 16,
@@ -169,14 +155,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   themeSwatchActive: {
-    borderColor: '#2f6f4f',
-    borderWidth: 3,
+    borderWidth: 3.5,
   },
   themeCheck: {
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#2f6f4f',
   },
   themeLabel: {
     fontSize: 11,
