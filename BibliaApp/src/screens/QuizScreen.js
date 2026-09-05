@@ -324,7 +324,7 @@ export default function QuizScreen() {
         <Ionicons name="help-circle" size={44} color="#FFFFFF" />
         <Text style={styles.heroTitle}>Mini Quiz da Bíblia</Text>
         <Text style={styles.heroSubtitle}>
-          Escolha um modo, defina a quantidade e teste seus conhecimentos com {perguntasArray.length} perguntas.
+          Escolha um modo, defina a quantidade e teste seus conhecimentos.
         </Text>
       </View>
 
