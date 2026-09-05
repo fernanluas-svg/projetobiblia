@@ -1,7 +1,13 @@
 const TIMEOUT_MS = 6000;
 
-const REST_URL = process.env.EXPO_PUBLIC_UPSTASH_REDIS_REST_URL;
-const REST_TOKEN = process.env.EXPO_PUBLIC_UPSTASH_REDIS_REST_TOKEN;
+const REST_URL =
+  process.env.EXPO_PUBLIC_UPSTASH_REDIS_REST_URL ||
+  process.env.KV_REST_API_URL ||
+  '';
+const REST_TOKEN =
+  process.env.EXPO_PUBLIC_UPSTASH_REDIS_REST_TOKEN ||
+  process.env.KV_REST_API_TOKEN ||
+  '';
 
 export const isRedisConfigured = Boolean(REST_URL && REST_TOKEN);
 
@@ -52,6 +58,34 @@ export async function redisIncr(key) {
   const res = await execute(['INCR', key]);
   if (res.error) return null;
   return typeof res.result === 'number' ? res.result : null;
+}
+
+export async function redisIncrBy(key, amount) {
+  if (!hasRedis()) return null;
+  const res = await execute(['INCRBY', key, Number(amount) || 0]);
+  if (res.error) return null;
+  return typeof res.result === 'number' ? res.result : null;
+}
+
+export async function redisHset(key, field, value) {
+  if (!hasRedis()) return false;
+  const res = await execute(['HSET', key, String(field), String(value)]);
+  return !res.error;
+}
+
+export async function redisHgetall(key) {
+  if (!hasRedis()) return null;
+  const res = await execute(['HGETALL', key]);
+  if (res.error || res.result === null || res.result === undefined) return null;
+  const raw = res.result;
+  if (Array.isArray(raw)) {
+    const out = {};
+    for (let i = 0; i + 1 < raw.length; i += 2) {
+      out[String(raw[i])] = String(raw[i + 1]);
+    }
+    return out;
+  }
+  return typeof raw === 'object' ? raw : null;
 }
 
 export async function redisZadd(key, score, member) {

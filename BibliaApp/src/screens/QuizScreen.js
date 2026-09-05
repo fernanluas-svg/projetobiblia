@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useApp } from '../context/AppContext';
 import { quizData } from '../data/quizQuestions';
-import { submitScore, fetchRanking } from '../utils/ranking';
+import { submitScore, fetchRanking, recordMatch } from '../services/quizService';
 
 const PLAYER_NAME_KEY = '@bibliaapp/playerName';
 const POINTS_PER_HIT = 10;
@@ -118,6 +118,10 @@ export default function QuizScreen() {
   const [ranking, setRanking] = useState([]);
   const [rankSaving, setRankSaving] = useState(false);
   const [rankError, setRankError] = useState(null);
+  const [autoSaved, setAutoSaved] = useState(false);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const autoSavedRef = useRef(false);
+  const recordedRef = useRef(false);
 
   const correctPlayer = useAudioPlayer(require('../../assets/sounds/correct.wav'));
   const wrongPlayer = useAudioPlayer(require('../../assets/sounds/wrong.wav'));
@@ -162,12 +166,47 @@ export default function QuizScreen() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (phase !== 'result' || recordedRef.current || !total) return;
+    recordedRef.current = true;
+    recordMatch({
+      score,
+      correct: Math.round(score / POINTS_PER_HIT),
+      total,
+      mode: modeKey,
+    }).catch(() => {});
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== 'result' || autoSavedRef.current || autoSaving) return;
+    const name = playerName.trim();
+    const pct = total > 0 ? score / maxScore : 0;
+    if (pct < 0.6 || !name) return;
+    autoSavedRef.current = true;
+    setAutoSaving(true);
+    (async () => {
+      const res = await submitScore(name, score);
+      setAutoSaving(false);
+      if (res.ok) {
+        setAutoSaved(true);
+        setRankError(null);
+        await loadRanking();
+      } else {
+        setRankError('Não foi possível publicar sua pontuação automaticamente. Você pode salvá-la abaixo.');
+      }
+    })();
+  }, [phase]);
+
   const startQuiz = () => {
     setQuestions(prepareQuestions(modeKey, questionCount));
     setCurrent(0);
     setSelected(null);
     setScore(0);
     setRankError(null);
+    setAutoSaved(false);
+    setAutoSaving(false);
+    autoSavedRef.current = false;
+    recordedRef.current = false;
     setPhase('playing');
   };
 
@@ -211,6 +250,10 @@ export default function QuizScreen() {
   const saveRanking = async () => {
     const name = playerName.trim();
     if (!name || rankSaving) return;
+    if (autoSavedRef.current) {
+      await loadRanking();
+      return;
+    }
     setRankSaving(true);
     setRankError(null);
     try {
@@ -224,6 +267,7 @@ export default function QuizScreen() {
       setRankError('Não foi possível enviar sua pontuação agora. O quiz continua disponível offline.');
       return;
     }
+    setAutoSaved(true);
     await loadRanking();
   };
 
@@ -523,36 +567,53 @@ export default function QuizScreen() {
         </View>
 
         <Text style={[styles.fieldLabel, { color: theme.textMuted }]}>Salvar pontuação no ranking</Text>
-        <TextInput
-          style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
-          placeholder="Seu nome no ranking"
-          placeholderTextColor={theme.textMuted}
-          value={playerName}
-          onChangeText={setPlayerName}
-          maxLength={20}
-        />
 
-        {rankError && (
+        {autoSaved ? (
+          <View style={[styles.successBox, styles.successBoxDark]}>
+            <Ionicons name="checkmark-circle" size={18} color="#16A34A" />
+            <Text style={[styles.successText, { color: '#16A34A' }]}>
+              Sua pontuação foi publicada automaticamente no ranking.
+            </Text>
+          </View>
+        ) : autoSaving ? (
+          <View style={styles.autoSavingRow}>
+            <ActivityIndicator color={theme.primary} size="small" />
+            <Text style={[styles.autoSavingText, { color: theme.textMuted }]}>Enviando pontuação...</Text>
+          </View>
+        ) : (
+          <TextInput
+            style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
+            placeholder="Seu nome no ranking"
+            placeholderTextColor={theme.textMuted}
+            value={playerName}
+            onChangeText={setPlayerName}
+            maxLength={20}
+          />
+        )}
+
+        {rankError && !autoSaved && (
           <View style={[styles.errorBox, { backgroundColor: isDark ? '#3B1F24' : '#FEE2E2' }]}>
             <Ionicons name="alert-circle-outline" size={16} color="#DC2626" />
             <Text style={[styles.errorText, { color: '#DC2626' }]}>{rankError}</Text>
           </View>
         )}
 
-        <TouchableOpacity
-          style={[styles.primaryButton, { backgroundColor: theme.primary }]}
-          onPress={saveRanking}
-          disabled={!playerName.trim() || rankSaving}
-        >
-          {rankSaving ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <>
-              <Ionicons name="trophy-outline" size={18} color="#FFFFFF" />
-              <Text style={styles.primaryButtonText}>Salvar no ranking</Text>
-            </>
-          )}
-        </TouchableOpacity>
+        {!autoSaved && (
+          <TouchableOpacity
+            style={[styles.primaryButton, { backgroundColor: theme.primary }]}
+            onPress={saveRanking}
+            disabled={!playerName.trim() || rankSaving || autoSaving}
+          >
+            {rankSaving ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <>
+                <Ionicons name="trophy-outline" size={18} color="#FFFFFF" />
+                <Text style={styles.primaryButtonText}>Salvar no ranking</Text>
+              </>
+            )}
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={startQuiz}>
           <Ionicons name="refresh" size={18} color={theme.primary} />
@@ -949,5 +1010,32 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 13,
     lineHeight: 18,
+  },
+  successBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    padding: 12,
+    marginBottom: 12,
+  },
+  successBoxDark: {
+    backgroundColor: 'rgba(22, 163, 74, 0.12)',
+    borderColor: '#22C55E',
+  },
+  successText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  autoSavingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  autoSavingText: {
+    fontSize: 13,
   },
 });
