@@ -4,34 +4,28 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApp } from '../context/AppContext';
 import { getBooks, getBook } from '../data/books';
+import {
+  toSafeString,
+  normalizeText,
+  sanitizeSearchTerm,
+  isValidSearchTerm,
+  escapeRegExp,
+} from '../utils/sanitize';
 
 const RECENT_SEARCHES_KEY = '@biblia_recent_searches';
 const MAX_RECENT = 8;
 const PAGE_SIZE = 20;
-
-// Remove acentos e normaliza para minúsculas (busca insensível a maiúsculas e acentos)
-const normalizeText = (text) => {
-  const str = String(text ?? '').toLowerCase();
-  try {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  } catch (e) {
-    // Fallback: se normalize() não estiver disponível, retorna o texto como está
-    return str;
-  }
-};
-
-// Escapa caracteres especiais para uso seguro dentro de uma Regex
-const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Divide o texto do versículo em partes, destacando cada ocorrência isolada da palavra.
 // O texto é quebrado em tokens de palavra e separadores preservados; um token é marcado
 // como "highlight" quando sua forma normalizada (sem acentos) é igual ao termo buscado.
 function splitHighlight(verseText, normalizedTerm) {
   const parts = [];
+  const safeVerseText = toSafeString(verseText);
   const tokenRegex = /([\p{L}\p{N}]+)|([^\p{L}\p{N}]+)/gu;
   let match;
 
-  while ((match = tokenRegex.exec(verseText)) !== null) {
+  while ((match = tokenRegex.exec(safeVerseText)) !== null) {
     const word = match[1];
     const separator = match[2];
     if (word) {
@@ -46,7 +40,7 @@ function splitHighlight(verseText, normalizedTerm) {
 }
 
 export default function SearchScreen({ navigation }) {
-  const { theme, darkMode } = useApp();
+  const { theme } = useApp();
   const [query, setQuery] = useState('');
   const [allResults, setAllResults] = useState([]);
   const [visibleResults, setVisibleResults] = useState([]);
@@ -66,7 +60,10 @@ export default function SearchScreen({ navigation }) {
     try {
       const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
       if (stored) {
-        setRecentSearches(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setRecentSearches(parsed.filter((item) => typeof item === 'string'));
+        }
       }
     } catch (e) {
       // erro ao carregar
@@ -74,8 +71,8 @@ export default function SearchScreen({ navigation }) {
   };
 
   const saveRecentSearch = async (searchTerm) => {
-    const trimmed = searchTerm.trim();
-    if (!trimmed) return;
+    const trimmed = toSafeString(searchTerm).replace(/\s+/g, ' ').trim();
+    if (!trimmed || !isValidSearchTerm(trimmed)) return;
     try {
       const updated = [trimmed, ...recentSearches.filter((item) => item !== trimmed)].slice(0, MAX_RECENT);
       setRecentSearches(updated);
@@ -118,12 +115,14 @@ export default function SearchScreen({ navigation }) {
   };
 
   const performSearch = async (searchTerm, clearPaginate = true) => {
-    const rawTerm = (searchTerm ?? query).trim();
-    const term = normalizeText(rawTerm);
-    if (!term) {
+    const rawTerm = sanitizeSearchTerm(searchTerm ?? query);
+
+    // Entrada vazia ou composta apenas de símbolos: volta à lista padrão sem quebrar.
+    if (!isValidSearchTerm(rawTerm)) {
       setAllResults([]);
       setVisibleResults([]);
       setHasSearched(false);
+      setLoading(false);
       return;
     }
 
@@ -132,55 +131,64 @@ export default function SearchScreen({ navigation }) {
     Keyboard.dismiss();
     if (clearPaginate) saveRecentSearch(rawTerm);
 
-    // Garante que os dados da Bíblia estejam carregados antes de buscar
-    const data = bibleData.length > 0
-      ? bibleData
-      : await loadAllBibleData();
+    try {
+      // Garante que os dados da Bíblia estejam carregados antes de buscar
+      const data = bibleData.length > 0
+        ? bibleData
+        : await loadAllBibleData();
 
-    // Busca exata por palavras usando word boundary (\b) e sem distinção de maiúsculas/acentos
-    const escapedTerm = escapeRegExp(term);
-    const termRegex = new RegExp(`\\b${escapedTerm}\\b`, 'g');
+      // Busca exata por palavras usando word boundary (\b) e sem distinção de maiúsculas/acentos
+      const escapedTerm = escapeRegExp(rawTerm);
+      const termRegex = new RegExp(`\\b${escapedTerm}\\b`, 'g');
 
-    const foundVerses = [];
+      const foundVerses = [];
 
-    for (const item of data) {
-      const { meta, full } = item;
-      if (!full || !full.chapters) continue;
+      for (const item of data) {
+        const { meta, full } = item;
+        if (!full || !full.chapters) continue;
 
-      // Percorre capítulos e versículos procurando o termo exato no texto
-      full.chapters.forEach((chapter, cIndex) => {
-        chapter.forEach((verseObj, vIndex) => {
-          const verseText =
-            typeof verseObj === 'object'
-              ? verseObj.text || verseObj.verse || ''
-              : verseObj;
-          if (!verseText) return;
+        // Percorre capítulos e versículos procurando o termo exato no texto
+        full.chapters.forEach((chapter, cIndex) => {
+          if (!Array.isArray(chapter)) return;
+          chapter.forEach((verseObj, vIndex) => {
+            const verseText =
+              typeof verseObj === 'object'
+                ? verseObj.text || verseObj.verse || ''
+                : verseObj;
+            if (!toSafeString(verseText)) return;
 
-          // A verificação com Regex ocorre EXCLUSIVAMENTE sobre o texto do versículo.
-          const normalizedVerse = normalizeText(verseText);
-          termRegex.lastIndex = 0;
-          const verseMatch = termRegex.test(normalizedVerse);
+            // A verificação com Regex ocorre EXCLUSIVAMENTE sobre o texto do versículo.
+            const normalizedVerse = normalizeText(verseText);
+            termRegex.lastIndex = 0;
+            const verseMatch = termRegex.test(normalizedVerse);
 
-          if (verseMatch) {
-            foundVerses.push({
-              key: `${meta.abbrev}:${cIndex}:${vIndex}`,
-              bookMeta: meta,
-              bookName: meta.name,
-              chapterIndex: cIndex,
-              verseIndex: vIndex,
-              reference: `${meta.name} ${cIndex + 1}:${vIndex + 1}`,
-              text: verseText,
-              normalizedTerm: term,
-            });
-          }
+            if (verseMatch) {
+              foundVerses.push({
+                key: `${meta.abbrev}:${cIndex}:${vIndex}`,
+                bookMeta: meta,
+                bookName: meta.name,
+                chapterIndex: cIndex,
+                verseIndex: vIndex,
+                reference: `${meta.name} ${cIndex + 1}:${vIndex + 1}`,
+                text: verseText,
+                normalizedTerm: rawTerm,
+              });
+            }
+          });
         });
-      });
-    }
+      }
 
-    // Guarda todo o array em memória, mas renderiza apenas o primeiro PAGE_SIZE
-    setAllResults(foundVerses);
-    setVisibleResults(foundVerses.slice(0, PAGE_SIZE));
-    setLoading(false);
+      // Guarda todo o array em memória, mas renderiza apenas o primeiro PAGE_SIZE
+      setAllResults(foundVerses);
+      setVisibleResults(foundVerses.slice(0, PAGE_SIZE));
+    } catch (e) {
+      // Falha inesperada: restaura o estado padrão sem disparar exceções
+      setAllResults([]);
+      setVisibleResults([]);
+      setHasSearched(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const loadMore = useCallback(() => {
@@ -218,7 +226,7 @@ export default function SearchScreen({ navigation }) {
           onPress={() => handleSelectVerse(item)}
           activeOpacity={0.7}
         >
-          <Text style={[styles.verseReference, { color: darkMode ? '#6EE7B7' : '#2E7D32' }]}>
+          <Text style={[styles.verseReference, { color: theme.dark ? '#6EE7B7' : '#2E7D32' }]}>
             {item.reference}
           </Text>
           <Text style={[styles.verseText, { color: theme.text }]} numberOfLines={3}>
@@ -229,7 +237,7 @@ export default function SearchScreen({ navigation }) {
                   style={[
                     styles.highlightedTerm,
                     {
-                      backgroundColor: darkMode ? '#3F6212' : '#DCFCE7',
+                      backgroundColor: theme.dark ? '#3F6212' : '#DCFCE7',
                       color: theme.text,
                     },
                   ]}
@@ -244,7 +252,7 @@ export default function SearchScreen({ navigation }) {
         </TouchableOpacity>
       );
     },
-    [theme, darkMode]
+    [theme]
   );
 
   const keyExtractor = useCallback((item) => item.key, []);
@@ -253,7 +261,7 @@ export default function SearchScreen({ navigation }) {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       {/* Barra de Pesquisa */}
       <View style={[styles.searchBarContainer, { backgroundColor: theme.surface, borderBottomColor: theme.border }]}>
-        <View style={[styles.inputWrapper, { backgroundColor: darkMode ? '#1F2937' : '#F3F4F6' }]}>
+        <View style={[styles.inputWrapper, { backgroundColor: theme.dark ? '#1F2937' : '#F3F4F6' }]}>
           <Ionicons name="search" size={20} color={theme.textMuted} style={styles.searchIcon} />
           <TextInput
             style={[styles.input, { color: theme.text }]}
@@ -289,7 +297,7 @@ export default function SearchScreen({ navigation }) {
           {recentSearches.length > 0 ? (
             <>
               <View style={styles.recentHeader}>
-                <Text style={[styles.recentTitle, { color: darkMode ? '#9CA3AF' : '#4B5563' }]}>
+                <Text style={[styles.recentTitle, { color: theme.dark ? '#9CA3AF' : '#4B5563' }]}>
                   Pesquisas Recentes
                 </Text>
                 <TouchableOpacity onPress={clearRecentSearches}>
@@ -300,7 +308,7 @@ export default function SearchScreen({ navigation }) {
                 {recentSearches.map((term, index) => (
                   <TouchableOpacity
                     key={index}
-                    style={[styles.chip, { backgroundColor: darkMode ? '#374151' : '#E5E7EB' }]}
+                    style={[styles.chip, { backgroundColor: theme.dark ? '#374151' : '#E5E7EB' }]}
                     onPress={() => handleChipPress(term)}
                   >
                     <Ionicons name="time-outline" size={14} color={theme.textMuted} style={{ marginRight: 6 }} />
@@ -320,7 +328,7 @@ export default function SearchScreen({ navigation }) {
         </View>
       ) : (
         <View style={styles.resultsContainer}>
-          <Text style={[styles.resultsCount, { color: darkMode ? '#9CA3AF' : '#6B7280' }]}>
+          <Text style={[styles.resultsCount, { color: theme.dark ? '#9CA3AF' : '#6B7280' }]}>
             {allResults.length} versículo{allResults.length === 1 ? '' : 's'} encontrado{allResults.length === 1 ? '' : 's'}
           </Text>
 

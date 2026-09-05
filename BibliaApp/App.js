@@ -14,6 +14,7 @@ import ProgressScreen from './src/screens/ProgressScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import StubScreen from './src/screens/StubScreen';
+import QuizScreen from './src/screens/QuizScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 
@@ -200,8 +201,7 @@ title: 'Progresso de Leitura',
         />
         <Drawer.Screen
           name="Quiz"
-          component={StubScreen}
-          initialParams={{ title: 'Mini Quiz da Bíblia', icon: 'help-circle-outline', message: 'Quiz da Bíblia em breve.' }}
+          component={QuizScreen}
           options={({ navigation, theme }) => ({
             title: 'Mini Quiz da Bíblia',
             headerTitleAlign: 'center',

@@ -113,7 +113,7 @@ function getGreeting() {
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, loaded, theme } = useApp();
+  const { lastRead, readChapters, loaded, theme } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
 
   const horaAtual = new Date().getHours();
@@ -147,8 +147,6 @@ export default function HomeScreen({ navigation }) {
 
   const hasProgress = loaded && lastRead?.book;
 
-  const progressAnim = useRef(new Animated.Value(0)).current;
-
   const continueTitle = hasProgress ? lastRead.book.name : 'Comece sua leitura';
   const continueChapter = hasProgress
     ? `Capítulo ${lastRead.chapter + 1}`
@@ -156,20 +154,14 @@ export default function HomeScreen({ navigation }) {
   const continueBookMeta = hasProgress ? lastRead.book : startReadingMeta;
   const continueChapterIndex = hasProgress ? lastRead.chapter : 0;
 
-  const continuePercent = hasProgress && lastRead.book.chapters
-    ? Math.min(100, Math.round(((lastRead.chapter + 1) / lastRead.book.chapters) * 100))
-    : 0;
-
-  useEffect(() => {
-    if (hasProgress) {
-      progressAnim.setValue(0);
-      Animated.timing(progressAnim, {
-        toValue: continuePercent,
-        duration: 800,
-        useNativeDriver: false,
-      }).start();
+  const continuePercent = (() => {
+    if (!hasProgress || !lastRead.book.chapters || !lastRead.book.abbrev) return 0;
+    let completed = 0;
+    for (let i = 0; i < lastRead.book.chapters; i += 1) {
+      if (readChapters.includes(`${lastRead.book.abbrev}:${i}`)) completed += 1;
     }
-  }, [hasProgress, continuePercent]);
+    return Math.min(100, Math.max(0, Math.round((completed / lastRead.book.chapters) * 100)));
+  })();
 
   const openContinueReading = () => {
     navigation.navigate('Read', {
@@ -246,21 +238,18 @@ export default function HomeScreen({ navigation }) {
               </Text>
               <Text style={[styles.continueChapter, { color: textMutedColor }]}>
                 {continueChapter}
-                {hasProgress ? ` • ${continuePercent}% concluído` : ''}
+                {continuePercent > 0 ? ` • ${continuePercent}% concluído` : ''}
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={22} color={textMutedColor} />
           </View>
           {hasProgress ? (
             <View style={[styles.progressTrack, { backgroundColor: isDarkBg ? '#333' : '#e5e5e5' }]}>
-              <Animated.View
+              <View
                 style={[
                   styles.progressFill,
                   {
-                    width: progressAnim.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: ['0%', '100%'],
-                    }),
+                    width: `${continuePercent}%`,
                   },
                 ]}
               />
