@@ -130,7 +130,11 @@ export default function ProgressScreen({ navigation }) {
         transparent
         onRequestClose={() => setSelectedBook(null)}
       >
-        <View style={styles.modalBackdrop}>
+        <View style={styles.modalRoot}>
+          <Pressable
+            style={styles.modalBackdrop}
+            onPress={() => setSelectedBook(null)}
+          />
           <View
             style={[
               styles.modalSheet,
@@ -273,9 +277,12 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 4,
   },
-  modalBackdrop: {
+  modalRoot: {
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  modalBackdrop: {
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
   },
   modalSheet: {
