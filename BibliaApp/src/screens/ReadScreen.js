@@ -20,7 +20,7 @@ import { makeChapterKey } from '../utils/chapterKey';
 const PALETA_CONFETI = ['#FFD700', '#FF4081', '#00E676', '#29B6F6', '#AB47BC', '#FF9100', '#00BFFF', '#9B59B6', '#2ECC71', '#FF4757'];
 const TOTAL_PARTICULAS = 24;
 
-function CompletionButton({ chapterRead, onToggle, theme }) {
+function CompletionButton({ chapterRead, onToggle, theme, t }) {
   // Partículas de confete com posições radiais em 360 graus
   const particlesData = useRef(
     [...Array(TOTAL_PARTICULAS)].map(() => ({
@@ -224,7 +224,7 @@ function CompletionButton({ chapterRead, onToggle, theme }) {
         >
           <Animated.View style={styles.completionLabelRow}>
             <Animated.Text style={[styles.completionText, animatedTextStyle]}>
-              {chapterRead ? 'Capítulo lido ' : 'Leitura concluída? '}
+              {chapterRead ? `${t('readUnmarkRead')} ` : `${t('readMarkRead')} `}
             </Animated.Text>
             {chapterRead ? (
               <Animated.Text style={[styles.check, animatedCheckStyle]}>✓</Animated.Text>
@@ -245,6 +245,8 @@ export default function ReadScreen({ navigation, route }) {
   const {
     theme,
     fontSize,
+    textAlign,
+    t,
     isFavorite,
     toggleFavorite,
     isChapterRead,
@@ -329,8 +331,8 @@ export default function ReadScreen({ navigation, route }) {
   const oldTestament = NT_START >= 0 ? books.slice(0, NT_START) : [];
   const newTestament = NT_START >= 0 ? books.slice(NT_START) : [];
   const booksSections = [
-    { key: 'antigo', title: 'Antigo Testamento', items: oldTestament },
-    { key: 'novo', title: 'Novo Testamento', items: newTestament },
+    { key: 'antigo', title: t('readOT'), items: oldTestament },
+    { key: 'novo', title: t('readNT'), items: newTestament },
   ].filter((s) => s.items.length > 0);
 
   const goToPrevModalBook = () => {
@@ -516,7 +518,7 @@ export default function ReadScreen({ navigation, route }) {
     });
   };
 
-  const sectionTitle = meta ? `Capítulo ${chapterIndex + 1}` : '';
+  const sectionTitle = meta ? t('readChapterLabel', { n: chapterIndex + 1 }) : '';
   const selectedCount = selectedIndexes.length;
   const allSelectedFavorite =
     selectedCount > 0 &&
@@ -578,7 +580,7 @@ export default function ReadScreen({ navigation, route }) {
         <View style={styles.loading}>
           <ActivityIndicator size="large" color={theme.primary} />
           <Text style={[styles.loadingText, { color: theme.textMuted }]}>
-            Carregando capítulo...
+            {t('readLoadingChapter')}
           </Text>
         </View>
       ) : (
@@ -603,7 +605,7 @@ export default function ReadScreen({ navigation, route }) {
             const verseTitle = typeof verseItem === 'object' ? verseItem.title : null;
 
             // Se for o primeiro versículo ou houver título de perícope, exibe o título editorial
-            const displayTitle = index === 0 ? (verseTitle || `Capítulo ${chapterIndex + 1}`) : verseTitle;
+            const displayTitle = index === 0 ? (verseTitle || t('readChapterLabel', { n: chapterIndex + 1 })) : verseTitle;
 
             return (
               <View
@@ -627,7 +629,7 @@ export default function ReadScreen({ navigation, route }) {
                   activeOpacity={0.6}
                 >
                   <Text style={[styles.verseNumber, { color: verseNumColor }]}>{index + 1}</Text>
-                  <Text style={[styles.verseText, { color: theme.text, fontSize }]}>
+                  <Text style={[styles.verseText, { color: theme.text, fontSize, textAlign: textAlign === 'justify' ? 'justify' : textAlign }]}>
                     {verseText}
                   </Text>
                 </TouchableOpacity>
@@ -641,6 +643,7 @@ export default function ReadScreen({ navigation, route }) {
               chapterRead={chapterRead}
               onToggle={() => toggleChapterRead(chapterKey)}
               theme={theme}
+              t={t}
             />
           </View>
         </ScrollView>

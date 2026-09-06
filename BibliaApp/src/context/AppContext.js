@@ -1,7 +1,29 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
+
+import { translate, SUPPORTED_LANGUAGES } from '../i18n';
 
 const AppContext = createContext(null);
+
+const isNative = Platform.OS !== 'web';
+const Notifications = isNative ? require('expo-notifications') : null;
+const NOTIF_CHANNEL_ID = 'versiculo-do-dia';
+
+if (Notifications) {
+  try {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowBanner: true,
+        shouldShowList: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+  } catch (e) {
+    // módulo nativo indisponível (ex.: binário antigo)
+  }
+}
 
 export const HIGHLIGHT_COLORS = {
   Amarelo: { bg: 'rgba(255, 211, 0, 0.28)', swatch: '#FFD300' },
@@ -155,12 +177,24 @@ export function AppProvider({ children }) {
   const [themeKey, setThemeKeyState] = useState('creme');
   const [lastRead, setLastReadState] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const [textAlign, setTextAlignState] = useState('left');
+  const [language, setLanguageState] = useState('pt-BR');
+  const [notificationsEnabled, setNotificationsEnabledState] = useState(false);
+  const [dailyVerseEnabled, setDailyVerseEnabledState] = useState(false);
+  const [dailyVerseTime, setDailyVerseTimeState] = useState('07:00');
 
   const LAST_READ_KEY = '@bibliaapp/lastRead';
   const HOME_THEME_KEY = '@bibliaapp/homeTheme';
   const READ_CHAPTERS_KEY = '@bibliaapp/readChapters';
   const FAVORITES_KEY = '@bibliaapp/favorites';
   const HIGHLIGHTS_KEY = '@bibliaapp/highlights';
+  const TEXT_ALIGN_KEY = '@bibliaapp/textAlign';
+  const LANGUAGE_KEY = '@bibliaapp/language';
+  const NOTIFICATIONS_ENABLED_KEY = '@bibliaapp/notificationsEnabled';
+  const DAILY_VERSE_ENABLED_KEY = '@bibliaapp/dailyVerseEnabled';
+  const DAILY_VERSE_TIME_KEY = '@bibliaapp/dailyVerseTime';
+
+  const TEXT_ALIGN_OPTIONS = ['left', 'right', 'center', 'justify'];
 
   const persist = (key, value) => {
     try {
@@ -174,19 +208,60 @@ export function AppProvider({ children }) {
     let active = true;
     (async () => {
       try {
-        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw] =
+        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw, textAlignRaw, languageRaw, notifEnabledRaw, dailyVerseEnabledRaw, dailyVerseTimeRaw] =
           await Promise.all([
             AsyncStorage.getItem(LAST_READ_KEY),
             AsyncStorage.getItem(HOME_THEME_KEY),
             AsyncStorage.getItem(READ_CHAPTERS_KEY),
             AsyncStorage.getItem(FAVORITES_KEY),
             AsyncStorage.getItem(HIGHLIGHTS_KEY),
+            AsyncStorage.getItem(TEXT_ALIGN_KEY),
+            AsyncStorage.getItem(LANGUAGE_KEY),
+            AsyncStorage.getItem(NOTIFICATIONS_ENABLED_KEY),
+            AsyncStorage.getItem(DAILY_VERSE_ENABLED_KEY),
+            AsyncStorage.getItem(DAILY_VERSE_TIME_KEY),
           ]);
         if (active && raw) {
           setLastReadState(JSON.parse(raw));
         }
         if (active && themeRaw && HOME_THEMES[themeRaw]) {
           setThemeKeyState(themeRaw);
+        }
+        if (active && textAlignRaw) {
+          try {
+            const parsedAlign = JSON.parse(textAlignRaw);
+            if (TEXT_ALIGN_OPTIONS.includes(parsedAlign)) {
+              setTextAlignState(parsedAlign);
+            }
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
+        if (active && languageRaw) {
+          try {
+            const parsedLanguage = JSON.parse(languageRaw);
+            if (SUPPORTED_LANGUAGES.includes(parsedLanguage)) {
+              setLanguageState(parsedLanguage);
+            }
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
+        if (active && notifEnabledRaw) {
+          setNotificationsEnabledState(notifEnabledRaw === 'true');
+        }
+        if (active && dailyVerseEnabledRaw) {
+          setDailyVerseEnabledState(dailyVerseEnabledRaw === 'true');
+        }
+        if (active && dailyVerseTimeRaw) {
+          try {
+            const parsedTime = JSON.parse(dailyVerseTimeRaw);
+            if (typeof parsedTime === 'string' && /^\d{2}:\d{2}$/.test(parsedTime)) {
+              setDailyVerseTimeState(parsedTime);
+            }
+          } catch (e) {
+            // ignora dados corrompidos
+          }
         }
         if (active && readRaw) {
           try {
@@ -239,6 +314,81 @@ export function AppProvider({ children }) {
   };
 
   const theme = getThemeConfig(themeKey).colors;
+
+  const setTextAlign = (value) => {
+    setTextAlignState(value);
+    persist(TEXT_ALIGN_KEY, value);
+  };
+
+  const setLanguage = (value) => {
+    setLanguageState(value);
+    persist(LANGUAGE_KEY, value);
+  };
+
+  const t = useCallback((key, params) => translate(language, key, params), [language]);
+
+  const ensureNotificationPermission = async () => {
+    if (!Notifications) return true;
+    try {
+      const current = await Notifications.getPermissionsAsync();
+      if (current.granted) return true;
+      const requested = await Notifications.requestPermissionsAsync();
+      return requested.granted;
+    } catch (e) {
+      return true;
+    }
+  };
+
+  const setNotificationsEnabled = async (value) => {
+    if (value && !(await ensureNotificationPermission())) {
+      return false;
+    }
+    setNotificationsEnabledState(value);
+    persist(NOTIFICATIONS_ENABLED_KEY, value);
+    return true;
+  };
+
+  const setDailyVerseEnabled = (value) => {
+    setDailyVerseEnabledState(value);
+    persist(DAILY_VERSE_ENABLED_KEY, value);
+  };
+
+  const setDailyVerseTime = (value) => {
+    setDailyVerseTimeState(value);
+    persist(DAILY_VERSE_TIME_KEY, value);
+  };
+
+  useEffect(() => {
+    if (!loaded || !Notifications) return;
+    (async () => {
+      try {
+        if (!notificationsEnabled || !dailyVerseEnabled) {
+          await Notifications.cancelAllScheduledNotificationsAsync();
+          return;
+        }
+        const [hour, minute] = (dailyVerseTime || '07:00').split(':').map(Number);
+        await Notifications.setNotificationChannelAsync(NOTIF_CHANNEL_ID, {
+          name: translate(language, 'notifVerseTitle'),
+          importance: Notifications.AndroidImportance.HIGH,
+        });
+        await Notifications.cancelAllScheduledNotificationsAsync();
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: translate(language, 'notifVerseTitle'),
+            body: translate(language, 'notifVerseBody'),
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DAILY,
+            hour,
+            minute,
+            channelId: NOTIF_CHANNEL_ID,
+          },
+        });
+      } catch (e) {
+        // ignora falhas de agendamento
+      }
+    })();
+  }, [loaded, notificationsEnabled, dailyVerseEnabled, dailyVerseTime, language]);
 
   const toggleFavorite = (verse) => {
     const next = favorites.some((f) => f.key === verse.key)
@@ -294,6 +444,12 @@ export function AppProvider({ children }) {
       lastRead,
       loaded,
       theme,
+      textAlign,
+      language,
+      notificationsEnabled,
+      dailyVerseEnabled,
+      dailyVerseTime,
+      t,
       toggleFavorite,
       isFavorite,
       toggleChapterRead,
@@ -304,8 +460,28 @@ export function AppProvider({ children }) {
       setLastRead,
       updateTheme,
       setFontSize,
+      setTextAlign,
+      setLanguage,
+      setNotificationsEnabled,
+      setDailyVerseEnabled,
+      setDailyVerseTime,
     }),
-    [favorites, readChapters, highlights, themeKey, fontSize, lastRead, loaded, theme]
+    [
+      favorites,
+      readChapters,
+      highlights,
+      themeKey,
+      fontSize,
+      lastRead,
+      loaded,
+      theme,
+      textAlign,
+      language,
+      notificationsEnabled,
+      dailyVerseEnabled,
+      dailyVerseTime,
+      t,
+    ]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
