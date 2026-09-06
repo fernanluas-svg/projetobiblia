@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   FlatList,
   Modal,
   Pressable,
@@ -27,6 +28,7 @@ export default function ProgressScreen({ navigation }) {
   const books = getBooks();
 
   const [selectedBook, setSelectedBook] = useState(null);
+  const [checkingUpdate, setCheckingUpdate] = useState(false);
   const barProgress = useSharedValue(0);
 
   const readSet = useMemo(() => new Set(readChapters), [readChapters]);
@@ -82,6 +84,27 @@ export default function ProgressScreen({ navigation }) {
     });
   };
 
+  const reloadUpdate = async () => {
+    if (checkingUpdate) return;
+    setCheckingUpdate(true);
+    try {
+      const res = await Updates.checkForUpdateAsync();
+      if (!res.isAvailable) {
+        Alert.alert(
+          'Versão atualizada',
+          `Você já está na versão mais recente (${Updates.updateId ? `id ${String(Updates.updateId).slice(0, 8)}` : 'sem id'}).`
+        );
+        return;
+      }
+      await Updates.fetchUpdateAsync();
+      await Updates.reloadAsync();
+    } catch (e) {
+      Alert.alert('Não foi possível buscar update', String(e && e.message ? e.message : e));
+    } finally {
+      setCheckingUpdate(false);
+    }
+  };
+
   const renderItem = ({ item }) => (
     <Pressable
       style={[styles.card, { backgroundColor: theme.surface }]}
@@ -115,12 +138,26 @@ export default function ProgressScreen({ navigation }) {
         <Text style={[styles.summaryPercent, { color: theme.activeGreen }]}>
           {totalPercent}% da Bíblia
         </Text>
-        <Text style={[styles.updateInfo, { color: theme.textMuted }]}>
-          {Updates.runtimeVersion ? `v${Updates.runtimeVersion}` : 'v?'}
-          {Updates.channel ? ` · ${Updates.channel}` : ''}
-          {Updates.updateId ? ` · ${String(Updates.updateId).slice(0, 8)}` : ''}
-          {Updates.isEmbeddedLaunch ? ' · embutida' : ''}
-        </Text>
+        <Pressable
+          style={styles.updateInfoRow}
+          onPress={reloadUpdate}
+          hitSlop={6}
+        >
+          <Ionicons
+            name={checkingUpdate ? 'sync' : 'refresh'}
+            size={12}
+            color={theme.textMuted}
+          />
+          <Text style={[styles.updateInfo, { color: theme.textMuted }]}>
+            {checkingUpdate
+              ? 'buscando update...'
+              : `${Updates.runtimeVersion ? `v${Updates.runtimeVersion}` : 'v?'}${
+                  Updates.channel ? ` · ${Updates.channel}` : ''
+                }${Updates.updateId ? ` · ${String(Updates.updateId).slice(0, 8)}` : ''}${
+                  Updates.isEmbeddedLaunch ? ' · embutida' : ''
+                }`}
+          </Text>
+        </Pressable>
       </View>
 
       <FlatList
@@ -137,16 +174,16 @@ export default function ProgressScreen({ navigation }) {
         transparent
         onRequestClose={() => setSelectedBook(null)}
       >
-        <View style={styles.modalRoot}>
+        <Pressable
+          style={styles.modalRoot}
+          onPress={() => setSelectedBook(null)}
+        >
           <Pressable
-            style={styles.modalBackdrop}
-            onPress={() => setSelectedBook(null)}
-          />
-          <View
             style={[
               styles.modalSheet,
               { backgroundColor: theme.surface, paddingTop: insets.top + 12 },
             ]}
+            onPress={() => {}}
           >
             <View
               style={[
@@ -225,8 +262,8 @@ export default function ProgressScreen({ navigation }) {
                 </View>
               </>
             )}
-          </View>
-        </View>
+          </Pressable>
+        </Pressable>
       </Modal>
     </View>
   );
@@ -250,9 +287,15 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontWeight: '500',
   },
+  updateInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    alignSelf: 'flex-start',
+    marginTop: 6,
+  },
   updateInfo: {
     fontSize: 11,
-    marginTop: 6,
   },
   content: {
     padding: 16,
@@ -291,9 +334,6 @@ const styles = StyleSheet.create({
   modalRoot: {
     flex: 1,
     justifyContent: 'flex-end',
-  },
-  modalBackdrop: {
-    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
   },
   modalSheet: {
