@@ -16,6 +16,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Updates from 'expo-updates';
 
 import { useApp } from '../context/AppContext';
 import { getBooks } from '../data/books';
@@ -113,6 +114,12 @@ export default function ProgressScreen({ navigation }) {
         </Text>
         <Text style={[styles.summaryPercent, { color: theme.activeGreen }]}>
           {totalPercent}% da Bíblia
+        </Text>
+        <Text style={[styles.updateInfo, { color: theme.textMuted }]}>
+          {Updates.runtimeVersion ? `v${Updates.runtimeVersion}` : 'v?'}
+          {Updates.channel ? ` · ${Updates.channel}` : ''}
+          {Updates.updateId ? ` · ${String(Updates.updateId).slice(0, 8)}` : ''}
+          {Updates.isEmbeddedLaunch ? ' · embutida' : ''}
         </Text>
       </View>
 
@@ -242,6 +249,10 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 2,
     fontWeight: '500',
+  },
+  updateInfo: {
+    fontSize: 11,
+    marginTop: 6,
   },
   content: {
     padding: 16,
