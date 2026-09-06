@@ -181,7 +181,11 @@ export default function ProgressScreen({ navigation }) {
           <Pressable
             style={[
               styles.modalSheet,
-              { backgroundColor: theme.surface, paddingTop: insets.top + 12 },
+              {
+                backgroundColor: theme.surface,
+                paddingTop: insets.top + 12,
+                paddingBottom: Math.max(insets.bottom, 16) + 8,
+              },
             ]}
             onPress={() => {}}
           >
@@ -339,7 +343,6 @@ const styles = StyleSheet.create({
   modalSheet: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    paddingBottom: 24,
   },
   modalHeader: {
     flexDirection: 'row',
