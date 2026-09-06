@@ -158,20 +158,56 @@ export function AppProvider({ children }) {
 
   const LAST_READ_KEY = '@bibliaapp/lastRead';
   const HOME_THEME_KEY = '@bibliaapp/homeTheme';
+  const READ_CHAPTERS_KEY = '@bibliaapp/readChapters';
+  const FAVORITES_KEY = '@bibliaapp/favorites';
+  const HIGHLIGHTS_KEY = '@bibliaapp/highlights';
+
+  const persist = (key, value) => {
+    try {
+      AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      // ignora falhas de escrita
+    }
+  };
 
   useEffect(() => {
     let active = true;
     (async () => {
       try {
-        const [raw, themeRaw] = await Promise.all([
-          AsyncStorage.getItem(LAST_READ_KEY),
-          AsyncStorage.getItem(HOME_THEME_KEY),
-        ]);
+        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw] =
+          await Promise.all([
+            AsyncStorage.getItem(LAST_READ_KEY),
+            AsyncStorage.getItem(HOME_THEME_KEY),
+            AsyncStorage.getItem(READ_CHAPTERS_KEY),
+            AsyncStorage.getItem(FAVORITES_KEY),
+            AsyncStorage.getItem(HIGHLIGHTS_KEY),
+          ]);
         if (active && raw) {
           setLastReadState(JSON.parse(raw));
         }
         if (active && themeRaw && HOME_THEMES[themeRaw]) {
           setThemeKeyState(themeRaw);
+        }
+        if (active && readRaw) {
+          try {
+            setReadChapters(JSON.parse(readRaw));
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
+        if (active && favoritesRaw) {
+          try {
+            setFavorites(JSON.parse(favoritesRaw));
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
+        if (active && highlightsRaw) {
+          try {
+            setHighlights(JSON.parse(highlightsRaw));
+          } catch (e) {
+            // ignora dados corrompidos
+          }
         }
       } catch (e) {
         // ignora falhas de leitura
@@ -205,50 +241,45 @@ export function AppProvider({ children }) {
   const theme = getThemeConfig(themeKey).colors;
 
   const toggleFavorite = (verse) => {
-    setFavorites((prev) => {
-      const exists = prev.some((f) => f.key === verse.key);
-      if (exists) {
-        return prev.filter((f) => f.key !== verse.key);
-      }
-      return [verse, ...prev];
-    });
+    const next = favorites.some((f) => f.key === verse.key)
+      ? favorites.filter((f) => f.key !== verse.key)
+      : [verse, ...favorites];
+    setFavorites(next);
+    persist(FAVORITES_KEY, next);
   };
 
   const isFavorite = (verseKey) => favorites.some((f) => f.key === verseKey);
 
   const toggleHighlight = (verseKey, color) => {
-    setHighlights((prev) => {
-      const next = { ...prev };
-      if (next[verseKey] === color) {
-        delete next[verseKey];
-      } else {
-        next[verseKey] = color;
-      }
-      return next;
-    });
+    const next = { ...highlights };
+    if (next[verseKey] === color) {
+      delete next[verseKey];
+    } else {
+      next[verseKey] = color;
+    }
+    setHighlights(next);
+    persist(HIGHLIGHTS_KEY, next);
   };
 
   const getHighlight = (verseKey) => highlights[verseKey] ?? null;
 
   const setHighlight = (verseKey, color) => {
-    setHighlights((prev) => {
-      const next = { ...prev };
-      if (!color) {
-        delete next[verseKey];
-      } else {
-        next[verseKey] = color;
-      }
-      return next;
-    });
+    const next = { ...highlights };
+    if (!color) {
+      delete next[verseKey];
+    } else {
+      next[verseKey] = color;
+    }
+    setHighlights(next);
+    persist(HIGHLIGHTS_KEY, next);
   };
 
   const toggleChapterRead = (chapterKey) => {
-    setReadChapters((prev) => {
-      if (prev.includes(chapterKey)) {
-        return prev.filter((k) => k !== chapterKey);
-      }
-      return [...prev, chapterKey];
-    });
+    const next = readChapters.includes(chapterKey)
+      ? readChapters.filter((k) => k !== chapterKey)
+      : [...readChapters, chapterKey];
+    setReadChapters(next);
+    persist(READ_CHAPTERS_KEY, next);
   };
 
   const isChapterRead = (chapterKey) => readChapters.includes(chapterKey);
