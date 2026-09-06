@@ -744,7 +744,7 @@ export default function ReadScreen({ navigation, route }) {
             <FlatList
               data={booksSections}
               keyExtractor={(section) => section.key}
-              contentContainerStyle={styles.booksListContent}
+              contentContainerStyle={[styles.booksListContent, { paddingBottom: Math.max(insets.bottom, 16) + 40 }]}
               renderItem={({ item: section }) => (
                 <View style={styles.booksSection}>
                   <Text style={[styles.booksSectionTitle, { color: theme.textMuted }]}>
@@ -788,7 +788,10 @@ export default function ReadScreen({ navigation, route }) {
               data={Array.from({ length: modalChapterCount }, (_, i) => i)}
               keyExtractor={(item) => String(item)}
               numColumns={5}
-              contentContainerStyle={styles.fullModalGrid}
+              contentContainerStyle={[
+                styles.fullModalGrid,
+                { paddingBottom: Math.max(insets.bottom, 16) + 40 },
+              ]}
               columnWrapperStyle={styles.fullModalGridRow}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
@@ -822,7 +825,10 @@ export default function ReadScreen({ navigation, route }) {
               data={Array.from({ length: modalVerseCount }, (_, i) => i)}
               keyExtractor={(item) => String(item)}
               numColumns={5}
-              contentContainerStyle={styles.fullModalGrid}
+              contentContainerStyle={[
+                styles.fullModalGrid,
+                { paddingBottom: Math.max(insets.bottom, 16) + 40 },
+              ]}
               columnWrapperStyle={styles.fullModalGridRow}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
@@ -1178,10 +1184,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6,
   },
   chapterCellActive: {
     backgroundColor: '#2f6f4f',
@@ -1223,10 +1229,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 6,
   },
   bookCellActive: {
     backgroundColor: '#2f6f4f',

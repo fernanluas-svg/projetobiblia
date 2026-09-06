@@ -1,10 +1,12 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getBooks } from '../data/books';
 import { useApp } from '../context/AppContext';
 
 export default function BookListScreen({ navigation }) {
   const { theme } = useApp();
+  const insets = useSafeAreaInsets();
   const books = getBooks();
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -15,6 +17,7 @@ export default function BookListScreen({ navigation }) {
         removeClippedSubviews
         windowSize={5}
         keyExtractor={(item) => item.abbrev}
+        contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[styles.item, { borderBottomColor: theme.border }]}
@@ -31,6 +34,9 @@ export default function BookListScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  content: {
+    paddingBottom: 24,
   },
   item: {
     paddingHorizontal: 20,

@@ -163,7 +163,7 @@ export default function ProgressScreen({ navigation }) {
       <FlatList
         data={items}
         keyExtractor={(item) => item.abbrev}
-        contentContainerStyle={styles.content}
+        contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
       />
@@ -304,11 +304,17 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
     paddingTop: 8,
+    paddingBottom: 24,
   },
   card: {
     borderRadius: 12,
     padding: 14,
     marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.28,
+    shadowRadius: 6,
+    elevation: 6,
   },
   cardHeader: {
     flexDirection: 'row',
