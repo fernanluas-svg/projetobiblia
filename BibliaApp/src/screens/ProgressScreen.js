@@ -23,7 +23,7 @@ import { useApp } from '../context/AppContext';
 import { getBooks } from '../data/books';
 
 export default function ProgressScreen({ navigation }) {
-  const { readChapters, theme } = useApp();
+  const { readChapters, theme, t } = useApp();
   const insets = useSafeAreaInsets();
   const books = getBooks();
 
@@ -91,15 +91,17 @@ export default function ProgressScreen({ navigation }) {
       const res = await Updates.checkForUpdateAsync();
       if (!res.isAvailable) {
         Alert.alert(
-          'Versão atualizada',
-          `Você já está na versão mais recente (${Updates.updateId ? `id ${String(Updates.updateId).slice(0, 8)}` : 'sem id'}).`
+          t('progressUpToDateTitle'),
+          t('progressUpToDateMsg', {
+            id: Updates.updateId ? `id ${String(Updates.updateId).slice(0, 8)}` : 'sem id',
+          })
         );
         return;
       }
       await Updates.fetchUpdateAsync();
       await Updates.reloadAsync();
     } catch (e) {
-      Alert.alert('Não foi possível buscar update', String(e && e.message ? e.message : e));
+      Alert.alert(t('progressUpdateErrorTitle'), String(e && e.message ? e.message : e));
     } finally {
       setCheckingUpdate(false);
     }
@@ -133,10 +135,10 @@ export default function ProgressScreen({ navigation }) {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.summary}>
         <Text style={[styles.summaryTitle, { color: theme.text }]}>
-          {totalRead} de {totalChapters} capítulos lidos
+          {t('progressChaptersRead', { read: totalRead, total: totalChapters })}
         </Text>
         <Text style={[styles.summaryPercent, { color: theme.activeGreen }]}>
-          {totalPercent}% da Bíblia
+          {t('progressOfBible', { p: totalPercent })}
         </Text>
         <Pressable
           style={styles.updateInfoRow}
@@ -150,11 +152,11 @@ export default function ProgressScreen({ navigation }) {
           />
           <Text style={[styles.updateInfo, { color: theme.textMuted }]}>
             {checkingUpdate
-              ? 'buscando update...'
+              ? t('progressCheckingUpdate')
               : `${Updates.runtimeVersion ? `v${Updates.runtimeVersion}` : 'v?'}${
                   Updates.channel ? ` · ${Updates.channel}` : ''
                 }${Updates.updateId ? ` · ${String(Updates.updateId).slice(0, 8)}` : ''}${
-                  Updates.isEmbeddedLaunch ? ' · embutida' : ''
+                  Updates.isEmbeddedLaunch ? ` · ${t('progressEmbedded')}` : ''
                 }`}
           </Text>
         </Pressable>
@@ -221,7 +223,7 @@ export default function ProgressScreen({ navigation }) {
                       {selectedBook.percent}%
                     </Text>
                     <Text style={[styles.percentCaption, { color: theme.textMuted }]}>
-                      lido
+                      {t('progressRead')}
                     </Text>
                   </View>
 
@@ -241,7 +243,7 @@ export default function ProgressScreen({ navigation }) {
                         {selectedBook.read}
                       </Text>
                       <Text style={[styles.statusLabel, { color: theme.textMuted }]}>
-                        capítulos lidos
+                        {t('progressChaptersReadLabel')}
                       </Text>
                     </View>
                     <View style={[styles.statusDivider, { backgroundColor: theme.border }]} />
@@ -250,7 +252,7 @@ export default function ProgressScreen({ navigation }) {
                         {selectedBook.remaining}
                       </Text>
                       <Text style={[styles.statusLabel, { color: theme.textMuted }]}>
-                        para concluir
+                        {t('progressToFinish')}
                       </Text>
                     </View>
                   </View>
@@ -261,7 +263,7 @@ export default function ProgressScreen({ navigation }) {
                     style={[styles.primaryButton, { backgroundColor: theme.activeGreen }]}
                     onPress={() => openBook(selectedBook)}
                   >
-                    <Text style={styles.primaryButtonText}>Continuar lendo</Text>
+                    <Text style={styles.primaryButtonText}>{t('progressContinueReading')}</Text>
                   </TouchableOpacity>
                 </View>
               </>

@@ -47,7 +47,7 @@ function getVerseOfTheDay() {
   return versiculosData.versiculos[index];
 }
 
-function ShimmerTitle({ isDark }) {
+function ShimmerTitle({ isDark, t }) {
   const animatedValue = useRef(new Animated.Value(-150)).current;
 
   useEffect(() => {
@@ -71,7 +71,7 @@ function ShimmerTitle({ isDark }) {
     <View style={styles.shimmerContainer}>
       {/* Texto base de fundo (garante o título visível e o contraste) */}
       <Text style={[styles.shimmerTitleText, { color: baseTextColor }]}>
-        Bíblia Sagrada
+        {t('appTitle')}
       </Text>
 
       {/* Brilho reluzente (katana) recortado nas letras */}
@@ -80,7 +80,7 @@ function ShimmerTitle({ isDark }) {
         androidRenderingMode="software"
         maskElement={
           <Text style={[styles.shimmerTitleText, { color: 'black' }]}>
-            Bíblia Sagrada
+            {t('appTitle')}
           </Text>
         }
       >
@@ -105,15 +105,15 @@ function ShimmerTitle({ isDark }) {
 
 const startReadingMeta = { abbrev: 'gn', name: 'Gênesis', chapters: 50 };
 
-function getGreeting() {
+function getGreeting(t) {
   const hour = new Date().getHours();
-  if (hour >= 0 && hour < 12) return 'Bom dia!';
-  if (hour >= 12 && hour < 19) return 'Boa tarde!';
-  return 'Boa noite!';
+  if (hour >= 0 && hour < 12) return t('greeting.morning');
+  if (hour >= 12 && hour < 19) return t('greeting.afternoon');
+  return t('greeting.evening');
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, readChapters, loaded, theme } = useApp();
+  const { lastRead, readChapters, loaded, theme, t } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
 
   const horaAtual = new Date().getHours();
@@ -147,10 +147,10 @@ export default function HomeScreen({ navigation }) {
 
   const hasProgress = loaded && lastRead?.book;
 
-  const continueTitle = hasProgress ? lastRead.book.name : 'Comece sua leitura';
+  const continueTitle = hasProgress ? lastRead.book.name : t('home.startReading');
   const continueChapter = hasProgress
-    ? `Capítulo ${lastRead.chapter + 1}`
-    : 'Inicie por Gênesis 1';
+    ? t('home.chapterLabel', { n: lastRead.chapter + 1 })
+    : t('home.startGenesis');
   const continueBookMeta = hasProgress ? lastRead.book : startReadingMeta;
   const continueChapterIndex = hasProgress ? lastRead.chapter : 0;
 
@@ -181,7 +181,7 @@ export default function HomeScreen({ navigation }) {
           <Ionicons name="menu" size={24} color={textColor} />
         </TouchableOpacity>
 
-        <ShimmerTitle isDark={isDarkBg} />
+        <ShimmerTitle isDark={isDarkBg} t={t} />
 
         <TouchableOpacity onPress={openSettings} hitSlop={8} style={[styles.menuCircle, { backgroundColor: cardColor }]}>
           <Ionicons name="settings-outline" size={22} color={isDarkBg ? '#FFFFFF' : textColor} />
@@ -190,9 +190,9 @@ export default function HomeScreen({ navigation }) {
 
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.headerBlock}>
-          <Text style={[styles.greeting, { color: accentColor }]}>{getGreeting()}</Text>
+          <Text style={[styles.greeting, { color: accentColor }]}>{getGreeting(t)}</Text>
           <Text style={[styles.subtitle, { color: subtitleColor }]}>
-            {'Que a paz do Senhor esteja com você hoje.\nTenha uma boa leitura!'}
+            {t('home.subtitle')}
           </Text>
         </View>
 
@@ -208,7 +208,7 @@ export default function HomeScreen({ navigation }) {
               loop
               style={styles.sunLottie}
             />
-            <Text style={styles.verseLabel}>Versículo do Dia</Text>
+            <Text style={styles.verseLabel}>{t('home.verseOfTheDay')}</Text>
             <Ionicons name="chevron-forward" size={16} color="#cde8da" style={styles.verseChevron} />
           </View>
           <Text style={styles.verseQuote}>
@@ -219,7 +219,7 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.sectionHeaderRow}>
           <Text style={[styles.sectionTitle, { color: textColor }]}>
-            Continue a sua leitura
+            {t('home.continueReading')}
           </Text>
         </View>
 
@@ -238,7 +238,7 @@ export default function HomeScreen({ navigation }) {
               </Text>
               <Text style={[styles.continueChapter, { color: textMutedColor }]}>
                 {continueChapter}
-                {continuePercent > 0 ? ` • ${continuePercent}% concluído` : ''}
+                {continuePercent > 0 ? ` • ${t('home.percentCompleted', { n: continuePercent })}` : ''}
               </Text>
             </View>
             <Ionicons name="chevron-forward" size={22} color={textMutedColor} />
@@ -259,7 +259,7 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.sectionHeaderRow}>
           <Text style={[styles.sectionTitle, { color: textColor }]}>
-            Acesso rápido
+            {t('home.quickAccess')}
           </Text>
         </View>
 
@@ -272,7 +272,7 @@ export default function HomeScreen({ navigation }) {
             <View style={[styles.quickIconBg, { backgroundColor: isDarkBg ? '#274b3a' : '#E8F5E9' }]}>
               <Image source={require('../../assets/LivroIcon.png')} style={styles.quickIcon} />
             </View>
-            <Text style={[styles.quickLabel, { color: textColor }]}>Bíblia</Text>
+            <Text style={[styles.quickLabel, { color: textColor }]}>{t('home.bible')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -283,7 +283,7 @@ export default function HomeScreen({ navigation }) {
             <View style={[styles.quickIconBg, { backgroundColor: isDarkBg ? '#1e3a5f' : '#E1F5FE' }]}>
               <Image source={require('../../assets/PesquisaIcon.png')} style={styles.quickIcon} />
             </View>
-            <Text style={[styles.quickLabel, { color: textColor }]}>Pesquisa</Text>
+            <Text style={[styles.quickLabel, { color: textColor }]}>{t('home.search')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -294,7 +294,7 @@ export default function HomeScreen({ navigation }) {
             <View style={[styles.quickIconBg, { backgroundColor: isDarkBg ? '#5a4a20' : '#FEF3C7' }]}>
               <Image source={require('../../assets/favoritoicon.png')} style={styles.quickIcon} />
             </View>
-            <Text style={[styles.quickLabel, { color: textColor }]}>Favoritos</Text>
+            <Text style={[styles.quickLabel, { color: textColor }]}>{t('home.favorites')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

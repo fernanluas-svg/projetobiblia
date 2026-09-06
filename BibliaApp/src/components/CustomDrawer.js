@@ -7,24 +7,24 @@ import { useApp } from '../context/AppContext';
 
 export default function CustomDrawerContent(props) {
   const { state, navigation } = props;
-  const { theme } = useApp();
+  const { theme, t } = useApp();
   const insets = useSafeAreaInsets();
 
   const activeIndex = state.index;
   const activeRouteName = state.routeNames[activeIndex];
 
   const mainItems = [
-    { label: 'Início', icon: 'home', color: theme.dark ? '#81C784' : '#2E7D32', bgColor: theme.dark ? '#1E3A2C' : '#E8F5E9', route: 'Início' },
-    { label: 'Pesquisar', icon: 'search', color: theme.dark ? '#64B5F6' : '#0288D1', bgColor: theme.dark ? '#1E3A52' : '#E1F5FE', route: 'Search' },
-    { label: 'Favoritos', icon: 'star', color: theme.dark ? '#FFD54F' : '#F59E0B', bgColor: theme.dark ? '#4A3B12' : '#FEF3C7', route: 'Favoritos' },
-    { label: 'Progresso de Leitura', icon: 'checkmark-circle', color: theme.dark ? '#4DD0B2' : '#10B981', bgColor: theme.dark ? '#173E38' : '#D1FAE5', route: 'Progresso' },
+    { label: t('nav.home'), icon: 'home', color: theme.dark ? '#81C784' : '#2E7D32', bgColor: theme.dark ? '#1E3A2C' : '#E8F5E9', route: 'Início' },
+    { label: t('nav.search'), icon: 'search', color: theme.dark ? '#64B5F6' : '#0288D1', bgColor: theme.dark ? '#1E3A52' : '#E1F5FE', route: 'Search' },
+    { label: t('nav.favorites'), icon: 'star', color: theme.dark ? '#FFD54F' : '#F59E0B', bgColor: theme.dark ? '#4A3B12' : '#FEF3C7', route: 'Favoritos' },
+    { label: t('nav.progress'), icon: 'checkmark-circle', color: theme.dark ? '#4DD0B2' : '#10B981', bgColor: theme.dark ? '#173E38' : '#D1FAE5', route: 'Progresso' },
   ];
 
   const resourceItems = [
-    { label: 'Loja', icon: 'bag-handle', color: theme.dark ? '#B39DDB' : '#8B5CF6', bgColor: theme.dark ? '#342A54' : '#EDE9FE', route: 'Store' },
-    { label: 'Quiz da Bíblia', icon: 'game-controller', color: theme.dark ? '#FFB74D' : '#E65100', bgColor: theme.dark ? '#4A3310' : '#FFF3E0', route: 'Quiz' },
-    { label: 'Colaborações', icon: 'heart', color: theme.dark ? '#EF9A9A' : '#EF4444', bgColor: theme.dark ? '#4A2424' : '#FEE2E2', route: 'Donate' },
-    { label: 'Configurações', icon: 'settings', color: theme.dark ? '#E5E7EB' : '#4B5563', bgColor: theme.dark ? '#2D3748' : '#F3F4F6', route: 'Configurações' },
+    { label: t('nav.store'), icon: 'bag-handle', color: theme.dark ? '#B39DDB' : '#8B5CF6', bgColor: theme.dark ? '#342A54' : '#EDE9FE', route: 'Store' },
+    { label: t('nav.quiz'), icon: 'game-controller', color: theme.dark ? '#FFB74D' : '#E65100', bgColor: theme.dark ? '#4A3310' : '#FFF3E0', route: 'Quiz' },
+    { label: t('nav.donate'), icon: 'heart', color: theme.dark ? '#EF9A9A' : '#EF4444', bgColor: theme.dark ? '#4A2424' : '#FEE2E2', route: 'Donate' },
+    { label: t('nav.settings'), icon: 'settings', color: theme.dark ? '#E5E7EB' : '#4B5563', bgColor: theme.dark ? '#2D3748' : '#F3F4F6', route: 'Configurações' },
   ];
 
   const renderItem = (item) => {
@@ -74,7 +74,7 @@ export default function CustomDrawerContent(props) {
     >
       <View style={styles.headerTitleContainer}>
         <Text style={[styles.headerTitle, { color: theme.dark ? '#FFFFFF' : '#1A1A1A' }]}>
-          Bíblia Sagrada
+          {t('appTitle')}
         </Text>
       </View>
 
@@ -86,7 +86,7 @@ export default function CustomDrawerContent(props) {
 
       <View style={styles.section}>
         <Text style={[styles.sectionHeader, { color: theme.dark ? '#888888' : '#718096' }]}>
-          Recursos & Mais
+          {t('nav.resources')}
         </Text>
         {resourceItems.map(renderItem)}
       </View>

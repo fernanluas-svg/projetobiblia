@@ -40,7 +40,7 @@ function splitHighlight(verseText, normalizedTerm) {
 }
 
 export default function SearchScreen({ navigation }) {
-  const { theme } = useApp();
+  const { theme, t } = useApp();
   const [query, setQuery] = useState('');
   const [allResults, setAllResults] = useState([]);
   const [visibleResults, setVisibleResults] = useState([]);
@@ -265,7 +265,7 @@ export default function SearchScreen({ navigation }) {
           <Ionicons name="search" size={20} color={theme.textMuted} style={styles.searchIcon} />
           <TextInput
             style={[styles.input, { color: theme.text }]}
-            placeholder="Pesquisar versículos ou palavras..."
+            placeholder={t('searchPlaceholder')}
             placeholderTextColor={theme.textMuted}
             value={query}
             onChangeText={(text) => {
@@ -287,7 +287,7 @@ export default function SearchScreen({ navigation }) {
           ) : null}
         </View>
         <TouchableOpacity style={styles.searchButton} onPress={() => performSearch()}>
-          <Text style={styles.searchButtonText}>Buscar</Text>
+          <Text style={styles.searchButtonText}>{t('searchSearch')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -298,10 +298,10 @@ export default function SearchScreen({ navigation }) {
             <>
               <View style={styles.recentHeader}>
                 <Text style={[styles.recentTitle, { color: theme.dark ? '#9CA3AF' : '#4B5563' }]}>
-                  Pesquisas Recentes
+                  {t('searchRecent')}
                 </Text>
                 <TouchableOpacity onPress={clearRecentSearches}>
-                  <Text style={styles.clearRecentText}>Limpar</Text>
+                  <Text style={styles.clearRecentText}>{t('searchClear')}</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.chipsRow}>
@@ -321,7 +321,7 @@ export default function SearchScreen({ navigation }) {
             <View style={styles.emptyState}>
               <Ionicons name="search-outline" size={56} color={theme.textMuted} />
               <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
-                Digite uma palavra ou versículo para começar a pesquisar.
+                {t('searchEmpty')}
               </Text>
             </View>
           )}
@@ -329,28 +329,30 @@ export default function SearchScreen({ navigation }) {
       ) : (
         <View style={styles.resultsContainer}>
           <Text style={[styles.resultsCount, { color: theme.dark ? '#9CA3AF' : '#6B7280' }]}>
-            {allResults.length} versículo{allResults.length === 1 ? '' : 's'} encontrado{allResults.length === 1 ? '' : 's'}
+            {allResults.length === 1
+              ? t('searchCountOne', { n: allResults.length })
+              : t('searchCountMany', { n: allResults.length })}
           </Text>
 
           {loading ? (
             <View style={styles.emptyState}>
               <Ionicons name="hourglass-outline" size={56} color={theme.textMuted} />
               <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
-                Pesquisando...
+                {t('searchSearching')}
               </Text>
             </View>
           ) : !dataReady || bibleData.length === 0 ? (
             <View style={styles.emptyState}>
               <Ionicons name="server-outline" size={56} color={theme.textMuted} />
               <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
-                Carregando a Bíblia para pesquisa, aguarde...
+                {t('searchLoadingData')}
               </Text>
             </View>
           ) : allResults.length === 0 ? (
             <View style={styles.emptyState}>
               <Ionicons name="alert-circle-outline" size={56} color={theme.textMuted} />
               <Text style={[styles.emptyStateText, { color: theme.textMuted }]}>
-                Nenhum versículo encontrado para "{query}".
+                {t('searchNoVerses', { q: query })}
               </Text>
             </View>
           ) : (

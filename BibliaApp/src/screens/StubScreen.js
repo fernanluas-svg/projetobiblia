@@ -5,10 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useApp } from '../context/AppContext';
 
 export default function StubScreen({ route }) {
-  const { theme } = useApp();
+  const { theme, t } = useApp();
   const insets = useSafeAreaInsets();
-  const { title = 'Em breve', icon = 'construct-outline' } = route?.params ?? {};
-  const message = route?.params?.message ?? 'Esta seção está em construção.';
+  const { title = t('stubSoon'), icon = 'construct-outline' } = route?.params ?? {};
+  const message = route?.params?.message ?? t('stubConstructing');
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background, paddingTop: insets.top }]}>

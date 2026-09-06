@@ -46,6 +46,7 @@ function Hamburger({ onPress, color, backgroundColor }) {
 }
 
 function HomeStack() {
+  const { theme, t } = useApp();
   return (
     <Stack.Navigator initialRouteName="Welcome">
       <Stack.Screen
@@ -62,7 +63,7 @@ function HomeStack() {
         name="Livros"
         component={BookListScreen}
         options={({ navigation, theme }) => ({
-          title: 'Bíblia',
+          title: t('nav.bible'),
           headerTitleAlign: 'center',
           headerLeft: () => (
             <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
@@ -73,7 +74,7 @@ function HomeStack() {
         name="Read"
         component={ReadScreen}
         options={({ navigation, theme }) => ({
-          title: 'Leitura',
+          title: t('nav.reading'),
           headerTitleAlign: 'center',
           headerLeft: () => (
             <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
@@ -85,7 +86,7 @@ function HomeStack() {
 }
 
 function RootNavigator() {
-  const { theme } = useApp();
+  const { theme, t } = useApp();
   const navigationTheme = {
     ...DefaultTheme,
     dark: theme.dark,
@@ -118,7 +119,7 @@ function RootNavigator() {
           component={HomeStack}
           options={{
             headerShown: false,
-            title: 'Início',
+            title: t('nav.home'),
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'home' : 'home-outline'} color={color} size={size} />
             ),
@@ -128,7 +129,7 @@ function RootNavigator() {
           name="Favoritos"
           component={FavoritesScreen}
           options={({ navigation, theme }) => ({
-title: 'Favoritos',
+title: t('nav.favorites'),
           headerTitleAlign: 'center',
           drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'star' : 'star-outline'} color="#FFC107" size={size} />
@@ -142,7 +143,7 @@ title: 'Favoritos',
           name="Progresso"
           component={ProgressScreen}
           options={({ navigation, theme }) => ({
-title: 'Progresso de Leitura',
+title: t('nav.progress'),
           headerTitleAlign: 'center',
           drawerIcon: ({ focused, color, size }) => (
               <Ionicons
@@ -160,7 +161,7 @@ title: 'Progresso de Leitura',
           name="Configurações"
           component={SettingsScreen}
           options={({ navigation, theme }) => ({
-            title: 'Configurações',
+            title: t('nav.settings'),
             headerTitleAlign: 'center',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'settings' : 'settings-outline'} color={color} size={size} />
@@ -174,7 +175,7 @@ title: 'Progresso de Leitura',
           name="Search"
           component={SearchScreen}
           options={({ navigation, theme }) => ({
-            title: 'Pesquisar',
+            title: t('nav.search'),
             headerTitleAlign: 'center',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'search' : 'search-outline'} color={color} size={size} />
@@ -187,9 +188,9 @@ title: 'Progresso de Leitura',
         <Drawer.Screen
           name="Store"
           component={StubScreen}
-          initialParams={{ title: 'Loja', icon: 'bag-handle-outline', message: 'Loja em breve.' }}
+          initialParams={{ title: t('nav.store'), icon: 'bag-handle-outline', message: t('stubStoreMessage') }}
           options={({ navigation, theme }) => ({
-            title: 'Loja',
+            title: t('nav.store'),
             headerTitleAlign: 'center',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} size={size} />
@@ -203,7 +204,7 @@ title: 'Progresso de Leitura',
           name="Quiz"
           component={QuizScreen}
           options={({ navigation, theme }) => ({
-            title: 'Mini Quiz da Bíblia',
+            title: t('nav.quiz'),
             headerTitleAlign: 'center',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'help-circle' : 'help-circle-outline'} color={color} size={size} />
@@ -216,9 +217,9 @@ title: 'Progresso de Leitura',
         <Drawer.Screen
           name="Donate"
           component={StubScreen}
-          initialParams={{ title: 'Colaborações', icon: 'heart-outline', message: 'Área de apoio e Pix em breve.' }}
+          initialParams={{ title: t('nav.donate'), icon: 'heart-outline', message: t('stubDonateMessage') }}
           options={({ navigation, theme }) => ({
-            title: 'Colaborações',
+            title: t('nav.donate'),
             headerTitleAlign: 'center',
             drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'heart' : 'heart-outline'} color={color} size={size} />

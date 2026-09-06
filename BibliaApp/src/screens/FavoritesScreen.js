@@ -13,7 +13,7 @@ import { useApp } from '../context/AppContext';
 import { getBooks } from '../data/books';
 
 export default function FavoritesScreen({ navigation }) {
-  const { favorites, toggleFavorite, theme } = useApp();
+  const { favorites, toggleFavorite, theme, t } = useApp();
   const [deleteTarget, setDeleteTarget] = useState(null);
   const books = getBooks();
 
@@ -46,7 +46,7 @@ export default function FavoritesScreen({ navigation }) {
       {favorites.length === 0 ? (
         <View style={styles.empty}>
           <Text style={[styles.emptyText, { color: theme.textMuted }]}>
-            Nenhum favorito ainda.{'\n'}Toque num versículo durante a leitura para marcá-lo aqui.
+            {t('favoritesEmpty')}
           </Text>
         </View>
       ) : (
@@ -66,7 +66,7 @@ export default function FavoritesScreen({ navigation }) {
                   {item.reference}
                 </Text>
                 <Text style={[styles.hint, { color: theme.textMuted }]}>
-                  segure para excluir
+                  {t('favoritesHoldToDelete')}
                 </Text>
               </View>
               <View style={styles.verseRow}>
@@ -97,7 +97,7 @@ export default function FavoritesScreen({ navigation }) {
             onPress={() => {}}
           >
             <Text style={[styles.modalTitle, { color: theme.text }]}>
-              Excluir favorito?
+              {t('favoritesDeleteTitle')}
             </Text>
             <Text style={[styles.modalSubtitle, { color: theme.textMuted }]}>
               {deleteTarget?.reference}
@@ -108,7 +108,7 @@ export default function FavoritesScreen({ navigation }) {
                 onPress={() => setDeleteTarget(null)}
               >
                 <Text style={[styles.modalButtonText, { color: theme.text }]}>
-                  Cancelar
+                  {t('favoritesCancel')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -116,7 +116,7 @@ export default function FavoritesScreen({ navigation }) {
                 onPress={confirmDelete}
               >
                 <Text style={[styles.modalButtonText, { color: '#fff' }]}>
-                  Excluir
+                  {t('favoritesDelete')}
                 </Text>
               </TouchableOpacity>
             </View>
