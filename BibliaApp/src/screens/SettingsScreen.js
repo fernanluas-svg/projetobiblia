@@ -1,16 +1,45 @@
 import { useState } from 'react';
-import { Alert, Platform, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { HOME_THEMES, useApp } from '../context/AppContext';
+import { HOME_THEMES, FONT_FAMILY_OPTIONS, useApp } from '../context/AppContext';
 
 const FONT_OPTIONS = [14, 16, 18, 20, 22];
 
+const ACTIVE_BG = '#F3EAD3';
+const ACTIVE_TEXT = '#332818';
+const LIGHT_THEME_KEYS = new Set(['branca', 'creme', 'rosa']);
+const LIGHT_THEME_SELECT_COLOR = '#2E7D32';
+
+const ALIGN_ICONS = {
+  left: { bars: [1, 0.88, 0.68], align: 'flex-start' },
+  center: { bars: [0.84, 0.66, 0.5], align: 'center' },
+  right: { bars: [1, 0.88, 0.68], align: 'flex-end' },
+  justify: { bars: [1, 1, 0.66], align: 'flex-start' },
+};
+
+function AlignIcon({ type, color }) {
+  const config = ALIGN_ICONS[type] ?? ALIGN_ICONS.left;
+  return (
+    <View style={styles.alignIcon}>
+      {config.bars.map((w, i) => (
+        <View
+          key={i}
+          style={[
+            styles.alignBar,
+            { backgroundColor: color, alignSelf: config.align, width: `${w * 100}%` },
+          ]}
+        />
+      ))}
+    </View>
+  );
+}
+
 const ALIGN_OPTIONS = (t) => [
   { value: 'left', label: t('settingsAlignLeft') },
-  { value: 'right', label: t('settingsAlignRight') },
   { value: 'center', label: t('settingsAlignCenter') },
+  { value: 'right', label: t('settingsAlignRight') },
   { value: 'justify', label: t('settingsAlignJustify') },
 ];
 
@@ -56,6 +85,8 @@ export default function SettingsScreen() {
     setFontSize,
     textAlign,
     setTextAlign,
+    fontFamily,
+    setFontFamily,
     language,
     setLanguage,
     t,
@@ -70,6 +101,10 @@ export default function SettingsScreen() {
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const alignOptions = ALIGN_OPTIONS(t);
+
+  const isLightTheme = LIGHT_THEME_KEYS.has(themeKey);
+  const activeOptionBg = isLightTheme ? LIGHT_THEME_SELECT_COLOR : ACTIVE_BG;
+  const activeOptionText = isLightTheme ? '#FFFFFF' : ACTIVE_TEXT;
 
   const toggleNotifications = async (value) => {
     const ok = await setNotificationsEnabled(value);
@@ -92,7 +127,11 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: theme.background }]}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={[styles.group, styles.groupSpacing, { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 1 }]}>
         <Text style={[styles.groupTitle, { color: theme.textMuted }]}>{t('settingsAppearance')}</Text>
 
@@ -105,15 +144,15 @@ export default function SettingsScreen() {
                 key={size}
                 style={[
                   styles.fontOption,
-                  { borderColor: active ? theme.primary : theme.border, borderWidth: active ? 2 : 1 },
-                  active && { backgroundColor: theme.selection },
+                  { borderColor: theme.border, borderWidth: 1 },
+                  active && { backgroundColor: activeOptionBg },
                 ]}
                 onPress={() => setFontSize(size)}
               >
                 <Text
                   style={[
                     styles.fontOptionText,
-                    { color: active ? theme.primary : theme.text, fontWeight: active ? 'bold' : '600' },
+                    { color: active ? activeOptionText : theme.text, fontWeight: active ? 'bold' : '600' },
                   ]}
                 >
                   Aa
@@ -121,7 +160,7 @@ export default function SettingsScreen() {
                 <Text
                   style={[
                     styles.fontSizeText,
-                    { color: active ? theme.primary : theme.textMuted, fontWeight: active ? '700' : 'normal' },
+                    { color: active ? activeOptionText : theme.textMuted, fontWeight: active ? '700' : 'normal' },
                   ]}
                 >
                   {size}
@@ -227,18 +266,51 @@ export default function SettingsScreen() {
                 key={option.value}
                 style={[
                   styles.alignOption,
-                  { borderColor: active ? theme.primary : theme.border, borderWidth: active ? 2 : 1 },
-                  active && { backgroundColor: theme.selection },
+                  { borderColor: theme.border, borderWidth: 1 },
+                  active && { backgroundColor: activeOptionBg },
                 ]}
                 onPress={() => setTextAlign(option.value)}
+                accessibilityRole="button"
+                accessibilityLabel={option.label}
+              >
+                <AlignIcon type={option.value} color={active ? activeOptionText : theme.text} />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <Text style={[styles.groupTitle, { color: theme.textMuted, marginTop: 20 }]}>{t('settingsFontType')}</Text>
+        <View style={styles.fontTypeRow}>
+          {FONT_FAMILY_OPTIONS.map((option) => {
+            const active = option.value === fontFamily;
+            return (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.fontTypeOption,
+                  { borderColor: theme.border, borderWidth: 1 },
+                  active && { backgroundColor: activeOptionBg },
+                ]}
+                onPress={() => setFontFamily(option.value)}
+                accessibilityRole="button"
+                accessibilityLabel={t(`font.${option.value}`)}
               >
                 <Text
                   style={[
-                    styles.alignOptionText,
-                    { color: active ? theme.primary : theme.text, fontWeight: active ? 'bold' : '600' },
+                    styles.fontTypeSample,
+                    { color: active ? activeOptionText : theme.text, fontFamily: option.font },
                   ]}
                 >
-                  {option.label}
+                  Aa
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    styles.fontTypeLabel,
+                    { color: active ? activeOptionText : theme.textMuted, fontWeight: active ? '700' : '500' },
+                  ]}
+                >
+                  {t(`font.${option.value}`)}
                 </Text>
               </TouchableOpacity>
             );
@@ -268,13 +340,15 @@ export default function SettingsScreen() {
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
     padding: 16,
     paddingBottom: 40,
   },
@@ -408,15 +482,42 @@ const styles = StyleSheet.create({
   alignOption: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 12,
     marginHorizontal: 4,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ccc',
   },
-  alignOptionText: {
-    fontSize: 13,
+  alignIcon: {
+    width: 24,
+    height: 22,
+    justifyContent: 'center',
+  },
+  alignBar: {
+    height: 3,
+    borderRadius: 1.5,
+    marginVertical: 1.5,
+  },
+  fontTypeRow: {
+    flexDirection: 'row',
+  },
+  fontTypeOption: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 12,
+    marginHorizontal: 4,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  fontTypeSample: {
+    fontSize: 20,
     fontWeight: '600',
+  },
+  fontTypeLabel: {
+    fontSize: 11,
+    marginTop: 6,
     textAlign: 'center',
   },
   languageRow: {

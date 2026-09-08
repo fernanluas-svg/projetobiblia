@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export class ErrorBoundary extends React.Component {
@@ -29,6 +29,11 @@ export class ErrorBoundary extends React.Component {
             <Text style={styles.message}>
               Encontramos um erro inesperado ao carregar o aplicativo. Pedimos desculpas pelo transtorno.
             </Text>
+            {this.state.error?.message ? (
+              <Text style={styles.errorDetail} selectable>
+                {String(this.state.error.message)}
+              </Text>
+            ) : null}
             <TouchableOpacity style={styles.button} onPress={this.handleReset} activeOpacity={0.8}>
               <Ionicons name="refresh-outline" size={20} color="#FFFFFF" style={styles.buttonIcon} />
               <Text style={styles.buttonText}>Tentar novamente</Text>
@@ -81,6 +86,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 24,
+  },
+  errorDetail: {
+    fontSize: 12,
+    color: '#8A2B3F',
+    textAlign: 'center',
+    lineHeight: 18,
+    marginBottom: 24,
+    fontFamily: Platform.select({ ios: 'Menlo', android: 'monospace', web: 'monospace' }),
   },
   button: {
     flexDirection: 'row',

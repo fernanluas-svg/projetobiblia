@@ -12,7 +12,7 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 
-import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER } from '../context/AppContext';
+import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, getFontFamily } from '../context/AppContext';
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
 import { makeChapterKey } from '../utils/chapterKey';
@@ -246,6 +246,7 @@ export default function ReadScreen({ navigation, route }) {
     theme,
     fontSize,
     textAlign,
+    fontFamily,
     t,
     isFavorite,
     toggleFavorite,
@@ -257,6 +258,7 @@ export default function ReadScreen({ navigation, route }) {
   } = useApp();
 
   const isReaderDark = theme.dark;
+  const readerFont = getFontFamily(fontFamily);
   const verseNumColor = isReaderDark ? '#FFFFFF' : '#4A5568';
   const sectionTitleColor = isReaderDark ? '#FFFFFF' : '#2D3748';
   const [chapterIndex, setChapterIndex] = useState(route?.params?.chapter ?? 0);
@@ -431,15 +433,19 @@ export default function ReadScreen({ navigation, route }) {
     }
   }, [meta, chapterIndex, loading]);
 
-  const buildVerse = (verseIndex) => ({
-    key: `${chapterKey}:${verseIndex}`,
-    bookName: meta.name,
-    bookAbbrev: meta.abbrev,
-    chapterIndex,
-    verseIndex,
-    text: chapter[verseIndex],
-    reference: `${meta.name} ${chapterIndex + 1}:${verseIndex + 1}`,
-  });
+  const buildVerse = (verseIndex) => {
+    const raw = chapter[verseIndex];
+    const text = typeof raw === 'object' && raw !== null ? (raw.text ?? raw.verse ?? '') : (raw ?? '');
+    return {
+      key: `${chapterKey}:${verseIndex}`,
+      bookName: meta.name,
+      bookAbbrev: meta.abbrev,
+      chapterIndex,
+      verseIndex,
+      text,
+      reference: `${meta.name} ${chapterIndex + 1}:${verseIndex + 1}`,
+    };
+  };
 
   const changeChapter = (nextIndex) => {
     if (nextIndex < 0 || nextIndex >= totalChapters) return;
@@ -628,8 +634,13 @@ export default function ReadScreen({ navigation, route }) {
                   onPress={() => toggleSelection(index)}
                   activeOpacity={0.6}
                 >
-                  <Text style={[styles.verseNumber, { color: verseNumColor }]}>{index + 1}</Text>
-                  <Text style={[styles.verseText, { color: theme.text, fontSize, textAlign: textAlign === 'justify' ? 'justify' : textAlign }]}>
+                  <View style={styles.verseNumberWrap}>
+                    <Text style={[styles.verseNumber, { color: verseNumColor }]}>{index + 1}</Text>
+                    {isFavorite(verseKey) ? (
+                      <Ionicons name="star" size={12} color="#EAB308" style={styles.favoriteStar} />
+                    ) : null}
+                  </View>
+                  <Text style={[styles.verseText, { color: theme.text, fontSize, fontFamily: readerFont, textAlign: textAlign === 'justify' ? 'justify' : textAlign }]}>
                     {verseText}
                   </Text>
                 </TouchableOpacity>
@@ -1026,12 +1037,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     borderRadius: 6,
   },
+  verseNumberWrap: {
+    alignItems: 'center',
+    marginRight: 8,
+    minWidth: 20,
+  },
   verseNumber: {
     color: '#000000',
     fontSize: 14,
     fontWeight: 'bold',
-    marginRight: 6,
     marginTop: 2,
+  },
+  favoriteStar: {
+    marginTop: 3,
   },
   verseText: {
     flex: 1,

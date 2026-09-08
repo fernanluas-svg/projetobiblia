@@ -1,24 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Alert,
+  Animated,
+  BackHandler,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAudioPlayer } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useApp } from '../context/AppContext';
 import { quizData } from '../data/quizQuestions';
-import { submitScore, fetchRanking, recordMatch } from '../services/quizService';
+import {
+  MEDALS,
+  loadAchievements,
+  loadStats,
+  medalColor,
+  medalPercent,
+  recordMatchResult,
+  recordQuizStarted,
+} from '../services/achievementsService';
 
-const PLAYER_NAME_KEY = '@bibliaapp/playerName';
 const POINTS_PER_HIT = 10;
 
 const ALTERNATIVA_LETRAS = ['a', 'b', 'c', 'd'];
@@ -113,14 +119,21 @@ export default function QuizScreen() {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
-  const [playerName, setPlayerName] = useState('');
-  const [rankStatus, setRankStatus] = useState('idle');
-  const [ranking, setRanking] = useState([]);
-  const [rankSaving, setRankSaving] = useState(false);
-  const [rankError, setRankError] = useState(null);
-  const [autoSaved, setAutoSaved] = useState(false);
-  const [autoSaving, setAutoSaving] = useState(false);
-  const autoSavedRef = useRef(false);
+  const [count, setCount] = useState(3);
+  const [achievements, setAchievements] = useState([]);
+  const [stats, setStats] = useState({
+    started: false,
+    matches: 0,
+    correct: 0,
+    perfectCount: 0,
+    streakPerfect: 0,
+    perfectInterCount: 0,
+    streakPerfectInter: 0,
+    perfectHardCount: 0,
+    streakPerfectHard: 0,
+    playedDays: 0,
+  });
+  const scale = useRef(new Animated.Value(1)).current;
   const recordedRef = useRef(false);
 
   const correctPlayer = useAudioPlayer(require('../../assets/sounds/correct.wav'));
@@ -142,72 +155,76 @@ export default function QuizScreen() {
     }
   };
 
-  const loadRanking = async () => {
-    setRankStatus('loading');
-    const res = await fetchRanking(10);
-    if (!res.ok) {
-      setRanking([]);
-      setRankStatus('offline');
-      return;
-    }
-    setRanking(res.entries);
-    setRankStatus(res.entries.length ? 'ok' : 'empty');
-  };
-
   useEffect(() => {
     (async () => {
-      try {
-        const saved = await AsyncStorage.getItem(PLAYER_NAME_KEY);
-        if (saved) setPlayerName(saved);
-      } catch (e) {
-        // falha ao ler nome salvo
-      }
-      await loadRanking();
+      setAchievements(await loadAchievements());
+      setStats(await loadStats());
     })();
   }, []);
 
   useEffect(() => {
+    if (phase !== 'achievements') return;
+    (async () => {
+      setAchievements(await loadAchievements());
+      setStats(await loadStats());
+    })();
+  }, [phase]);
+
+  const showNewlyUnlocked = (list) => {
+    if (!list || !list.length) return;
+    Alert.alert(
+      'Medalha conquistada!',
+      `Você desbloqueou:\n\n${list.map((m) => m.name).join('\n')}`
+    );
+  };
+
+  useEffect(() => {
     if (phase !== 'result' || recordedRef.current || !total) return;
     recordedRef.current = true;
-    recordMatch({
-      score,
-      correct: Math.round(score / POINTS_PER_HIT),
-      total,
-      mode: modeKey,
-    }).catch(() => {});
+    (async () => {
+      const res = await recordMatchResult({
+        correct: Math.round(score / POINTS_PER_HIT),
+        total,
+        mode: modeKey,
+      });
+      setAchievements(res.achievements);
+      setStats(res.stats);
+      showNewlyUnlocked(res.newUnlocked);
+    })();
   }, [phase]);
 
   useEffect(() => {
-    if (phase !== 'result' || autoSavedRef.current || autoSaving) return;
-    const name = playerName.trim();
-    const pct = total > 0 ? score / maxScore : 0;
-    if (pct < 0.6 || !name) return;
-    autoSavedRef.current = true;
-    setAutoSaving(true);
-    (async () => {
-      const res = await submitScore(name, score);
-      setAutoSaving(false);
-      if (res.ok) {
-        setAutoSaved(true);
-        setRankError(null);
-        await loadRanking();
-      } else {
-        setRankError('Não foi possível publicar sua pontuação automaticamente. Você pode salvá-la abaixo.');
-      }
-    })();
-  }, [phase]);
+    if (phase !== 'countdown') return;
+    scale.setValue(0.2);
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 5,
+      tension: 140,
+      useNativeDriver: true,
+    }).start();
+    Haptics.selectionAsync().catch(() => {});
+    if (count === 0) {
+      const t = setTimeout(() => setPhase('playing'), 550);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setCount((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [phase, count]);
 
   const startQuiz = () => {
     setQuestions(prepareQuestions(modeKey, questionCount));
     setCurrent(0);
     setSelected(null);
     setScore(0);
-    setRankError(null);
-    setAutoSaved(false);
-    setAutoSaving(false);
-    autoSavedRef.current = false;
+    setCount(3);
     recordedRef.current = false;
-    setPhase('playing');
+    setPhase('countdown');
+    (async () => {
+      const res = await recordQuizStarted();
+      setAchievements(res.achievements);
+      setStats(res.stats);
+      showNewlyUnlocked(res.newUnlocked);
+    })();
   };
 
   const selectCount = (value) => {
@@ -247,73 +264,192 @@ export default function QuizScreen() {
     ]);
   };
 
-  const saveRanking = async () => {
-    const name = playerName.trim();
-    if (!name || rankSaving) return;
-    if (autoSavedRef.current) {
-      await loadRanking();
-      return;
-    }
-    setRankSaving(true);
-    setRankError(null);
-    try {
-      await AsyncStorage.setItem(PLAYER_NAME_KEY, name);
-    } catch (e) {
-      // falha ao salvar nome
-    }
-    const res = await submitScore(name, score);
-    setRankSaving(false);
-    if (!res.ok) {
-      setRankError('Não foi possível enviar sua pontuação agora. O quiz continua disponível offline.');
-      return;
-    }
-    setAutoSaved(true);
-    await loadRanking();
-  };
+  useEffect(() => {
+    if (phase !== 'playing' && phase !== 'countdown') return;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      confirmQuit();
+      return true;
+    });
+    return () => subscription.remove();
+  }, [phase]);
 
-  const renderRanking = () => {
-    if (rankStatus === 'loading') {
-      return (
-        <View style={styles.rankBox}>
-          <ActivityIndicator color={theme.primary} />
-          <Text style={[styles.rankHint, { color: theme.textMuted }]}>Carregando ranking...</Text>
-        </View>
-      );
-    }
-    if (rankStatus === 'offline') {
-      return (
-        <View style={[styles.rankBox, styles.rankBoxOffline]}>
-          <Ionicons name="cloud-offline-outline" size={28} color={theme.textMuted} />
-          <Text style={[styles.rankTitle, { color: theme.text }]}>Ranking indisponível</Text>
-          <Text style={[styles.rankHint, { color: theme.textMuted }]}>
-            Sem conexão com o ranking agora. O quiz continua funcionando normalmente.
-          </Text>
-        </View>
-      );
-    }
-    if (rankStatus === 'empty') {
-      return (
-        <View style={styles.rankBox}>
-          <Ionicons name="trophy-outline" size={28} color={theme.primary} />
-          <Text style={[styles.rankTitle, { color: theme.text }]}>Nenhuma pontuação ainda</Text>
-          <Text style={[styles.rankHint, { color: theme.textMuted }]}>
-            Seja o primeiro a entrar no ranking!
-          </Text>
-        </View>
-      );
-    }
+  const renderCountdown = () => (
+    <View style={styles.countdownWrap}>
+      <Text style={[styles.countdownHint, { color: theme.textMuted }]}>Prepare-se!</Text>
+      <Animated.Text
+        style={[
+          styles.countdownText,
+          { color: theme.primary, transform: [{ scale }] },
+        ]}
+      >
+        {count > 0 ? count : 'VAI!'}
+      </Animated.Text>
+      <TouchableOpacity
+        style={[styles.countdownCancel, { borderColor: theme.border }]}
+        onPress={goBackToSetup}
+        activeOpacity={0.7}
+      >
+        <Text style={[styles.countdownCancelText, { color: theme.textMuted }]}>Cancelar</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderAchievements = () => {
+    const unlockedIds = achievements.map((a) => a.id);
+    const levels = [
+      { key: 'Iniciante', color: '#169B4E' },
+      { key: 'Intermediário', color: '#D97706' },
+      { key: 'Avançado', color: '#DC2626' },
+      { key: 'Lendário', color: '#7C3AED' },
+    ];
     return (
-      <View style={styles.rankBox}>
-        <Text style={[styles.rankTitle, { color: theme.text }]}>Ranking</Text>
-        {ranking.map((entry) => (
-          <View key={`${entry.rank}-${entry.name}`} style={styles.rankRow}>
-            <Text style={[styles.rankPos, { color: theme.textMuted }]}>#{entry.rank}</Text>
-            <Text style={[styles.rankName, { color: theme.text }]} numberOfLines={1}>
-              {entry.name}
-            </Text>
-            <Text style={[styles.rankScore, { color: theme.primary }]}>{entry.score} pts</Text>
+      <View>
+        <View style={styles.achieveHeader}>
+          <TouchableOpacity
+            style={[styles.achieveBack, { borderColor: theme.border }]}
+            onPress={goBackToSetup}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="arrow-back" size={16} color={theme.text} />
+            <Text style={[styles.achieveBackText, { color: theme.text }]}>Voltar</Text>
+          </TouchableOpacity>
+          <Text style={[styles.achieveCount, { color: theme.textMuted }]}>
+            {unlockedIds.length} de {MEDALS.length} selos
+          </Text>
+        </View>
+
+        <View style={[styles.hero, { backgroundColor: theme.primary }]}>
+          <Ionicons name="medal-outline" size={44} color="#FFFFFF" />
+          <Text style={styles.heroTitle}>Suas Conquistas</Text>
+          <Text style={styles.heroSubtitle}>
+            Seu progresso é rastreado offline e os selos são desbloqueados automaticamente a cada
+            partida concluída.
+          </Text>
+        </View>
+
+        <View style={styles.statsRow}>
+          <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <Text style={[styles.statValue, { color: theme.primary }]}>{stats.matches}</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Partidas</Text>
           </View>
-        ))}
+          <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <Text style={[styles.statValue, { color: theme.primary }]}>{stats.correct}</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Acertos</Text>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <Text style={[styles.statValue, { color: theme.primary }]}>{stats.playedDays}</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Dias ativos</Text>
+          </View>
+        </View>
+
+        {unlockedIds.length === 0 && (
+          <View style={[styles.achieveEmpty, { borderColor: theme.border }]}>
+            <Ionicons name="lock-closed-outline" size={26} color={theme.textMuted} />
+            <Text style={[styles.achieveEmptyTitle, { color: theme.text }]}>
+              Nenhum selo ainda
+            </Text>
+            <Text style={[styles.achieveEmptyHint, { color: theme.textMuted }]}>
+              Complete partidas, responda com precisão e vença desafios para desbloquear suas
+              primeiras medalhas.
+            </Text>
+          </View>
+        )}
+
+        {levels.map((level) => {
+          const medals = MEDALS.filter((m) => m.level === level.key);
+          const unlockedCount = medals.filter((m) => unlockedIds.includes(m.id)).length;
+          return (
+            <View key={level.key}>
+              <View style={styles.levelHeader}>
+                <View style={[styles.levelDot, { backgroundColor: level.color }]} />
+                <Text style={[styles.levelTitle, { color: theme.text }]}>{level.key}</Text>
+                <Text style={[styles.levelCount, { color: theme.textMuted }]}>
+                  {unlockedCount}/{medals.length}
+                </Text>
+              </View>
+              <View style={styles.achieveGrid}>
+                {medals.map((medal) => {
+                  const unlocked = unlockedIds.includes(medal.id);
+                  const color = medalColor(medal);
+                  const pct = medalPercent(medal, stats);
+                  const metrics = medal.metrics(stats);
+                  return (
+                    <View
+                      key={medal.id}
+                      style={[
+                        styles.medalCard,
+                        {
+                          backgroundColor: unlocked ? rgba(color, 0.14) : theme.surface,
+                          borderColor: unlocked ? color : theme.border,
+                        },
+                      ]}
+                    >
+                      <View
+                        style={[
+                          styles.medalIcon,
+                          {
+                            backgroundColor: unlocked ? color : 'rgba(127,127,127,0.25)',
+                          },
+                        ]}
+                      >
+                        <Ionicons
+                          name={medal.icon}
+                          size={22}
+                          color={unlocked ? '#FFFFFF' : theme.textMuted}
+                        />
+                      </View>
+                      <Text
+                        numberOfLines={2}
+                        style={[
+                          styles.medalLabel,
+                          { color: unlocked ? theme.text : theme.textMuted },
+                        ]}
+                      >
+                        {medal.name}
+                      </Text>
+                      <Text numberOfLines={3} style={[styles.medalDesc, { color: theme.textMuted }]}>
+                        {medal.description}
+                      </Text>
+                      <View
+                        style={[
+                          styles.medalProgressTrack,
+                          { backgroundColor: isDark ? '#333' : '#E5E7EB' },
+                        ]}
+                      >
+                        <View
+                          style={[
+                            styles.medalProgressFill,
+                            { backgroundColor: unlocked ? color : theme.textMuted, width: `${pct}%` },
+                          ]}
+                        />
+                      </View>
+                      {metrics.map((metric, index) => (
+                        <Text
+                          key={index}
+                          numberOfLines={1}
+                          style={[styles.medalMetric, { color: theme.textMuted }]}
+                        >
+                          {metric.label}: {Math.min(metric.current, metric.target)}/{metric.target}
+                        </Text>
+                      ))}
+                      {unlocked ? (
+                        <View style={styles.medalLockRow}>
+                          <Ionicons name="checkmark-circle" size={13} color={color} />
+                          <Text style={[styles.medalUnlockText, { color }]}>Conquistada</Text>
+                        </View>
+                      ) : (
+                        <View style={styles.medalLockRow}>
+                          <Ionicons name="lock-closed" size={12} color={theme.textMuted} />
+                          <Text style={[styles.medalLockText, { color: theme.textMuted }]}>Bloqueado</Text>
+                        </View>
+                      )}
+                    </View>
+                  );
+                })}
+              </View>
+            </View>
+          );
+        })}
       </View>
     );
   };
@@ -327,16 +463,6 @@ export default function QuizScreen() {
           Escolha um modo, defina a quantidade e teste seus conhecimentos.
         </Text>
       </View>
-
-      <Text style={[styles.fieldLabel, { color: theme.textMuted }]}>Seu nome no ranking</Text>
-      <TextInput
-        style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
-        placeholder="Digite seu nome"
-        placeholderTextColor={theme.textMuted}
-        value={playerName}
-        onChangeText={setPlayerName}
-        maxLength={20}
-      />
 
       <Text style={[styles.sectionLabel, { color: theme.text }]}>Modo de jogo</Text>
       <View style={styles.modesList}>
@@ -436,12 +562,30 @@ export default function QuizScreen() {
         <Ionicons name="play" size={18} color="#FFFFFF" />
         <Text style={styles.primaryButtonText}>Iniciar Quiz</Text>
       </TouchableOpacity>
+      <Text style={[styles.countdownNote, { color: theme.textMuted }]}>
+        Uma contagem regressiva de 3, 2, 1... dá o start da partida.
+      </Text>
 
       <View style={styles.sectionTitleRow}>
-        <Ionicons name="trophy" size={18} color={isDark ? '#FFC107' : '#B45309'} />
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Ranking</Text>
+        <Ionicons name="medal-outline" size={18} color={isDark ? '#FFC107' : '#B45309'} />
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>Conquistas</Text>
       </View>
-      {renderRanking()}
+      <TouchableOpacity
+        style={[styles.achieveEntry, { backgroundColor: theme.surface, borderColor: theme.border }]}
+        onPress={() => setPhase('achievements')}
+        activeOpacity={0.8}
+      >
+        <View style={[styles.achieveEntryIcon, { backgroundColor: 'rgba(22,163,74,0.14)' }]}>
+          <Ionicons name="trophy" size={20} color="#169B4E" />
+        </View>
+        <View style={styles.achieveEntryInfo}>
+          <Text style={[styles.achieveEntryLabel, { color: theme.text }]}>Meus selos e medalhas</Text>
+          <Text style={[styles.achieveEntryDesc, { color: theme.textMuted }]}>
+            {achievements.length} de {MEDALS.length} conquistados — tudo salvo offline.
+          </Text>
+        </View>
+        <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
+      </TouchableOpacity>
     </View>
   );
 
@@ -566,58 +710,9 @@ export default function QuizScreen() {
           <Text style={styles.heroMessage}>{resultMessage(score, maxScore)}</Text>
         </View>
 
-        <Text style={[styles.fieldLabel, { color: theme.textMuted }]}>Salvar pontuação no ranking</Text>
-
-        {autoSaved ? (
-          <View style={[styles.successBox, styles.successBoxDark]}>
-            <Ionicons name="checkmark-circle" size={18} color="#16A34A" />
-            <Text style={[styles.successText, { color: '#16A34A' }]}>
-              Sua pontuação foi publicada automaticamente no ranking.
-            </Text>
-          </View>
-        ) : autoSaving ? (
-          <View style={styles.autoSavingRow}>
-            <ActivityIndicator color={theme.primary} size="small" />
-            <Text style={[styles.autoSavingText, { color: theme.textMuted }]}>Enviando pontuação...</Text>
-          </View>
-        ) : (
-          <TextInput
-            style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
-            placeholder="Seu nome no ranking"
-            placeholderTextColor={theme.textMuted}
-            value={playerName}
-            onChangeText={setPlayerName}
-            maxLength={20}
-          />
-        )}
-
-        {rankError && !autoSaved && (
-          <View style={[styles.errorBox, { backgroundColor: isDark ? '#3B1F24' : '#FEE2E2' }]}>
-            <Ionicons name="alert-circle-outline" size={16} color="#DC2626" />
-            <Text style={[styles.errorText, { color: '#DC2626' }]}>{rankError}</Text>
-          </View>
-        )}
-
-        {!autoSaved && (
-          <TouchableOpacity
-            style={[styles.primaryButton, { backgroundColor: theme.primary }]}
-            onPress={saveRanking}
-            disabled={!playerName.trim() || rankSaving || autoSaving}
-          >
-            {rankSaving ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <>
-                <Ionicons name="trophy-outline" size={18} color="#FFFFFF" />
-                <Text style={styles.primaryButtonText}>Salvar no ranking</Text>
-              </>
-            )}
-          </TouchableOpacity>
-        )}
-
-        <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={startQuiz}>
-          <Ionicons name="refresh" size={18} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Jogar novamente</Text>
+        <TouchableOpacity style={[styles.primaryButton, { backgroundColor: theme.primary }]} onPress={startQuiz}>
+          <Ionicons name="refresh" size={18} color="#FFFFFF" />
+          <Text style={styles.primaryButtonText}>Jogar novamente</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={goBackToSetup}>
@@ -625,11 +720,10 @@ export default function QuizScreen() {
           <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Trocar modo e quantidade</Text>
         </TouchableOpacity>
 
-        <View style={styles.sectionTitleRow}>
-          <Ionicons name="trophy" size={18} color={isDark ? '#FFC107' : '#B45309'} />
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>Ranking</Text>
-        </View>
-        {renderRanking()}
+        <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={() => setPhase('achievements')}>
+          <Ionicons name="medal-outline" size={18} color={theme.primary} />
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Ver minhas conquistas</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -641,10 +735,21 @@ export default function QuizScreen() {
       showsVerticalScrollIndicator={false}
     >
       {phase === 'home' && renderSetup()}
+      {phase === 'countdown' && renderCountdown()}
+      {phase === 'achievements' && renderAchievements()}
       {phase === 'playing' && total > 0 && renderPlaying()}
       {phase === 'result' && renderResult()}
     </ScrollView>
   );
+}
+
+function rgba(hex, alpha) {
+  const clean = String(hex || '').replace('#', '');
+  if (clean.length !== 6) return `rgba(22,163,74,${alpha})`;
+  const r = parseInt(clean.slice(0, 2), 16);
+  const g = parseInt(clean.slice(2, 4), 16);
+  const b = parseInt(clean.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 const styles = StyleSheet.create({
@@ -686,20 +791,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     textAlign: 'center',
     fontWeight: '600',
-  },
-  fieldLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    marginBottom: 6,
-    marginTop: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    height: 46,
-    fontSize: 15,
-    marginBottom: 16,
   },
   sectionLabel: {
     fontSize: 15,
@@ -830,49 +921,209 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  rankBox: {
-    borderRadius: 16,
-    padding: 16,
+  countdownNote: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 8,
+    lineHeight: 17,
+  },
+  countdownWrap: {
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(127,127,127,0.2)',
+    justifyContent: 'center',
+    paddingVertical: 90,
   },
-  rankBoxOffline: {
-    paddingVertical: 24,
+  countdownHint: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 16,
   },
-  rankTitle: {
-    fontSize: 16,
+  countdownText: {
+    fontSize: 96,
     fontWeight: 'bold',
+  },
+  countdownCancel: {
+    marginTop: 32,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 18,
+    paddingVertical: 9,
+  },
+  countdownCancelText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  achieveHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 14,
+  },
+  achieveBack: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+  },
+  achieveBackText: {
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  achieveCount: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  achieveEmpty: {
+    alignItems: 'center',
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 22,
+    marginBottom: 16,
+  },
+  achieveEmptyTitle: {
+    fontSize: 16,
+    fontWeight: '700',
     marginTop: 8,
     marginBottom: 4,
   },
-  rankHint: {
+  achieveEmptyHint: {
     fontSize: 13,
     textAlign: 'center',
     lineHeight: 18,
   },
-  rankRow: {
+  achieveGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  medalCard: {
+    width: '48%',
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 12,
+    alignItems: 'center',
+  },
+  medalIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  medalLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  medalDesc: {
+    fontSize: 11,
+    textAlign: 'center',
+    lineHeight: 15,
+    marginTop: 3,
+  },
+  medalLockRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: 'rgba(127,127,127,0.25)',
-    alignSelf: 'stretch',
+    gap: 4,
+    marginTop: 6,
   },
-  rankPos: {
-    width: 36,
-    fontSize: 14,
-    fontWeight: '700',
-  },
-  rankName: {
-    flex: 1,
-    fontSize: 15,
+  medalLockText: {
+    fontSize: 11,
     fontWeight: '600',
-    marginRight: 8,
   },
-  rankScore: {
-    fontSize: 14,
+  medalUnlockText: {
+    fontSize: 11,
     fontWeight: '700',
+  },
+  statsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  statCard: {
+    flex: 1,
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    paddingVertical: 12,
+  },
+  statValue: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  statLabel: {
+    fontSize: 12,
+    marginTop: 2,
+    fontWeight: '600',
+  },
+  levelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 18,
+    marginBottom: 12,
+  },
+  levelDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  levelTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  levelCount: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  medalProgressTrack: {
+    height: 6,
+    borderRadius: 3,
+    overflow: 'hidden',
+    width: '100%',
+    marginTop: 8,
+  },
+  medalProgressFill: {
+    height: '100%',
+    borderRadius: 3,
+  },
+  medalMetric: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  achieveEntry: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 14,
+    gap: 12,
+  },
+  achieveEntryIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  achieveEntryInfo: {
+    flex: 1,
+  },
+  achieveEntryLabel: {
+    fontSize: 15,
+    fontWeight: '700',
+  },
+  achieveEntryDesc: {
+    fontSize: 12,
+    marginTop: 2,
+    lineHeight: 16,
   },
   quizCard: {
     borderRadius: 16,
@@ -997,45 +1248,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 48,
     marginTop: 18,
-  },
-  errorBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 12,
-  },
-  errorText: {
-    flex: 1,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  successBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    borderRadius: 10,
-    borderWidth: 1,
-    padding: 12,
-    marginBottom: 12,
-  },
-  successBoxDark: {
-    backgroundColor: 'rgba(22, 163, 74, 0.12)',
-    borderColor: '#22C55E',
-  },
-  successText: {
-    flex: 1,
-    fontSize: 13,
-    lineHeight: 18,
-  },
-  autoSavingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 12,
-  },
-  autoSavingText: {
-    fontSize: 13,
   },
 });

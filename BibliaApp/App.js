@@ -7,6 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppProvider, useApp } from './src/context/AppContext';
 import HomeScreen from './src/screens/HomeScreen';
+import LivrosScreen from './src/screens/LivrosScreen';
 import BookListScreen from './src/screens/BookListScreen';
 import ReadScreen from './src/screens/ReadScreen';
 import FavoritesScreen from './src/screens/FavoritesScreen';
@@ -14,6 +15,7 @@ import ProgressScreen from './src/screens/ProgressScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import StubScreen from './src/screens/StubScreen';
+import StoreScreen from './src/screens/StoreScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
@@ -126,6 +128,17 @@ function RootNavigator() {
           }}
         />
         <Drawer.Screen
+          name="Livros"
+          component={LivrosScreen}
+          options={({ navigation, theme }) => ({
+            headerShown: false,
+            title: t('nav.livros'),
+            drawerIcon: ({ focused, color, size }) => (
+              <Ionicons name={focused ? 'book' : 'book-outline'} color={color} size={size} />
+            ),
+          })}
+        />
+        <Drawer.Screen
           name="Favoritos"
           component={FavoritesScreen}
           options={({ navigation, theme }) => ({
@@ -186,21 +199,6 @@ title: t('nav.progress'),
           })}
         />
         <Drawer.Screen
-          name="Store"
-          component={StubScreen}
-          initialParams={{ title: t('nav.store'), icon: 'bag-handle-outline', message: t('stubStoreMessage') }}
-          options={({ navigation, theme }) => ({
-            title: t('nav.store'),
-            headerTitleAlign: 'center',
-            drawerIcon: ({ focused, color, size }) => (
-              <Ionicons name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} size={size} />
-            ),
-            headerLeft: () => (
-              <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
-            ),
-          })}
-        />
-        <Drawer.Screen
           name="Quiz"
           component={QuizScreen}
           options={({ navigation, theme }) => ({
@@ -211,6 +209,17 @@ title: t('nav.progress'),
             ),
             headerLeft: () => (
               <Hamburger onPress={() => navigation.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
+            ),
+          })}
+        />
+        <Drawer.Screen
+          name="Store"
+          component={StoreScreen}
+          options={({ navigation, theme }) => ({
+            headerShown: false,
+            title: t('nav.store'),
+            drawerIcon: ({ focused, color, size }) => (
+              <Ionicons name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} size={size} />
             ),
           })}
         />

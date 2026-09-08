@@ -30,6 +30,12 @@ export default function FavoritesScreen({ navigation }) {
     };
   };
 
+  const resolveText = (item) => {
+    const t = item.text;
+    if (t && typeof t === 'object') return t.text ?? t.verse ?? '';
+    return t ?? '';
+  };
+
   const openFavorite = (favorite) => {
     const parsed = parseKey(favorite.key);
     if (!parsed) return;
@@ -74,7 +80,7 @@ export default function FavoritesScreen({ navigation }) {
                   {item.verseIndex + 1}
                 </Text>
                 <Text style={[styles.verseText, { color: theme.text }]}>
-                  {item.text}
+                  {resolveText(item)}
                 </Text>
               </View>
             </Pressable>

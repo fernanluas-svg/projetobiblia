@@ -36,6 +36,40 @@ export const HIGHLIGHT_COLORS = {
 
 export const HIGHLIGHT_ORDER = ['Amarelo', 'Roxo', 'Verde', 'Rosa', 'Azul', 'Laranja'];
 
+export const FONT_FAMILY_OPTIONS = [
+  { value: 'default', font: undefined },
+  {
+    value: 'sans',
+    font: Platform.select({
+      ios: 'System',
+      android: 'sans-serif',
+      default: "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    }),
+  },
+  {
+    value: 'serif',
+    font: Platform.select({
+      ios: 'Georgia',
+      android: 'serif',
+      default: 'Georgia, "Times New Roman", serif',
+    }),
+  },
+  {
+    value: 'mono',
+    font: Platform.select({
+      ios: 'Menlo',
+      android: 'monospace',
+      default: '"Courier New", Courier, monospace',
+    }),
+  },
+];
+
+export const FONT_FAMILY_VALUES = FONT_FAMILY_OPTIONS.map((o) => o.value);
+
+export function getFontFamily(value) {
+  return FONT_FAMILY_OPTIONS.find((o) => o.value === value)?.font;
+}
+
 export const HOME_THEMES = {
   branca: {
     name: 'Branco',
@@ -178,6 +212,7 @@ export function AppProvider({ children }) {
   const [lastRead, setLastReadState] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [textAlign, setTextAlignState] = useState('left');
+  const [fontFamily, setFontFamilyState] = useState('default');
   const [language, setLanguageState] = useState('pt-BR');
   const [notificationsEnabled, setNotificationsEnabledState] = useState(false);
   const [dailyVerseEnabled, setDailyVerseEnabledState] = useState(false);
@@ -189,6 +224,7 @@ export function AppProvider({ children }) {
   const FAVORITES_KEY = '@bibliaapp/favorites';
   const HIGHLIGHTS_KEY = '@bibliaapp/highlights';
   const TEXT_ALIGN_KEY = '@bibliaapp/textAlign';
+  const FONT_FAMILY_KEY = '@bibliaapp/fontFamily';
   const LANGUAGE_KEY = '@bibliaapp/language';
   const NOTIFICATIONS_ENABLED_KEY = '@bibliaapp/notificationsEnabled';
   const DAILY_VERSE_ENABLED_KEY = '@bibliaapp/dailyVerseEnabled';
@@ -208,7 +244,7 @@ export function AppProvider({ children }) {
     let active = true;
     (async () => {
       try {
-        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw, textAlignRaw, languageRaw, notifEnabledRaw, dailyVerseEnabledRaw, dailyVerseTimeRaw] =
+        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw, textAlignRaw, fontFamilyRaw, languageRaw, notifEnabledRaw, dailyVerseEnabledRaw, dailyVerseTimeRaw] =
           await Promise.all([
             AsyncStorage.getItem(LAST_READ_KEY),
             AsyncStorage.getItem(HOME_THEME_KEY),
@@ -216,6 +252,7 @@ export function AppProvider({ children }) {
             AsyncStorage.getItem(FAVORITES_KEY),
             AsyncStorage.getItem(HIGHLIGHTS_KEY),
             AsyncStorage.getItem(TEXT_ALIGN_KEY),
+            AsyncStorage.getItem(FONT_FAMILY_KEY),
             AsyncStorage.getItem(LANGUAGE_KEY),
             AsyncStorage.getItem(NOTIFICATIONS_ENABLED_KEY),
             AsyncStorage.getItem(DAILY_VERSE_ENABLED_KEY),
@@ -232,6 +269,16 @@ export function AppProvider({ children }) {
             const parsedAlign = JSON.parse(textAlignRaw);
             if (TEXT_ALIGN_OPTIONS.includes(parsedAlign)) {
               setTextAlignState(parsedAlign);
+            }
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
+        if (active && fontFamilyRaw) {
+          try {
+            const parsedFont = JSON.parse(fontFamilyRaw);
+            if (FONT_FAMILY_VALUES.includes(parsedFont)) {
+              setFontFamilyState(parsedFont);
             }
           } catch (e) {
             // ignora dados corrompidos
@@ -272,7 +319,17 @@ export function AppProvider({ children }) {
         }
         if (active && favoritesRaw) {
           try {
-            setFavorites(JSON.parse(favoritesRaw));
+            const parsedFavorites = JSON.parse(favoritesRaw);
+            if (Array.isArray(parsedFavorites)) {
+              setFavorites(
+                parsedFavorites.map((f) => {
+                  if (f && f.text && typeof f.text === 'object') {
+                    return { ...f, text: f.text.text ?? f.text.verse ?? '' };
+                  }
+                  return f;
+                })
+              );
+            }
           } catch (e) {
             // ignora dados corrompidos
           }
@@ -318,6 +375,11 @@ export function AppProvider({ children }) {
   const setTextAlign = (value) => {
     setTextAlignState(value);
     persist(TEXT_ALIGN_KEY, value);
+  };
+
+  const setFontFamily = (value) => {
+    setFontFamilyState(value);
+    persist(FONT_FAMILY_KEY, value);
   };
 
   const setLanguage = (value) => {
@@ -391,14 +453,22 @@ export function AppProvider({ children }) {
   }, [loaded, notificationsEnabled, dailyVerseEnabled, dailyVerseTime, language]);
 
   const toggleFavorite = (verse) => {
-    const next = favorites.some((f) => f.key === verse.key)
-      ? favorites.filter((f) => f.key !== verse.key)
-      : [verse, ...favorites];
-    setFavorites(next);
-    persist(FAVORITES_KEY, next);
+    setFavorites((prev) => {
+      const list = Array.isArray(prev) ? prev : [];
+      const exists = list.some((f) => f.key === verse.key);
+      return exists
+        ? list.filter((f) => f.key !== verse.key)
+        : [verse, ...list];
+    });
   };
 
-  const isFavorite = (verseKey) => favorites.some((f) => f.key === verseKey);
+  useEffect(() => {
+    if (loaded) {
+      persist(FAVORITES_KEY, favorites);
+    }
+  }, [favorites, loaded]);
+
+  const isFavorite = (verseKey) => (Array.isArray(favorites) ? favorites.some((f) => f.key === verseKey) : false);
 
   const toggleHighlight = (verseKey, color) => {
     const next = { ...highlights };
@@ -445,6 +515,7 @@ export function AppProvider({ children }) {
       loaded,
       theme,
       textAlign,
+      fontFamily,
       language,
       notificationsEnabled,
       dailyVerseEnabled,
@@ -461,6 +532,7 @@ export function AppProvider({ children }) {
       updateTheme,
       setFontSize,
       setTextAlign,
+      setFontFamily,
       setLanguage,
       setNotificationsEnabled,
       setDailyVerseEnabled,
@@ -476,6 +548,7 @@ export function AppProvider({ children }) {
       loaded,
       theme,
       textAlign,
+      fontFamily,
       language,
       notificationsEnabled,
       dailyVerseEnabled,
