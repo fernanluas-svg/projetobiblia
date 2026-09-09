@@ -102,14 +102,18 @@ const PRODUCTS_DATA = [
   },
   {
     id: '7',
-    title: 'Novo Produto 7',
-    description: 'Em breve na loja.',
+    title: 'Livro Infantil Devocional Tempo com Deus',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mpr5e9ojdiwyf5@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2BEkm8sv7e',
     buttonText: 'Ver Oferta',
   },
   {
     id: '8',
-    title: 'Novo Produto 8',
-    description: 'Em breve na loja.',
+    title: '365 Histórias bíblicas narradas com carinho',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-mcv3pzkr854x94@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/7AdQjOlfxN',
     buttonText: 'Ver Oferta',
   },
 ];
