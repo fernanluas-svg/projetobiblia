@@ -1,11 +1,13 @@
 import React from 'react';
 import {
+  Dimensions,
+  Image,
+  Linking,
   StyleSheet,
   Text,
   View,
   ScrollView,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -17,14 +19,18 @@ const { width } = Dimensions.get('window');
 const PRODUCTS_DATA = [
   {
     id: '1',
-    title: 'Bíblia de Estudo Aplicada',
-    description: 'Aprofunde sua leitura diária com notas detalhadas.',
+    title: 'Ferido pelo Processo Curado Pelo Propósito',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mggnr9f2t9mo0b@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/7AdQdtQpEO',
     buttonText: 'Ver Oferta',
   },
   {
     id: '2',
-    title: 'Devocional Diário 365 Dias',
-    description: 'Mensagens de fé e inspiração para cada manhã.',
+    title: 'Eu, Minhas Lutas Internas e Deus',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-7rdym-mcf6qan1x2rbd2@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/8pled5dFQe',
     buttonText: 'Ver Oferta',
   },
   {
@@ -46,7 +52,9 @@ export default function StoreScreen({ navigation }) {
   const isDark = theme.dark;
 
   const handlePressProduct = (item) => {
-    // Ação ao clicar no produto/oferta
+    if (item.url) {
+      Linking.openURL(item.url).catch(() => {});
+    }
   };
 
   return (
@@ -101,14 +109,26 @@ export default function StoreScreen({ navigation }) {
             >
               <View
                 style={[
-                  styles.imagePlaceholder,
+                  styles.imageContainer,
                   {
                     backgroundColor: isDark ? '#262626' : '#EAEAEA',
                   },
                 ]}
               >
-                <Ionicons name="book-outline" size={32} color={theme.textMuted} />
-                <Text style={[styles.imagePlaceholderText, { color: theme.textMuted }]}>Capa do Produto</Text>
+                {item.image ? (
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.productImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <>
+                    <Ionicons name="book-outline" size={32} color={theme.textMuted} />
+                    <Text style={[styles.imagePlaceholderText, { color: theme.textMuted }]}>
+                      Capa do Produto
+                    </Text>
+                  </>
+                )}
               </View>
 
               <View style={styles.infoContainer}>
@@ -195,13 +215,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'space-between',
   },
-  imagePlaceholder: {
+  imageContainer: {
     width: '100%',
     height: 130,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
+    overflow: 'hidden',
+  },
+  productImage: {
+    width: '100%',
+    height: '100%',
   },
   imagePlaceholderText: {
     fontSize: 12,
