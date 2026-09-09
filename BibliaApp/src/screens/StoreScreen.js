@@ -35,14 +35,18 @@ const PRODUCTS_DATA = [
   },
   {
     id: '3',
-    title: 'Teologia Sistemática',
-    description: 'Compreenda as doutrinas fundamentais da Palavra.',
+    title: 'Café com Deus Pai',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m283cuc4b629fd@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/9AOV3OUtpz',
     buttonText: 'Ver Oferta',
   },
   {
     id: '4',
-    title: 'O Peregrino (Edição Especial)',
-    description: 'O clássico cristão sobre a jornada da fé.',
+    title: 'Kit Casal Cristão 2 Biblias',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lygmkt5s0jxh5c@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/1gIU7jCIAE',
     buttonText: 'Ver Oferta',
   },
 ];
