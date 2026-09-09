@@ -34,7 +34,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/notification_icon.png",
+          "icon": "./assets/images/notification_biblia.png",
           "color": "#ffffff"
         }
       ]

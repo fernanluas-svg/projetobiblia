@@ -136,8 +136,9 @@ export default function QuizScreen() {
   const scale = useRef(new Animated.Value(1)).current;
   const recordedRef = useRef(false);
 
-  const correctPlayer = useAudioPlayer(require('../../assets/sounds/correct.wav'));
+  const correctPlayer = useAudioPlayer(require('../../assets/sounds/somcorreto.wav'));
   const wrongPlayer = useAudioPlayer(require('../../assets/sounds/wrong.wav'));
+  const tadaPlayer = useAudioPlayer(require('../../assets/sounds/Windows 95 Tada.wav'));
 
   const total = questions.length;
   const maxScore = total * POINTS_PER_HIT;
@@ -181,6 +182,10 @@ export default function QuizScreen() {
   useEffect(() => {
     if (phase !== 'result' || recordedRef.current || !total) return;
     recordedRef.current = true;
+    const pct = total > 0 ? (score / (total * POINTS_PER_HIT)) * 100 : 0;
+    if (pct >= 80) {
+      replaySound(tadaPlayer);
+    }
     (async () => {
       const res = await recordMatchResult({
         correct: Math.round(score / POINTS_PER_HIT),
@@ -666,6 +671,13 @@ export default function QuizScreen() {
       </View>
 
       {selected !== null && (
+        <TouchableOpacity style={[styles.nextButton, { backgroundColor: theme.primary }]} onPress={goNext}>
+          <Text style={styles.primaryButtonText}>{current + 1 >= total ? 'Ver resultado' : 'Próxima pergunta'}</Text>
+          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+        </TouchableOpacity>
+      )}
+
+      {selected !== null && (
         <View style={[styles.explainBox, { backgroundColor: isDark ? '#1F2937' : '#F0FDF4', borderColor: '#86EFAC' }]}>
           <View style={styles.explainHeader}>
             <Ionicons
@@ -685,13 +697,6 @@ export default function QuizScreen() {
           <Text style={[styles.explainRef, { color: theme.textMuted }]}>{questions[current].referencia}</Text>
           <Text style={[styles.explainText, { color: theme.text }]}>{questions[current].explicacao}</Text>
         </View>
-      )}
-
-      {selected !== null && (
-        <TouchableOpacity style={[styles.nextButton, { backgroundColor: theme.primary }]} onPress={goNext}>
-          <Text style={styles.primaryButtonText}>{current + 1 >= total ? 'Ver resultado' : 'Próxima pergunta'}</Text>
-          <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
-        </TouchableOpacity>
       )}
     </View>
   );
@@ -1247,6 +1252,6 @@ const styles = StyleSheet.create({
     gap: 8,
     borderRadius: 12,
     height: 48,
-    marginTop: 18,
+    marginTop: 12,
   },
 });
