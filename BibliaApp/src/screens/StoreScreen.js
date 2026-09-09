@@ -93,7 +93,7 @@ export default function StoreScreen({ navigation }) {
             },
           ]}
         >
-          <Ionicons name="shopping-bag-outline" size={24} color={theme.primary} style={styles.bannerIcon} />
+          <Ionicons name="storefront-outline" size={24} color={theme.primary} style={styles.bannerIcon} />
           <Text style={[styles.bannerText, { color: theme.text }]}>
             Melhores produtos do nicho evangélico pra você.
           </Text>
@@ -136,7 +136,7 @@ export default function StoreScreen({ navigation }) {
               </View>
 
               <View style={styles.infoContainer}>
-                <Text style={[styles.productTitle, { color: theme.text }]} numberOfLines={2}>
+                <Text style={[styles.productTitle, { color: theme.text }]} numberOfLines={3}>
                   {item.title}
                 </Text>
                 <Text style={[styles.productDescription, { color: theme.textMuted }]} numberOfLines={2}>
@@ -237,11 +237,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   infoContainer: {
+    flex: 1,
+    justifyContent: 'center',
     marginBottom: 12,
   },
   productTitle: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
+    lineHeight: 18,
     marginBottom: 4,
   },
   productDescription: {
