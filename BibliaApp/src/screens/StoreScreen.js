@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
+  Animated,
   Dimensions,
   Image,
   Linking,
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -15,6 +17,39 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useApp } from '../context/AppContext';
 
 const { width } = Dimensions.get('window');
+
+const OFFER_BUTTON_COLOR = '#E53935';
+
+function PulseButton({ children, style, activeOpacity = 0.85, onPress }) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(scale, {
+          toValue: 1.06,
+          duration: 650,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+        Animated.timing(scale, {
+          toValue: 1,
+          duration: 650,
+          useNativeDriver: Platform.OS !== 'web',
+        }),
+      ])
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [scale]);
+
+  return (
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <TouchableOpacity style={style} activeOpacity={activeOpacity} onPress={onPress}>
+        {children}
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
 
 const PRODUCTS_DATA = [
   {
@@ -144,13 +179,12 @@ export default function StoreScreen({ navigation }) {
                 </Text>
               </View>
 
-              <TouchableOpacity
-                style={[styles.actionButton, { backgroundColor: theme.primary }]}
-                activeOpacity={0.8}
+              <PulseButton
+                style={[styles.actionButton, { backgroundColor: OFFER_BUTTON_COLOR }]}
                 onPress={() => handlePressProduct(item)}
               >
                 <Text style={styles.actionButtonText}>{item.buttonText}</Text>
-              </TouchableOpacity>
+              </PulseButton>
             </View>
           ))}
         </View>
@@ -255,6 +289,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center',
+    shadowColor: OFFER_BUTTON_COLOR,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.35,
+    shadowRadius: 5,
+    elevation: 4,
   },
   actionButtonText: {
     color: '#FFFFFF',
