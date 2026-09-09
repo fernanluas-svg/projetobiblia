@@ -118,20 +118,26 @@ const PRODUCTS_DATA = [
   },
   {
     id: '9',
-    title: 'Novo Produto 9',
-    description: 'Em breve na loja.',
+    title: 'Blusa Tshirt Estampada Gospel Feminina',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m0eruiwivpmp50@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2LYAyInOfl',
     buttonText: 'Ver Oferta',
   },
   {
     id: '10',
-    title: 'Novo Produto 10',
-    description: 'Em breve na loja.',
+    title: 'T-shirt Linda Até Que Ele Venha',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m3wkwef65al7ee@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/6q0aLMlbOq',
     buttonText: 'Ver Oferta',
   },
   {
     id: '11',
-    title: 'Novo Produto 11',
-    description: 'Em breve na loja.',
+    title: 'Camiseta T-shirt Feminina Deus Te Quer Sorrindo',
+    image:
+      'https://down-br.img.susercontent.com/file/0ad2c4ed5284872e7ae1e1fbb025832e@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/5AsMMPkidw',
     buttonText: 'Ver Oferta',
   },
   {
