@@ -142,8 +142,10 @@ const PRODUCTS_DATA = [
   },
   {
     id: '12',
-    title: 'Novo Produto 12',
-    description: 'Em breve na loja.',
+    title: 'Camisa Camiseta T-Shirt Cristã "Ele nos amou primeiro"',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mqxnp9w35czob4@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/3g3Ya2XjHy',
     buttonText: 'Ver Oferta',
   },
 ];
