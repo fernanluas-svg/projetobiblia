@@ -79,7 +79,7 @@ export default function StoreScreen({ navigation }) {
         >
           <Ionicons name="menu" size={24} color={theme.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: theme.text }]}>Loja</Text>
+        <Text style={[styles.headerTitle, { color: theme.text }]}>{t('nav.storeTitle')}</Text>
         <View style={styles.headerPlaceholder} />
       </View>
 
