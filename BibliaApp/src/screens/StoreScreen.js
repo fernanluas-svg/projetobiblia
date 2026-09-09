@@ -86,14 +86,18 @@ const PRODUCTS_DATA = [
   },
   {
     id: '5',
-    title: 'Novo Produto 5',
-    description: 'Em breve na loja.',
+    title: 'Bíblia Infantil Ilustrada | Promessas de Amor',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-8227i-mhmajmnn55vmb1@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2gB1MLzzVd',
     buttonText: 'Ver Oferta',
   },
   {
     id: '6',
-    title: 'Novo Produto 6',
-    description: 'Em breve na loja.',
+    title: 'Livro Devocional Café com Deus Pai Kids Infantil',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-7rbki-lmywv17ps2mx0f@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/3g3YYJSYRI',
     buttonText: 'Ver Oferta',
   },
   {
