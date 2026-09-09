@@ -93,7 +93,7 @@ export default function StoreScreen({ navigation }) {
             },
           ]}
         >
-          <Ionicons name="basket-outline" size={24} color={theme.primary} style={styles.bannerIcon} />
+          <Ionicons name="shopping-bag-outline" size={24} color={theme.primary} style={styles.bannerIcon} />
           <Text style={[styles.bannerText, { color: theme.text }]}>
             Melhores produtos do nicho evangélico pra você.
           </Text>
