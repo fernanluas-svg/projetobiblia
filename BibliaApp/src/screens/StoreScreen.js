@@ -84,6 +84,30 @@ const PRODUCTS_DATA = [
     url: 'https://s.shopee.com.br/1gIU7jCIAE',
     buttonText: 'Ver Oferta',
   },
+  {
+    id: '5',
+    title: 'Novo Produto 5',
+    description: 'Em breve na loja.',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '6',
+    title: 'Novo Produto 6',
+    description: 'Em breve na loja.',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '7',
+    title: 'Novo Produto 7',
+    description: 'Em breve na loja.',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '8',
+    title: 'Novo Produto 8',
+    description: 'Em breve na loja.',
+    buttonText: 'Ver Oferta',
+  },
 ];
 
 export default function StoreScreen({ navigation }) {
