@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform, Pressable, StyleSheet, View, Image } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppProvider, useApp } from './src/context/AppContext';
@@ -227,17 +227,17 @@ title: t('nav.progress'),
         <Drawer.Screen
           name="Conselhos"
           component={AdviceScreen}
-          options={{
+          options={({ navigation, theme }) => ({
             headerShown: false,
             title: t('nav.advice'),
             drawerIcon: ({ focused, color, size }) => (
-              <Image
-                source={require('./assets/emotionicon.png')}
-                style={{ width: size, height: size }}
-                resizeMode="contain"
+              <Ionicons
+                name={focused ? 'sparkles' : 'sparkles-outline'}
+                color={theme.dark ? '#FFD54F' : '#D4A017'}
+                size={size}
               />
             ),
-          }}
+          })}
         />
         <Drawer.Screen
           name="Donate"
