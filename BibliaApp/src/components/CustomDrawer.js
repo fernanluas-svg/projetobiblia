@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,6 +22,7 @@ export default function CustomDrawerContent(props) {
 
   const resourceItems = [
     { label: t('nav.store'), icon: 'bag-handle', color: theme.dark ? '#B39DDB' : '#8B5CF6', bgColor: theme.dark ? '#342A54' : '#EDE9FE', route: 'Store' },
+    { label: t('nav.advice'), iconSource: require('../../assets/emotionicon.png'), color: theme.dark ? '#7986CB' : '#3949AB', bgColor: theme.dark ? '#333A66' : '#E0E3F5', route: 'Conselhos' },
     { label: t('nav.quiz'), icon: 'game-controller', color: theme.dark ? '#FFB74D' : '#E65100', bgColor: theme.dark ? '#4A3310' : '#FFF3E0', route: 'Quiz' },
     { label: t('nav.donate'), icon: 'heart', color: theme.dark ? '#EF9A9A' : '#EF4444', bgColor: theme.dark ? '#4A2424' : '#FEE2E2', route: 'Donate' },
     { label: t('nav.settings'), icon: 'settings', color: theme.dark ? '#E5E7EB' : '#4B5563', bgColor: theme.dark ? '#2D3748' : '#F3F4F6', route: 'Configurações' },
@@ -48,11 +49,15 @@ export default function CustomDrawerContent(props) {
           <View style={[styles.activeIndicator, { backgroundColor: theme.primary }]} />
         ) : null}
         <View style={[styles.iconBadge, { backgroundColor: item.bgColor }]}>
-          <Ionicons
-            name={item.icon}
-            size={20}
-            color={item.color}
-          />
+          {item.iconSource ? (
+            <Image source={item.iconSource} style={styles.customIcon} resizeMode="contain" />
+          ) : (
+            <Ionicons
+              name={item.icon}
+              size={20}
+              color={item.color}
+            />
+          )}
         </View>
         <Text
           style={[
@@ -144,6 +149,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  customIcon: {
+    width: 20,
+    height: 20,
   },
   drawerLabel: {
     fontSize: 15,

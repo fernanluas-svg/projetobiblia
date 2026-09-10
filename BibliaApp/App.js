@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { AppProvider, useApp } from './src/context/AppContext';
@@ -17,6 +17,7 @@ import SearchScreen from './src/screens/SearchScreen';
 import StubScreen from './src/screens/StubScreen';
 import StoreScreen from './src/screens/StoreScreen';
 import QuizScreen from './src/screens/QuizScreen';
+import AdviceScreen from './src/screens/AdviceScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 
@@ -222,6 +223,21 @@ title: t('nav.progress'),
               <Ionicons name={focused ? 'bag-handle' : 'bag-handle-outline'} color={color} size={size} />
             ),
           })}
+        />
+        <Drawer.Screen
+          name="Conselhos"
+          component={AdviceScreen}
+          options={{
+            headerShown: false,
+            title: t('nav.advice'),
+            drawerIcon: ({ focused, color, size }) => (
+              <Image
+                source={require('./assets/emotionicon.png')}
+                style={{ width: size, height: size }}
+                resizeMode="contain"
+              />
+            ),
+          }}
         />
         <Drawer.Screen
           name="Donate"
