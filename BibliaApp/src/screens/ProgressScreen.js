@@ -78,10 +78,7 @@ export default function ProgressScreen({ navigation }) {
   }));
 
   const openBook = (item) => {
-    navigation.navigate('Início', {
-      screen: 'Read',
-      params: { book: { abbrev: item.abbrev, name: item.name, chapters: item.chapters }, chapter: item.openAt, verse: 0 },
-    });
+    navigation.navigate('Read', { book: { abbrev: item.abbrev, name: item.name, chapters: item.chapters }, chapter: item.openAt, verse: 0 });
   };
 
   const reloadUpdate = async () => {

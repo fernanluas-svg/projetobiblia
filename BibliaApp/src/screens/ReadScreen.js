@@ -564,13 +564,13 @@ export default function ReadScreen({ navigation, route }) {
         ]}
       >
         <View style={styles.headerRow}>
-          {/* Slot esquerdo: menu lateral (futuros ícones podem ocupar este espaço) */}
+          {/* Slot esquerdo: voltar à tela de origem */}
           <TouchableOpacity
             style={styles.headerIcon}
-            onPress={() => navigation.getParent()?.openDrawer()}
+            onPress={() => navigation.goBack()}
             hitSlop={8}
           >
-            <Ionicons name="menu" size={24} color={theme.text} />
+            <Ionicons name="chevron-back" size={24} color={theme.text} />
           </TouchableOpacity>
 
           {/* Seletor principal: nome do livro + capítulo atual */}

@@ -199,15 +199,12 @@ export default function SearchScreen({ navigation }) {
   }, [allResults]);
 
   const handleSelectVerse = (item) => {
-    // A tela "Read" fica dentro do HomeStack, aninhada no drawer "Início".
-    // Navegamos para o drawer e depois para a tela de leitura dentro do stack.
-    navigation.navigate('Início', {
-      screen: 'Read',
-      params: {
-        book: item.bookMeta,
-        chapter: item.chapterIndex,
-        verse: item.verseIndex,
-      },
+    // A tela "Read" fica no RootStack, acima do Drawer. Navegar para ela
+    // preserva a tela de origem no histórico de volta.
+    navigation.navigate('Read', {
+      book: item.bookMeta,
+      chapter: item.chapterIndex,
+      verse: item.verseIndex,
     });
   };
 

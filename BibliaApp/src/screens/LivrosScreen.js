@@ -28,13 +28,10 @@ export default function LivrosScreen({ navigation }) {
   }, [t]);
 
   const openBook = (book) => {
-    navigation.navigate('Início', {
-      screen: 'Read',
-      params: {
-        book: { abbrev: book.abbrev, name: book.name, chapters: book.chapters },
-        chapter: 0,
-        verse: 0,
-      },
+    navigation.navigate('Read', {
+      book: { abbrev: book.abbrev, name: book.name, chapters: book.chapters },
+      chapter: 0,
+      verse: 0,
     });
   };
 

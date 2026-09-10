@@ -39,7 +39,7 @@ export default function FavoritesScreen({ navigation }) {
   const openFavorite = (favorite) => {
     const parsed = parseKey(favorite.key);
     if (!parsed) return;
-    navigation.navigate('Início', { screen: 'Read', params: parsed });
+    navigation.navigate('Read', parsed);
   };
 
   const confirmDelete = () => {

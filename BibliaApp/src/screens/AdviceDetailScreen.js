@@ -16,13 +16,10 @@ export default function AdviceDetailScreen({ route, navigation }) {
   const openVerse = (entry) => {
     const book = getBooks().find((b) => b.abbrev === entry.abbrev);
     if (!book) return;
-    navigation.navigate('Início', {
-      screen: 'Read',
-      params: {
-        book,
-        chapter: entry.chapterIndex,
-        verse: entry.verseIndex,
-      },
+    navigation.navigate('Read', {
+      book,
+      chapter: entry.chapterIndex,
+      verse: entry.verseIndex,
     });
   };
 

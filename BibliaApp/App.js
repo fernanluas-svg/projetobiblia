@@ -24,6 +24,7 @@ import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator();
 
 const webFrameStyle =
   Platform.OS === 'web'
@@ -74,18 +75,7 @@ function HomeStack() {
           ),
         })}
       />
-      <Stack.Screen
-        name="Read"
-        component={ReadScreen}
-        options={({ navigation, theme }) => ({
-          title: t('nav.reading'),
-          headerTitleAlign: 'center',
-          headerLeft: () => (
-            <Hamburger onPress={() => navigation.getParent()?.openDrawer()} color={theme.colors.text} backgroundColor={theme.colors.card} />
-          ),
-        })}
-      />
-    </Stack.Navigator>
+      </Stack.Navigator>
   );
 }
 
@@ -115,6 +105,21 @@ function RootNavigator() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="Main">
+          {() => <DrawerContent />}
+        </RootStack.Screen>
+        <RootStack.Screen name="Read" component={ReadScreen} />
+      </RootStack.Navigator>
+      <StatusBar style={theme.dark ? 'light' : 'dark'} />
+    </NavigationContainer>
+  );
+}
+
+function DrawerContent() {
+  const { theme, t } = useApp();
+
+  return (
       <Drawer.Navigator
         initialRouteName="Início"
         drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -265,8 +270,6 @@ title: t('nav.progress'),
           })}
         />
       </Drawer.Navigator>
-      <StatusBar style={theme.dark ? 'light' : 'dark'} />
-    </NavigationContainer>
   );
 }
 
