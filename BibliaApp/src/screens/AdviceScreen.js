@@ -12,12 +12,12 @@ const EMOTIONS = [
   { key: 'anger', icon: 'flame', dark: ['#FFB74D', '#4A3310'], light: ['#E65100', '#FFF3E0'] },
   { key: 'loneliness', icon: 'person', dark: ['#64B5F6', '#2A4A6B'], light: ['#0288D1', '#D8EAFB'] },
   { key: 'sick', icon: 'thermometer', dark: ['#F48FB1', '#4A2C38'], light: ['#DB2777', '#FCE7F3'] },
-  { key: 'grief', icon: 'moon', dark: ['#94A3B8', '#2D3748'], light: ['#4B5563', '#F3F4F6'] },
+  { key: 'grief', icon: 'ribbon', emoji: '🎗️', dark: ['#94A3B8', '#2D3748'], light: ['#4B5563', '#F3F4F6'] },
   { key: 'envy', icon: 'eye', dark: ['#81C784', '#2E5C44'], light: ['#2E7D32', '#DCEFE2'] },
   { key: 'temptation', icon: 'flash', dark: ['#F06292', '#4A2440'], light: ['#DB2777', '#FCE7F3'] },
   { key: 'guidance', icon: 'compass', dark: ['#4FC3F7', '#1E4A5E'], light: ['#0EA5E9', '#CFFAFE'] },
   { key: 'decisions', icon: 'git-branch', dark: ['#7986CB', '#333A66'], light: ['#3949AB', '#E0E3F5'] },
-  { key: 'prayer', icon: 'hand-left', dark: ['#FFD54F', '#4A3E10'], light: ['#D4A017', '#FEF3C7'] },
+  { key: 'prayer', icon: 'hand-left', emoji: '🙏', dark: ['#FFD54F', '#4A3E10'], light: ['#D4A017', '#FEF3C7'] },
   { key: 'gratitude', icon: 'heart-circle', dark: ['#B39DDB', '#342A54'], light: ['#8B5CF6', '#EDE9FE'] },
 ];
 
@@ -29,6 +29,7 @@ export default function AdviceScreen({ navigation }) {
     navigation.navigate('ConselhosDetalhe', {
       title: t(`advice.${item.key}`),
       icon: item.icon,
+      emoji: item.emoji,
       color,
       bgColor,
     });
@@ -76,7 +77,11 @@ export default function AdviceScreen({ navigation }) {
                 onPress={() => openDetail(item)}
               >
                 <View style={[styles.cardIcon, { backgroundColor: bgColor }]}>
-                  <Ionicons name={item.icon} size={22} color={color} />
+                  {item.emoji ? (
+                    <Text style={{ fontSize: 22 }}>{item.emoji}</Text>
+                  ) : (
+                    <Ionicons name={item.icon} size={22} color={color} />
+                  )}
                 </View>
                 <Text style={[styles.cardLabel, { color: theme.text }]} numberOfLines={2}>
                   {t(`advice.${item.key}`)}

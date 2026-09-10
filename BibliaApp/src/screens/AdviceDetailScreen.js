@@ -6,7 +6,7 @@ import { useApp } from '../context/AppContext';
 
 export default function AdviceDetailScreen({ route, navigation }) {
   const { theme, t } = useApp();
-  const { title = '', icon = 'book-outline', color = '#81C784', bgColor = '#2E5C44' } =
+  const { title = '', icon = 'book-outline', emoji, color = '#81C784', bgColor = '#2E5C44' } =
     route?.params ?? {};
 
   return (
@@ -36,7 +36,11 @@ export default function AdviceDetailScreen({ route, navigation }) {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <View style={[styles.bigIcon, { backgroundColor: bgColor }]}>
-            <Ionicons name={icon} size={40} color={color} />
+            {emoji ? (
+              <Text style={{ fontSize: 40 }}>{emoji}</Text>
+            ) : (
+              <Ionicons name={icon} size={40} color={color} />
+            )}
           </View>
           <Text style={[styles.title, { color: theme.text }]}>{title}</Text>
           <Text style={[styles.message, { color: theme.textMuted }]}>{t('stubSoon')}</Text>
