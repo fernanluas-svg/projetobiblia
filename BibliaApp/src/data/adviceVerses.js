@@ -36,7 +36,7 @@ const ADVICE_VERSES = {
   ],
   guilt: ['Salmo 32', '51', '130', 'Isaias 1.18', 'Lucas 15', 'João 6.37'],
   worried: ['Mateus 6.19-21', 'Eclesiastes 5.10', '1 Timóteo 6.6-10', 'Hebreus 13.5-6'],
-  fear: ['Salmo 4.8', 'Isaías 41.13', 'Lucas 8.22-25', 'João 14.27', '16.33', 'Romanos 8.1, 31-39'],
+  fear: ['Salmo 4.8', 'Isaías 41.13', 'Lucas 8.22-25', 'João 14.27', '16.33'],
   tired: ['Salmo 34.15-22', 'Isaias 40.25-31', 'Mateus 11.28-30', 'Hebreus 12.1-3'],
   anger: [
     'Mateus 5.44-48',
