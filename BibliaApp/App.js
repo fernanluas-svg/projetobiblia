@@ -89,7 +89,7 @@ function ConselhosStack() {
 }
 
 function RootNavigator() {
-  const { theme, t } = useApp();
+  const { theme } = useApp();
   const navigationTheme = {
     ...DefaultTheme,
     dark: theme.dark,
@@ -158,9 +158,9 @@ function DrawerContent() {
           name="Favoritos"
           component={FavoritesScreen}
           options={({ navigation, theme }) => ({
-title: t('nav.favorites'),
-          headerTitleAlign: 'center',
-          drawerIcon: ({ focused, color, size }) => (
+            title: t('nav.favorites'),
+            headerTitleAlign: 'center',
+            drawerIcon: ({ focused, color, size }) => (
               <Ionicons name={focused ? 'star' : 'star-outline'} color="#FFC107" size={size} />
             ),
             headerLeft: () => (
@@ -172,9 +172,9 @@ title: t('nav.favorites'),
           name="Progresso"
           component={ProgressScreen}
           options={({ navigation, theme }) => ({
-title: t('nav.progress'),
-          headerTitleAlign: 'center',
-          drawerIcon: ({ focused, color, size }) => (
+            title: t('nav.progress'),
+            headerTitleAlign: 'center',
+            drawerIcon: ({ focused, color, size }) => (
               <Ionicons
                 name={focused ? 'checkmark-done-circle' : 'checkmark-done-circle-outline'}
                 color={color}
