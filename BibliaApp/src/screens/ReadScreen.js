@@ -399,6 +399,16 @@ export default function ReadScreen({ navigation, route }) {
     setChapterModalVisible(false);
   };
 
+  // Sincroniza capítulo/versículo com os params de navegação quando a tela já
+  // está montada (ex.: atalho vindo de Conselhos ou troca de livro no modal).
+  useEffect(() => {
+    const chapter = route?.params?.chapter ?? 0;
+    const verse = route?.params?.verse ?? null;
+    setChapterIndex(chapter);
+    setScrollToVerse(verse);
+    setScrollNonce((n) => n + 1);
+  }, [route?.params?.book?.abbrev, route?.params?.chapter, route?.params?.verse]);
+
   useEffect(() => {
     let active = true;
     if (meta) {
