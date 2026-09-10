@@ -18,6 +18,7 @@ import StubScreen from './src/screens/StubScreen';
 import StoreScreen from './src/screens/StoreScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import AdviceScreen from './src/screens/AdviceScreen';
+import AdviceDetailScreen from './src/screens/AdviceDetailScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 
@@ -84,6 +85,15 @@ function HomeStack() {
           ),
         })}
       />
+    </Stack.Navigator>
+  );
+}
+
+function ConselhosStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ConselhosHome" component={AdviceScreen} />
+      <Stack.Screen name="ConselhosDetalhe" component={AdviceDetailScreen} />
     </Stack.Navigator>
   );
 }
@@ -226,7 +236,7 @@ title: t('nav.progress'),
         />
         <Drawer.Screen
           name="Conselhos"
-          component={AdviceScreen}
+          component={ConselhosStack}
           options={({ navigation, theme }) => ({
             headerShown: false,
             title: t('nav.advice'),

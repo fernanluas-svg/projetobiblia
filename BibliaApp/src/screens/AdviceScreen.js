@@ -1,11 +1,38 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { useApp } from '../context/AppContext';
 
+const EMOTIONS = [
+  { key: 'anxiety', icon: 'pulse', dark: ['#4DD0B2', '#2B5F55'], light: ['#10B981', '#C9F0E0'] },
+  { key: 'guilt', icon: 'sad', dark: ['#EF9A9A', '#4A2424'], light: ['#EF4444', '#FEE2E2'] },
+  { key: 'worried', icon: 'help-circle', dark: ['#FFD54F', '#4A3E10'], light: ['#F59E0B', '#FEF3C7'] },
+  { key: 'fear', icon: 'alert-circle', dark: ['#9575CD', '#3E2C54'], light: ['#7C3AED', '#EDE9FE'] },
+  { key: 'anger', icon: 'flame', dark: ['#FFB74D', '#4A3310'], light: ['#E65100', '#FFF3E0'] },
+  { key: 'loneliness', icon: 'person', dark: ['#64B5F6', '#2A4A6B'], light: ['#0288D1', '#D8EAFB'] },
+  { key: 'sick', icon: 'thermometer', dark: ['#F48FB1', '#4A2C38'], light: ['#DB2777', '#FCE7F3'] },
+  { key: 'grief', icon: 'moon', dark: ['#94A3B8', '#2D3748'], light: ['#4B5563', '#F3F4F6'] },
+  { key: 'envy', icon: 'eye', dark: ['#81C784', '#2E5C44'], light: ['#2E7D32', '#DCEFE2'] },
+  { key: 'temptation', icon: 'flash', dark: ['#F06292', '#4A2440'], light: ['#DB2777', '#FCE7F3'] },
+  { key: 'guidance', icon: 'compass', dark: ['#4FC3F7', '#1E4A5E'], light: ['#0EA5E9', '#CFFAFE'] },
+  { key: 'decisions', icon: 'git-branch', dark: ['#7986CB', '#333A66'], light: ['#3949AB', '#E0E3F5'] },
+  { key: 'prayer', icon: 'hand-left', dark: ['#FFD54F', '#4A3E10'], light: ['#D4A017', '#FEF3C7'] },
+  { key: 'gratitude', icon: 'heart-circle', dark: ['#B39DDB', '#342A54'], light: ['#8B5CF6', '#EDE9FE'] },
+];
+
 export default function AdviceScreen({ navigation }) {
   const { theme, t } = useApp();
+
+  const openDetail = (item) => {
+    const [color, bgColor] = theme.dark ? item.dark : item.light;
+    navigation.navigate('ConselhosDetalhe', {
+      title: t(`advice.${item.key}`),
+      icon: item.icon,
+      color,
+      bgColor,
+    });
+  };
 
   return (
     <SafeAreaView edges={['top']} style={[styles.container, { backgroundColor: theme.background }]}>
@@ -19,7 +46,7 @@ export default function AdviceScreen({ navigation }) {
         ]}
       >
         <TouchableOpacity
-          onPress={() => navigation.openDrawer()}
+          onPress={() => navigation.getParent()?.openDrawer()}
           hitSlop={8}
           style={[styles.menuCircle, { backgroundColor: theme.background }]}
         >
@@ -30,14 +57,33 @@ export default function AdviceScreen({ navigation }) {
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.content}>
-          <Image
-            source={require('../../assets/emotionicon.png')}
-            style={styles.icon}
-            resizeMode="contain"
-          />
-          <Text style={[styles.title, { color: theme.text }]}>{t('stubSoon')}</Text>
-          <Text style={[styles.message, { color: theme.textMuted }]}>{t('stubAdviceMessage')}</Text>
+        <Text style={[styles.headline, { color: theme.text }]}>{t('advice.ask')}</Text>
+
+        <View style={styles.grid}>
+          {EMOTIONS.map((item) => {
+            const [color, bgColor] = theme.dark ? item.dark : item.light;
+            return (
+              <TouchableOpacity
+                key={item.key}
+                style={[
+                  styles.card,
+                  {
+                    backgroundColor: theme.surface,
+                    borderColor: theme.border,
+                  },
+                ]}
+                activeOpacity={0.7}
+                onPress={() => openDetail(item)}
+              >
+                <View style={[styles.cardIcon, { backgroundColor: bgColor }]}>
+                  <Ionicons name={item.icon} size={22} color={color} />
+                </View>
+                <Text style={[styles.cardLabel, { color: theme.text }]} numberOfLines={2}>
+                  {t(`advice.${item.key}`)}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -71,27 +117,42 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   scrollContent: {
-    flexGrow: 1,
-    padding: 24,
+    padding: 16,
+    paddingBottom: 40,
   },
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 64,
-    height: 64,
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 20,
+  headline: {
+    fontSize: 22,
     fontWeight: 'bold',
-  },
-  message: {
-    fontSize: 14,
-    textAlign: 'center',
+    lineHeight: 30,
     marginTop: 8,
-    lineHeight: 20,
+    marginBottom: 20,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  card: {
+    width: '48%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 12,
+    marginBottom: 12,
+  },
+  cardIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  cardLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: '600',
+    lineHeight: 18,
   },
 });
