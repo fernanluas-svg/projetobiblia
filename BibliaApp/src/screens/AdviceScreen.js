@@ -9,6 +9,7 @@ const EMOTIONS = [
   { key: 'guilt', icon: 'sad', dark: ['#EF9A9A', '#4A2424'], light: ['#EF4444', '#FEE2E2'] },
   { key: 'worried', icon: 'help-circle', dark: ['#FFD54F', '#4A3E10'], light: ['#F59E0B', '#FEF3C7'] },
   { key: 'fear', icon: 'alert-circle', dark: ['#9575CD', '#3E2C54'], light: ['#7C3AED', '#EDE9FE'] },
+  { key: 'tired', icon: 'battery-dead', emoji: '😮‍💨', dark: ['#90A4AE', '#2D3748'], light: ['#607D8B', '#ECEFF1'] },
   { key: 'anger', icon: 'flame', dark: ['#FFB74D', '#4A3310'], light: ['#E65100', '#FFF3E0'] },
   { key: 'loneliness', icon: 'person', dark: ['#64B5F6', '#2A4A6B'], light: ['#0288D1', '#D8EAFB'] },
   { key: 'sick', icon: 'thermometer', dark: ['#F48FB1', '#4A2C38'], light: ['#DB2777', '#FCE7F3'] },
@@ -30,6 +31,7 @@ export default function AdviceScreen({ navigation }) {
       title: t(`advice.${item.key}`),
       icon: item.icon,
       emoji: item.emoji,
+      category: item.key,
       color,
       bgColor,
     });
