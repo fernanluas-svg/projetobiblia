@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "Bem-aventurado o homem que não anda segundo o conselho dos ímpios, nem se detém no caminho dos pecadores, nem se assenta na roda dos escarnecedores."
+        "text": "Bem-aventurado o homem que não anda segundo o conselho dos ímpios, nem se detém no caminho dos pecadores, nem se assenta na roda dos escarnecedores.",
+        "title": "Os dois caminhos"
       },
       {
         "text": "Antes tem o seu prazer na lei do Senhor, e na sua lei medita de dia e de noite."
@@ -23,7 +24,8 @@
     ],
     [
       {
-        "text": "Por que se amotinam os gentios, e os povos imaginam coisas vàs?"
+        "text": "Por que se amotinam os gentios, e os povos imaginam coisas vàs?",
+        "title": "O reinado do Messias"
       },
       {
         "text": "Os reis da terra se levantam e os governos consultam juntamente contra o Senhor e contra o seu ungido, dizendo:"
@@ -61,7 +63,8 @@
     ],
     [
       {
-        "text": "Senhor, como se têm multiplicado os meus adversários! São muitos os que se levantam contra mim."
+        "text": "Senhor, como se têm multiplicado os meus adversários! São muitos os que se levantam contra mim.",
+        "title": "Súplica em tempos de angústia"
       },
       {
         "text": "Muitos dizem da minha alma: Não há salvação para ele em Deus. (Selá.)"
@@ -87,7 +90,8 @@
     ],
     [
       {
-        "text": "Ouve-me quando eu clamo, ó Deus da minha justiça, na angústia me deste largueza; tem misericórdia de mim e ouve a minha oração."
+        "text": "Ouve-me quando eu clamo, ó Deus da minha justiça, na angústia me deste largueza; tem misericórdia de mim e ouve a minha oração.",
+        "title": "Confiança e paz à noite"
       },
       {
         "text": "Filhos dos homens, até quando convertereis a minha glória em infâmia? Até quando amareis a vaidade e buscareis a mentira? (Selá.)"
@@ -113,7 +117,8 @@
     ],
     [
       {
-        "text": "DÁ ouvidos às minhas palavras, ó Senhor, atende à minha meditação."
+        "text": "DÁ ouvidos às minhas palavras, ó Senhor, atende à minha meditação.",
+        "title": "Oração matinal por justiça"
       },
       {
         "text": "Atende à voz do meu clamor, Rei meu e Deus meu, pois a ti orarei."
@@ -151,7 +156,8 @@
     ],
     [
       {
-        "text": "Senhor, não me repreendas na tua ira, nem me castigues no teu furor."
+        "text": "Senhor, não me repreendas na tua ira, nem me castigues no teu furor.",
+        "title": "Clamor por misericórdia"
       },
       {
         "text": "Tem misericórdia de mim, Senhor, porque sou fraco; sara-me, Senhor, porque os meus ossos estão perturbados."
@@ -183,7 +189,8 @@
     ],
     [
       {
-        "text": "Senhor meu Deus, em ti confio; salva-me de todos os que me perseguem, e livra-me;"
+        "text": "Senhor meu Deus, em ti confio; salva-me de todos os que me perseguem, e livra-me;",
+        "title": "Refúgio contra os perseguidores"
       },
       {
         "text": "Para que ele não arrebate a minha alma, como leão, despedaçando-a, sem que haja quem a livre."
@@ -236,7 +243,8 @@
     ],
     [
       {
-        "text": "Ó Senhor, Senhor nosso, quão admirável é o teu nome em toda a terra, pois puseste a tua glória sobre os céus!"
+        "text": "Ó Senhor, Senhor nosso, quão admirável é o teu nome em toda a terra, pois puseste a tua glória sobre os céus!",
+        "title": "A glória de Deus e a dignidade do homem"
       },
       {
         "text": "Tu ordenaste força da boca das crianças e dos que mamam, por causa dos teus inimigos, para fazer calar ao inimigo e ao vingador."
@@ -265,7 +273,8 @@
     ],
     [
       {
-        "text": "Eu te louvarei, Senhor, com todo o meu coração; contarei todas as tuas maravilhas."
+        "text": "Eu te louvarei, Senhor, com todo o meu coração; contarei todas as tuas maravilhas.",
+        "title": "Louvor pela justiça de Deus"
       },
       {
         "text": "Em ti me alegrarei e saltarei de prazer; cantarei louvores ao teu nome, ó Altíssimo."
@@ -327,7 +336,8 @@
     ],
     [
       {
-        "text": "Por que estás ao longe, SENHOR? Por que te escondes nos tempos de angústia?"
+        "text": "Por que estás ao longe, SENHOR? Por que te escondes nos tempos de angústia?",
+        "title": "Súplica contra os ímpios"
       },
       {
         "text": "Os ímpios na sua arrogância perseguem furiosamente o pobre; sejam apanhados nas ciladas que maquinaram."
@@ -383,7 +393,8 @@
     ],
     [
       {
-        "text": "No SENHOR confio; como dizeis à minha alma: Fugi para a vossa montanha como pássaro?"
+        "text": "No SENHOR confio; como dizeis à minha alma: Fugi para a vossa montanha como pássaro?",
+        "title": "Refúgio no SENHOR"
       },
       {
         "text": "Pois eis que os ímpios armam o arco, põem as flechas na corda, para com elas atirarem, às escuras, aos retos de coração."
@@ -406,7 +417,8 @@
     ],
     [
       {
-        "text": "Salva-nos, SENHOR, porque faltam os homens bons; porque são poucos os fiéis entre os filhos dos homens."
+        "text": "Salva-nos, SENHOR, porque faltam os homens bons; porque são poucos os fiéis entre os filhos dos homens.",
+        "title": "A pureza da palavra de Deus"
       },
       {
         "text": "Cada um fala com falsidade ao seu próximo; falam com lábios lisonjeiros e coração dobrado."
@@ -432,7 +444,8 @@
     ],
     [
       {
-        "text": "Até quando te esquecerás de mim, SENHOR? Para sempre? Até quando esconderás de mim o teu rosto?"
+        "text": "Até quando te esquecerás de mim, SENHOR? Para sempre? Até quando esconderás de mim o teu rosto?",
+        "title": "Súplica: até quando, SENHOR?"
       },
       {
         "text": "Até quando consultarei com a minha alma, tendo tristeza no meu coração cada dia? Até quando se exaltará sobre mim o meu inimigo?"
@@ -452,7 +465,8 @@
     ],
     [
       {
-        "text": "Disse o néscio no seu coração: Não há Deus. Têm-se corrompido, fazem-se abomináveis em suas obras, não há ninguém que faça o bem."
+        "text": "Disse o néscio no seu coração: Não há Deus. Têm-se corrompido, fazem-se abomináveis em suas obras, não há ninguém que faça o bem.",
+        "title": "A corrupção da humanidade"
       },
       {
         "text": "O Senhor olhou desde os céus para os filhos dos homens, para ver se havia algum que tivesse entendimento e buscasse a Deus."
@@ -475,7 +489,8 @@
     ],
     [
       {
-        "text": "SENHOR, quem habitará no teu tabernáculo? Quem morará no teu santo monte?"
+        "text": "SENHOR, quem habitará no teu tabernáculo? Quem morará no teu santo monte?",
+        "title": "Quem pode habitar no monte santo?"
       },
       {
         "text": "Aquele que anda sinceramente, e pratica a justiça, e fala a verdade no seu coração."
@@ -492,7 +507,8 @@
     ],
     [
       {
-        "text": "Guarda-me, ó Deus, porque em ti confio."
+        "text": "Guarda-me, ó Deus, porque em ti confio.",
+        "title": "A herança e a segurança do crente"
       },
       {
         "text": "A minha alma disse ao Senhor: Tu és o meu Senhor, a minha bondade não chega à tua presença,"
@@ -527,7 +543,8 @@
     ],
     [
       {
-        "text": "Ouve, SENHOR, a justiça; atende ao meu clamor; dá ouvidos à minha oração, que não é feita com lábios enganosos."
+        "text": "Ouve, SENHOR, a justiça; atende ao meu clamor; dá ouvidos à minha oração, que não é feita com lábios enganosos.",
+        "title": "Oração por proteção"
       },
       {
         "text": "Saia a minha sentença de diante do teu rosto; atendam os teus olhos à razão."
@@ -574,7 +591,8 @@
     ],
     [
       {
-        "text": "Eu te amarei, ó SENHOR, fortaleza minha."
+        "text": "Eu te amarei, ó SENHOR, fortaleza minha.",
+        "title": "Cântico de vitória de Davi"
       },
       {
         "text": "O Senhor é o meu rochedo, e o meu lugar forte, e o meu libertador; o meu Deus, a minha fortaleza, em quem confio; o meu escudo, a força da minha salvação, e o meu alto refúgio."
@@ -726,7 +744,8 @@
     ],
     [
       {
-        "text": "Os céus declaram a glória de Deus e o firmamento anuncia a obra das suas mãos."
+        "text": "Os céus declaram a glória de Deus e o firmamento anuncia a obra das suas mãos.",
+        "title": "A revelação de Deus nas obras e na Lei"
       },
       {
         "text": "Um dia faz declaração a outro dia, e uma noite mostra sabedoria a outra noite."
@@ -770,7 +789,8 @@
     ],
     [
       {
-        "text": "O SENHOR te ouça no dia da angústia, o nome do Deus de Jacó te proteja."
+        "text": "O SENHOR te ouça no dia da angústia, o nome do Deus de Jacó te proteja.",
+        "title": "Oração pela vitória do rei"
       },
       {
         "text": "Envie-te socorro desde o seu santuário, e te sustenha desde Sião."
@@ -799,7 +819,8 @@
     ],
     [
       {
-        "text": "O rei se alegra em tua força, SENHOR; e na tua salvação grandemente se regozija."
+        "text": "O rei se alegra em tua força, SENHOR; e na tua salvação grandemente se regozija.",
+        "title": "Louvor pelo rei vitorioso"
       },
       {
         "text": "Cumpriste-lhe o desejo do seu coração, e não negaste as súplicas dos seus lábios. (Selá.)"
@@ -840,7 +861,8 @@
     ],
     [
       {
-        "text": "Deus meu, Deus meu, por que me desamparaste? Por que te alongas do meu auxílio e das palavras do meu bramido?"
+        "text": "Deus meu, Deus meu, por que me desamparaste? Por que te alongas do meu auxílio e das palavras do meu bramido?",
+        "title": "O clamor do justo abandonado"
       },
       {
         "text": "Deus meu, eu clamo de dia, e tu não me ouves; de noite, e não tenho sossego."
@@ -935,7 +957,8 @@
     ],
     [
       {
-        "text": "O SENHOR é o meu pastor, nada me faltará."
+        "text": "O SENHOR é o meu pastor, nada me faltará.",
+        "title": "O SENHOR é o meu pastor"
       },
       {
         "text": "Deitar-me faz em verdes pastos, guia-me mansamente a águas tranqüilas."
@@ -955,7 +978,8 @@
     ],
     [
       {
-        "text": "Do SENHOR é a terra e a sua plenitude, o mundo e aqueles que nele habitam."
+        "text": "Do SENHOR é a terra e a sua plenitude, o mundo e aqueles que nele habitam.",
+        "title": "O Rei da glória"
       },
       {
         "text": "Porque ele a fundou sobre os mares, e a firmou sobre os rios."
@@ -987,7 +1011,8 @@
     ],
     [
       {
-        "text": "A ti, SENHOR, levanto a minha alma."
+        "text": "A ti, SENHOR, levanto a minha alma.",
+        "title": "Súplica por direção e perdão"
       },
       {
         "text": "Deus meu, em ti confio, não me deixes confundido, nem que os meus inimigos triunfem sobre mim."
@@ -1055,7 +1080,8 @@
     ],
     [
       {
-        "text": "Julga-me, SENHOR, pois tenho andado em minha sinceridade; tenho confiado também no SENHOR; não vacilarei."
+        "text": "Julga-me, SENHOR, pois tenho andado em minha sinceridade; tenho confiado também no SENHOR; não vacilarei.",
+        "title": "A inocência e a retidão do justo"
       },
       {
         "text": "Examina-me, Senhor, e prova-me; esquadrinha os meus rins e o meu coração."
@@ -1093,7 +1119,8 @@
     ],
     [
       {
-        "text": "O SENHOR é a minha luz e a minha salvação; a quem temerei? O SENHOR é a força da minha vida; de quem me recearei?"
+        "text": "O SENHOR é a minha luz e a minha salvação; a quem temerei? O SENHOR é a força da minha vida; de quem me recearei?",
+        "title": "A luz e a salvação do SENHOR"
       },
       {
         "text": "Quando os malvados, meus adversários e meus inimigos, se chegaram contra mim, para comerem as minhas carnes, tropeçaram e caíram."
@@ -1137,7 +1164,8 @@
     ],
     [
       {
-        "text": "A ti clamarei, ó Senhor, Rocha minha; não emudeças para comigo; não aconteça, cal ando-te tu para comigo, que eu fique semelhante aos que descem ao abismo."
+        "text": "A ti clamarei, ó Senhor, Rocha minha; não emudeças para comigo; não aconteça, cal ando-te tu para comigo, que eu fique semelhante aos que descem ao abismo.",
+        "title": "A oração do aflito; rocha minha"
       },
       {
         "text": "Ouve a voz das minhas súplicas, quando a ti clamar, quando levantar as minhas mãos para o teu santo oráculo."
@@ -1166,7 +1194,8 @@
     ],
     [
       {
-        "text": "Dai ao SENHOR, ó filhos dos poderosos, dai ao SENHOR glória e força."
+        "text": "Dai ao SENHOR, ó filhos dos poderosos, dai ao SENHOR glória e força.",
+        "title": "A voz do SENHOR"
       },
       {
         "text": "Dai ao Senhor a glória devida ao seu nome, adorai o Senhor na beleza da santidade."
@@ -1201,7 +1230,8 @@
     ],
     [
       {
-        "text": "Exaltar-te-ei, ó SENHOR, porque tu me exaltaste; e não fizeste com que meus inimigos se alegrassem sobre mim."
+        "text": "Exaltar-te-ei, ó SENHOR, porque tu me exaltaste; e não fizeste com que meus inimigos se alegrassem sobre mim.",
+        "title": "Louvor pela restauração"
       },
       {
         "text": "Senhor meu Deus, clamei a ti, e tu me saraste."
@@ -1239,7 +1269,8 @@
     ],
     [
       {
-        "text": "Em ti, SENHOR, confio; nunca me deixes confundido. Livra-me pela tua justiça."
+        "text": "Em ti, SENHOR, confio; nunca me deixes confundido. Livra-me pela tua justiça.",
+        "title": "Refúgio em Deus"
       },
       {
         "text": "Inclina para mim os teus ouvidos, livra-me depressa; sê a minha firme rocha, uma casa fortíssima que me salve."
@@ -1313,7 +1344,8 @@
     ],
     [
       {
-        "text": "Bem-aventurado aquele cuja transgressão é perdoada, e cujo pecado é coberto."
+        "text": "Bem-aventurado aquele cuja transgressão é perdoada, e cujo pecado é coberto.",
+        "title": "A bem-aventurança do perdão"
       },
       {
         "text": "Bem-aventurado o homem a quem o Senhor não imputa maldade, e em cujo espírito não há engano."
@@ -1348,7 +1380,8 @@
     ],
     [
       {
-        "text": "Regozijai-vos no SENHOR, vós justos, pois aos retos convém o louvor."
+        "text": "Regozijai-vos no SENHOR, vós justos, pois aos retos convém o louvor.",
+        "title": "Louvor ao Criador e Sustentador"
       },
       {
         "text": "Louvai ao Senhor com harpa, cantai a ele com o saltério e um instrumento de dez cordas."
@@ -1416,7 +1449,8 @@
     ],
     [
       {
-        "text": "Louvarei ao SENHOR em todo o tempo; o seu louvor estará continuamente na minha boca."
+        "text": "Louvarei ao SENHOR em todo o tempo; o seu louvor estará continuamente na minha boca.",
+        "title": "Prova e vede que o SENHOR é bom"
       },
       {
         "text": "A minha alma se gloriará no Senhor; os mansos o ouvirão e se alegrarão."
@@ -1484,7 +1518,8 @@
     ],
     [
       {
-        "text": "Pleiteia, SENHOR, com aqueles que pleiteiam comigo; peleja contra os que pelejam contra mim."
+        "text": "Pleiteia, SENHOR, com aqueles que pleiteiam comigo; peleja contra os que pelejam contra mim.",
+        "title": "Súplica contra os adversários"
       },
       {
         "text": "Pega do escudo e da rodela, e levanta-te em minha ajuda."
@@ -1570,7 +1605,8 @@
     ],
     [
       {
-        "text": "A transgressão do ímpio diz no íntimo do meu coração: Não há temor de Deus perante os seus olhos."
+        "text": "A transgressão do ímpio diz no íntimo do meu coração: Não há temor de Deus perante os seus olhos.",
+        "title": "A bondade de Deus e a maldade do homem"
       },
       {
         "text": "Porque em seus olhos se lisonjeia, até que a sua iniqüidade se descubra ser detestável."
@@ -1608,7 +1644,8 @@
     ],
     [
       {
-        "text": "NÃO te indignes por causa dos malfeitores, nem tenhas inveja dos que praticam a iniqüidade."
+        "text": "NÃO te indignes por causa dos malfeitores, nem tenhas inveja dos que praticam a iniqüidade.",
+        "title": "A sorte dos justos e dos ímpios"
       },
       {
         "text": "Porque cedo serão ceifados como a erva, e murcharão como a verdura."
@@ -1730,7 +1767,8 @@
     ],
     [
       {
-        "text": "Ó Senhor, não me repreendas na tua ira, nem me castigues no teu furor."
+        "text": "Ó Senhor, não me repreendas na tua ira, nem me castigues no teu furor.",
+        "title": "A confissão do pecado e a súplica"
       },
       {
         "text": "Porque as tuas flechas se cravaram em mim, e a tua mão sobre mim desceu."
@@ -1798,7 +1836,8 @@
     ],
     [
       {
-        "text": "Eu disse: Guardarei os meus caminhos para não pecar com a minha língua; guardarei a boca com um freio, enquanto o ímpio estiver diante de mim."
+        "text": "Eu disse: Guardarei os meus caminhos para não pecar com a minha língua; guardarei a boca com um freio, enquanto o ímpio estiver diante de mim.",
+        "title": "A brevidade da vida humana"
       },
       {
         "text": "Com o silêncio fiquei mudo; calava-me mesmo acerca do bem, e a minha dor se agravou."
@@ -1839,7 +1878,8 @@
     ],
     [
       {
-        "text": "Esperei com paciência no SENHOR, e ele se inclinou para mim, e ouviu o meu clamor."
+        "text": "Esperei com paciência no SENHOR, e ele se inclinou para mim, e ouviu o meu clamor.",
+        "title": "Ação de graças e súplica"
       },
       {
         "text": "Tirou-me dum lago horrível, dum charco de lodo, pôs os meus pés sobre uma rocha, firmou os meus passos."
@@ -1892,7 +1932,8 @@
     ],
     [
       {
-        "text": "Bem-aventurado é aquele que atende ao pobre; o SENHOR o livrará no dia do mal."
+        "text": "Bem-aventurado é aquele que atende ao pobre; o SENHOR o livrará no dia do mal.",
+        "title": "Bem-aventurado o que olha pelo necessitado"
       },
       {
         "text": "O Senhor o livrará, e o conservará em vida; será abençoado na terra, e tu não o entregarás à vontade de seus inimigos."
@@ -1933,7 +1974,8 @@
     ],
     [
       {
-        "text": "Assim como o cervo brama pelas correntes das águas, assim suspira a minha alma por ti, ó Deus!"
+        "text": "Assim como o cervo brama pelas correntes das águas, assim suspira a minha alma por ti, ó Deus!",
+        "title": "A sede de Deus"
       },
       {
         "text": "A minha alma tem sede de Deus, do Deus vivo; quando entrarei e me apresentarei ante a face de Deus?"
@@ -1968,7 +2010,8 @@
     ],
     [
       {
-        "text": "Faze-me justiça, ó Deus, e pleiteia a minha causa contra a nação ímpia. Livra-me do homem fraudulento e injusto."
+        "text": "Faze-me justiça, ó Deus, e pleiteia a minha causa contra a nação ímpia. Livra-me do homem fraudulento e injusto.",
+        "title": "Súplica do exilado"
       },
       {
         "text": "Pois tu és o Deus da minha fortaleza; por que me rejeitas? Por que ando lamentando por causa da opressão do inimigo?"
@@ -1985,7 +2028,8 @@
     ],
     [
       {
-        "text": "Ó Deus, nós ouvimos com os nossos ouvidos, e nossos pais nos têm contado a obra que fizeste em seus dias, nos tempos da antiguidade."
+        "text": "Ó Deus, nós ouvimos com os nossos ouvidos, e nossos pais nos têm contado a obra que fizeste em seus dias, nos tempos da antiguidade.",
+        "title": "Lembrança das vitórias passadas"
       },
       {
         "text": "Como expulsaste os gentios com a tua mão e os plantaste a eles; como afligiste os povos e os derrubaste."
@@ -2065,7 +2109,8 @@
     ],
     [
       {
-        "text": "O meu coração ferve com palavras boas, falo do que tenho feito no tocante ao Rei. A minha língua é a pena de um destro escritor."
+        "text": "O meu coração ferve com palavras boas, falo do que tenho feito no tocante ao Rei. A minha língua é a pena de um destro escritor.",
+        "title": "Cântico nupcial do rei"
       },
       {
         "text": "Tu és mais formoso do que os filhos dos homens; a graça se derramou em teus lábios; por isso Deus te abençoou para sempre."
@@ -2118,7 +2163,8 @@
     ],
     [
       {
-        "text": "Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia."
+        "text": "Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia.",
+        "title": "Deus é o nosso refúgio"
       },
       {
         "text": "Portanto não temeremos, ainda que a terra se mude, e ainda que os montes se transportem para o meio dos mares."
@@ -2153,7 +2199,8 @@
     ],
     [
       {
-        "text": "Batei palmas, todos os povos; aclamai a Deus com voz de triunfo."
+        "text": "Batei palmas, todos os povos; aclamai a Deus com voz de triunfo.",
+        "title": "Deus reina sobre as nações"
       },
       {
         "text": "Porque o Senhor Altíssimo é tremendo, e Rei grande sobre toda a terra."
@@ -2182,7 +2229,8 @@
     ],
     [
       {
-        "text": "Grande é o SENHOR e mui digno de louvor, na cidade do nosso Deus, no seu monte santo."
+        "text": "Grande é o SENHOR e mui digno de louvor, na cidade do nosso Deus, no seu monte santo.",
+        "title": "A beleza da cidade de Deus"
       },
       {
         "text": "Formoso de sítio, e alegria de toda a terra é o monte Sião sobre os lados do norte, a cidade do grande Rei."
@@ -2226,7 +2274,8 @@
     ],
     [
       {
-        "text": "Ouvi isto, vós todos os povos; inclinai os ouvidos, todos os moradores do mundo,"
+        "text": "Ouvi isto, vós todos os povos; inclinai os ouvidos, todos os moradores do mundo,",
+        "title": "A insensatez das riquezas"
       },
       {
         "text": "Tanto baixos como altos, tanto ricos como pobres."
@@ -2288,7 +2337,8 @@
     ],
     [
       {
-        "text": "O Deus poderoso, o SENHOR, falou e chamou a terra desde o nascimento do sol até ao seu ocaso."
+        "text": "O Deus poderoso, o SENHOR, falou e chamou a terra desde o nascimento do sol até ao seu ocaso.",
+        "title": "Deus, o Juiz de todos"
       },
       {
         "text": "Desde Sião, a perfeição da formosura, resplandeceu Deus."
@@ -2359,7 +2409,8 @@
     ],
     [
       {
-        "text": "Tem misericórdia de mim, ó Deus, segundo a tua benignidade; apaga as minhas transgressões, segundo a multidão das tuas misericórdias."
+        "text": "Tem misericórdia de mim, ó Deus, segundo a tua benignidade; apaga as minhas transgressões, segundo a multidão das tuas misericórdias.",
+        "title": "Oração de arrependimento de Davi"
       },
       {
         "text": "Lava-me completamente da minha iniqüidade, e purifica-me do meu pecado."
@@ -2418,7 +2469,8 @@
     ],
     [
       {
-        "text": "Por que te glorias na malícia, ó homem poderoso? Pois a bondade de Deus permanece continuamente."
+        "text": "Por que te glorias na malícia, ó homem poderoso? Pois a bondade de Deus permanece continuamente.",
+        "title": "A queda do tirano"
       },
       {
         "text": "A tua língua intenta o mal, como uma navalha amolada, traçando enganos."
@@ -2447,7 +2499,8 @@
     ],
     [
       {
-        "text": "Disse o néscio no seu coração: Não há Deus. Têm-se corrompido, e cometido abominável iniqüidade; não há ninguém que faça o bem."
+        "text": "Disse o néscio no seu coração: Não há Deus. Têm-se corrompido, e cometido abominável iniqüidade; não há ninguém que faça o bem.",
+        "title": "A loucura de negar a Deus"
       },
       {
         "text": "Deus olhou desde os céus para os filhos dos homens, para ver se havia algum que tivesse entendimento e buscasse a Deus."
@@ -2467,7 +2520,8 @@
     ],
     [
       {
-        "text": "Salva-me, ó Deus, pelo teu nome, e faze-me justiça pelo teu poder."
+        "text": "Salva-me, ó Deus, pelo teu nome, e faze-me justiça pelo teu poder.",
+        "title": "Súplica por livramento"
       },
       {
         "text": "Ó Deus, ouve a minha oração, inclina os teus ouvidos às palavras da minha boca."
@@ -2490,7 +2544,8 @@
     ],
     [
       {
-        "text": "Inclina, ó Deus, os teus ouvidos à minha oração, e não te escondas da minha súplica."
+        "text": "Inclina, ó Deus, os teus ouvidos à minha oração, e não te escondas da minha súplica.",
+        "title": "Súplica na traição de um amigo"
       },
       {
         "text": "Atende-me, e ouve-me; lamento na minha queixa, e faço ruído,"
@@ -2561,7 +2616,8 @@
     ],
     [
       {
-        "text": "Tem misericórdia de mim, ó Deus, porque o homem procura devorar-me; pelejando todo dia, me oprime."
+        "text": "Tem misericórdia de mim, ó Deus, porque o homem procura devorar-me; pelejando todo dia, me oprime.",
+        "title": "Confiança em Deus mesmo diante dos inimigos"
       },
       {
         "text": "Os meus inimigos procuram devorar-me todo dia; pois são muitos os que pelejam contra mim, ó Altíssimo."
@@ -2602,7 +2658,8 @@
     ],
     [
       {
-        "text": "Tem misericórdia de mim, ó Deus, tem misericórdia de mim, porque a minha alma confia em ti; e à sombra das tuas asas me abrigo, até que passem as calamidades."
+        "text": "Tem misericórdia de mim, ó Deus, tem misericórdia de mim, porque a minha alma confia em ti; e à sombra das tuas asas me abrigo, até que passem as calamidades.",
+        "title": "Louvor entre as nações"
       },
       {
         "text": "Clamarei ao Deus altíssimo, ao Deus que por mim tudo executa."
@@ -2637,7 +2694,8 @@
     ],
     [
       {
-        "text": "Acaso falais vós, deveras, ó congregação, a justiça? Julgais retamente, ó filhos dos homens?"
+        "text": "Acaso falais vós, deveras, ó congregação, a justiça? Julgais retamente, ó filhos dos homens?",
+        "title": "O juízo contra os juízes injustos"
       },
       {
         "text": "Antes no coração forjais iniqüidades; sobre a terra pesais a violência das vossas mãos."
@@ -2672,7 +2730,8 @@
     ],
     [
       {
-        "text": "Livra-me, meu Deus, dos meus inimigos, defende-me daqueles que se levantam contra mim."
+        "text": "Livra-me, meu Deus, dos meus inimigos, defende-me daqueles que se levantam contra mim.",
+        "title": "Súplica por proteção"
       },
       {
         "text": "Livra-me dos que praticam a iniqüidade, e salva-me dos homens sanguinários."
@@ -2725,7 +2784,8 @@
     ],
     [
       {
-        "text": "Ó Deus, tu nos rejeitaste, tu nos espalhaste, tu te indignaste; oh, volta-te para nós."
+        "text": "Ó Deus, tu nos rejeitaste, tu nos espalhaste, tu te indignaste; oh, volta-te para nós.",
+        "title": "Oração na derrota"
       },
       {
         "text": "Abalaste a terra, e a fendeste; sara as suas fendas, pois ela treme."
@@ -2763,7 +2823,8 @@
     ],
     [
       {
-        "text": "Ouve, ó Deus, o meu clamor; atende à minha oração."
+        "text": "Ouve, ó Deus, o meu clamor; atende à minha oração.",
+        "title": "Refúgio na rocha e esperança"
       },
       {
         "text": "Desde o fim da terra clamarei a ti, quando o meu coração estiver desmaiado; leva-me para a rocha que é mais alta do que eu."
@@ -2789,7 +2850,8 @@
     ],
     [
       {
-        "text": "A minha alma espera somente em Deus; dele vem a minha salvação."
+        "text": "A minha alma espera somente em Deus; dele vem a minha salvação.",
+        "title": "Só Deus é o refúgio seguro"
       },
       {
         "text": "Só ele é a minha rocha e a minha salvação; é a minha defesa; não serei grandemente abalado."
@@ -2827,7 +2889,8 @@
     ],
     [
       {
-        "text": "O Deus, tu és o meu Deus, de madrugada te buscarei; a minha alma tem sede de ti; a minha carne te deseja muito em uma terra seca e cansada, onde não há água;"
+        "text": "O Deus, tu és o meu Deus, de madrugada te buscarei; a minha alma tem sede de ti; a minha carne te deseja muito em uma terra seca e cansada, onde não há água;",
+        "title": "Sede da presença de Deus"
       },
       {
         "text": "Para ver a tua força e a tua glória, como te vi no santuário."
@@ -2862,7 +2925,8 @@
     ],
     [
       {
-        "text": "Ouve, ó Deus, a minha voz na minha oração; guarda a minha vida do temor do inimigo."
+        "text": "Ouve, ó Deus, a minha voz na minha oração; guarda a minha vida do temor do inimigo.",
+        "title": "Oração contra os conspiradores"
       },
       {
         "text": "Esconde-me do secreto conselho dos maus, e do tumulto dos que praticam a iniqüidade."
@@ -2894,7 +2958,8 @@
     ],
     [
       {
-        "text": "A ti, ó Deus, espera o louvor em Sião, e a ti se pagará o voto."
+        "text": "A ti, ó Deus, espera o louvor em Sião, e a ti se pagará o voto.",
+        "title": "Ação de graças pela colheita"
       },
       {
         "text": "Ó tu que ouves as orações, a ti virá toda a carne."
@@ -2935,7 +3000,8 @@
     ],
     [
       {
-        "text": "Celebrai com júbilo a Deus, todas as terras."
+        "text": "Celebrai com júbilo a Deus, todas as terras.",
+        "title": "Louvor pelas grandes obras de Deus"
       },
       {
         "text": "Cantai a glória do seu nome; dai glória ao seu louvor."
@@ -2997,7 +3063,8 @@
     ],
     [
       {
-        "text": "Deus tenha misericórdia de nós e nos abençoe; e faça resplandecer o seu rosto sobre nós (Selá.)"
+        "text": "Deus tenha misericórdia de nós e nos abençoe; e faça resplandecer o seu rosto sobre nós (Selá.)",
+        "title": "Que as nações louvem a Deus"
       },
       {
         "text": "Para que se conheça na terra o teu caminho, e entre todas as nações a tua salvação."
@@ -3020,7 +3087,8 @@
     ],
     [
       {
-        "text": "Levante-se Deus, e sejam dissipados os seus inimigos; fugirão de diante dele os que o odeiam."
+        "text": "Levante-se Deus, e sejam dissipados os seus inimigos; fugirão de diante dele os que o odeiam.",
+        "title": "Deus marcha à frente do seu povo"
       },
       {
         "text": "Como se impele a fumaça, assim tu os impeles; assim como a cera se derrete diante do fogo, assim pereçam os ímpios diante de Deus."
@@ -3127,7 +3195,8 @@
     ],
     [
       {
-        "text": "Livra-me, ó Deus, pois as águas entraram até à minha alma."
+        "text": "Livra-me, ó Deus, pois as águas entraram até à minha alma.",
+        "title": "O zelo pela casa de Deus"
       },
       {
         "text": "Atolei-me em profundo lamaçal, onde se não pode estar em pé; entrei na profundeza das águas, onde a corrente me leva."
@@ -3237,7 +3306,8 @@
     ],
     [
       {
-        "text": "Apressa-te, ó Deus, em me livrar; SENHOR, apressa-te em ajudar-me."
+        "text": "Apressa-te, ó Deus, em me livrar; SENHOR, apressa-te em ajudar-me.",
+        "title": "Súplica urgente por socorro"
       },
       {
         "text": "Fiquem envergonhados e confundidos os que procuram a minha alma; voltem para trás e confundam-se os que me desejam mal."
@@ -3254,7 +3324,8 @@
     ],
     [
       {
-        "text": "Em ti, SENHOR, confio; nunca seja eu confundido."
+        "text": "Em ti, SENHOR, confio; nunca seja eu confundido.",
+        "title": "Refúgio e esperança desde a juventude"
       },
       {
         "text": "Livra-me na tua justiça, e faze-me escapar; inclina os teus ouvidos para mim, e salva-me."
@@ -3328,7 +3399,8 @@
     ],
     [
       {
-        "text": "Ó Deus, dá ao rei os teus juízos, e a tua justiça ao filho do rei."
+        "text": "Ó Deus, dá ao rei os teus juízos, e a tua justiça ao filho do rei.",
+        "title": "A justiça e a paz do reino do Messias"
       },
       {
         "text": "Ele julgará ao teu povo com justiça, e aos teus pobres com juízo."
@@ -3390,7 +3462,8 @@
     ],
     [
       {
-        "text": "Verdadeiramente bom é Deus para com Israel, para com os limpos de coração."
+        "text": "Verdadeiramente bom é Deus para com Israel, para com os limpos de coração.",
+        "title": "A prosperidade dos ímpios e a fé do justo"
       },
       {
         "text": "Quanto a mim, os meus pés quase que se desviaram; pouco faltou para que escorregassem os meus passos."
@@ -3476,7 +3549,8 @@
     ],
     [
       {
-        "text": "Ó Deus, por que nos rejeitaste para sempre? Por que se acende a tua ira contra as ovelhas do teu pasto?"
+        "text": "Ó Deus, por que nos rejeitaste para sempre? Por que se acende a tua ira contra as ovelhas do teu pasto?",
+        "title": "Lamento pela destruição do santuário"
       },
       {
         "text": "Lembra-te da tua congregação, que compraste desde a antiguidade; da vara da tua herança, que remiste; deste monte Sião, em que habitaste."
@@ -3547,7 +3621,8 @@
     ],
     [
       {
-        "text": "A ti, ó Deus, glorificamos, a ti damos louvor, pois o teu nome está perto, as tuas maravilhas o declaram."
+        "text": "A ti, ó Deus, glorificamos, a ti damos louvor, pois o teu nome está perto, as tuas maravilhas o declaram.",
+        "title": "Deus, o Juiz do mundo"
       },
       {
         "text": "Quando eu ocupar o lugar determinado, julgarei retamente."
@@ -3579,7 +3654,8 @@
     ],
     [
       {
-        "text": "Conhecido é Deus em Judá; grande é o seu nome em Israel."
+        "text": "Conhecido é Deus em Judá; grande é o seu nome em Israel.",
+        "title": "Deus, vencedor e protetor"
       },
       {
         "text": "E em Salém está o seu tabernáculo, e a sua morada em Sião."
@@ -3617,7 +3693,8 @@
     ],
     [
       {
-        "text": "Clamei a Deus com a minha voz, a Deus levantei a minha voz, e ele inclinou para mim os ouvidos."
+        "text": "Clamei a Deus com a minha voz, a Deus levantei a minha voz, e ele inclinou para mim os ouvidos.",
+        "title": "Lembrança das maravilhas do passado"
       },
       {
         "text": "No dia da minha angústia busquei ao Senhor; a minha mão se estendeu de noite, e não cessava; a minha alma recusava ser consolada."
@@ -3679,7 +3756,8 @@
     ],
     [
       {
-        "text": "Escutai a minha lei, povo meu; inclinai os vossos ouvidos às palavras da minha boca."
+        "text": "Escutai a minha lei, povo meu; inclinai os vossos ouvidos às palavras da minha boca.",
+        "title": "A história do povo de Deus"
       },
       {
         "text": "Abrirei a minha boca numa parábola; falarei enigmas da antiguidade."
@@ -3897,7 +3975,8 @@
     ],
     [
       {
-        "text": "Ó Deus, os gentios vieram à tua herança; contaminaram o teu santo templo; reduziram Jerusalém a montões de pedras."
+        "text": "Ó Deus, os gentios vieram à tua herança; contaminaram o teu santo templo; reduziram Jerusalém a montões de pedras.",
+        "title": "O lamento pela destruição de Jerusalém"
       },
       {
         "text": "Deram os corpos mortos dos teus servos por comida às aves dos céus, e a carne dos teus santos às feras da terra."
@@ -3938,7 +4017,8 @@
     ],
     [
       {
-        "text": "Tu, que és pastor de Israel, dá ouvidos; tu, que guias a José como a um rebanho; tu, que te assentas entre os querubins, resplandece."
+        "text": "Tu, que és pastor de Israel, dá ouvidos; tu, que guias a José como a um rebanho; tu, que te assentas entre os querubins, resplandece.",
+        "title": "Restaura-nos, ó Deus"
       },
       {
         "text": "Perante Efraim, Benjamim e Manassés, desperta o teu poder, e vem salvar-nos."
@@ -3997,7 +4077,8 @@
     ],
     [
       {
-        "text": "Exultai a Deus, nossa fortaleza; jubilai ao Deus de Jacó."
+        "text": "Exultai a Deus, nossa fortaleza; jubilai ao Deus de Jacó.",
+        "title": "Louvor e advertência"
       },
       {
         "text": "Tomai um salmo, e trazei junto o tamborim, a harpa suave e o saltério."
@@ -4047,7 +4128,8 @@
     ],
     [
       {
-        "text": "Deus está na congregação dos poderosos; julga no meio dos deuses."
+        "text": "Deus está na congregação dos poderosos; julga no meio dos deuses.",
+        "title": "Deus preside o conselho dos deuses"
       },
       {
         "text": "Até quando julgareis injustamente, e aceitareis as pessoas dos ímpios? (Selá.)"
@@ -4073,7 +4155,8 @@
     ],
     [
       {
-        "text": "Ó Deus, não estejas em silêncio; não te cales, nem te aquietes, ó Deus,"
+        "text": "Ó Deus, não estejas em silêncio; não te cales, nem te aquietes, ó Deus,",
+        "title": "Súplica contra as nações inimigas"
       },
       {
         "text": "Porque eis que teus inimigos fazem tumulto, e os que te odeiam levantaram a cabeça."
@@ -4129,7 +4212,8 @@
     ],
     [
       {
-        "text": "Quão amáveis são os teus tabernáculos, SENHOR dos Exércitos!"
+        "text": "Quão amáveis são os teus tabernáculos, SENHOR dos Exércitos!",
+        "title": "Saudade da casa do SENHOR"
       },
       {
         "text": "A minha alma está desejosa, e desfalece pelos átrios do Senhor; o meu coração e a minha carne clamam pelo Deus vivo."
@@ -4167,7 +4251,8 @@
     ],
     [
       {
-        "text": "Abençoaste, SENHOR, a tua terra; fizeste voltar o cativeiro de Jacó."
+        "text": "Abençoaste, SENHOR, a tua terra; fizeste voltar o cativeiro de Jacó.",
+        "title": "A restauração da graça"
       },
       {
         "text": "Perdoaste a iniqüidade do teu povo; cobriste todos os seus pecados. (Selá.)"
@@ -4208,7 +4293,8 @@
     ],
     [
       {
-        "text": "Inclina, SENHOR, os teus ouvidos, e ouve-me, porque estou necessitado e aflito."
+        "text": "Inclina, SENHOR, os teus ouvidos, e ouve-me, porque estou necessitado e aflito.",
+        "title": "Oração de um servo fiel"
       },
       {
         "text": "Guarda a minha alma, pois sou santo: ó Deus meu, salva o teu servo, que em ti confia."
@@ -4261,7 +4347,8 @@
     ],
     [
       {
-        "text": "O seu fundamento está nos montes santos."
+        "text": "O seu fundamento está nos montes santos.",
+        "title": "A glória de Sião"
       },
       {
         "text": "O Senhor ama as portas de Sião, mais do que todas as habitações de Jacó."
@@ -4284,7 +4371,8 @@
     ],
     [
       {
-        "text": "SENHOR Deus da minha salvação, diante de ti tenho clamado de dia e de noite."
+        "text": "SENHOR Deus da minha salvação, diante de ti tenho clamado de dia e de noite.",
+        "title": "O clamor desde as profundezas"
       },
       {
         "text": "Chegue a minha oração perante a tua face, inclina os teus ouvidos ao meu clamor;"
@@ -4340,7 +4428,8 @@
     ],
     [
       {
-        "text": "As benignidades do SENHOR cantarei perpetuamente; com a minha boca manifestarei a tua fidelidade de geração em geração."
+        "text": "As benignidades do SENHOR cantarei perpetuamente; com a minha boca manifestarei a tua fidelidade de geração em geração.",
+        "title": "A aliança com Davi"
       },
       {
         "text": "Pois disse eu: A tua benignidade será edificada para sempre; tu confirmarás a tua fidelidade até nos céus, dizendo:"
@@ -4498,7 +4587,8 @@
     ],
     [
       {
-        "text": "SENHOR, tu tens sido o nosso refúgio, de geração em geração."
+        "text": "SENHOR, tu tens sido o nosso refúgio, de geração em geração.",
+        "title": "A eternidade de Deus e a brevidade do homem"
       },
       {
         "text": "Antes que os montes nascessem, ou que tu formasses a terra e o mundo, mesmo de eternidade a eternidade, tu és Deus."
@@ -4551,7 +4641,8 @@
     ],
     [
       {
-        "text": "Aquele que habita no esconderijo do Altíssimo, à sombra do Onipotente descansará."
+        "text": "Aquele que habita no esconderijo do Altíssimo, à sombra do Onipotente descansará.",
+        "title": "A proteção do Altíssimo"
       },
       {
         "text": "Direi do Senhor: Ele é o meu Deus, o meu refúgio, a minha fortaleza, e nele confiarei."
@@ -4601,7 +4692,8 @@
     ],
     [
       {
-        "text": "Bom é louvar ao SENHOR, e cantar louvores ao teu nome, ó Altíssimo;"
+        "text": "Bom é louvar ao SENHOR, e cantar louvores ao teu nome, ó Altíssimo;",
+        "title": "Louvor pela bondade do SENHOR"
       },
       {
         "text": "Para de manhã anunciar a tua benignidade, e todas as noites a tua fidelidade;"
@@ -4648,7 +4740,8 @@
     ],
     [
       {
-        "text": "O SENHOR reina; está vestido de majestade. O SENHOR se revestiu e cingiu de poder; o mundo também está firmado, e não poderá vacilar."
+        "text": "O SENHOR reina; está vestido de majestade. O SENHOR se revestiu e cingiu de poder; o mundo também está firmado, e não poderá vacilar.",
+        "title": "O reinado majestoso do SENHOR"
       },
       {
         "text": "O teu trono está firme desde então; tu és desde a eternidade."
@@ -4665,7 +4758,8 @@
     ],
     [
       {
-        "text": "Ó Senhor Deus, a quem a vingança pertence, ó Deus, a quem a vingança pertence, mostra-te resplandecente."
+        "text": "Ó Senhor Deus, a quem a vingança pertence, ó Deus, a quem a vingança pertence, mostra-te resplandecente.",
+        "title": "Oração por vingança e justiça"
       },
       {
         "text": "Exalta-te, tu, que és juiz da terra; dá a paga aos soberbos."
@@ -4736,7 +4830,8 @@
     ],
     [
       {
-        "text": "Vinde, cantemos ao SENHOR; jubilemos à rocha da nossa salvação."
+        "text": "Vinde, cantemos ao SENHOR; jubilemos à rocha da nossa salvação.",
+        "title": "O dia do descanso e da adoração"
       },
       {
         "text": "Apresentemo-nos ante a sua face com louvores, e celebremo-lo com salmos."
@@ -4771,7 +4866,8 @@
     ],
     [
       {
-        "text": "Cantai ao SENHOR um cântico novo, cantai ao SENHOR toda a terra."
+        "text": "Cantai ao SENHOR um cântico novo, cantai ao SENHOR toda a terra.",
+        "title": "Cantai ao SENHOR um cântico novo"
       },
       {
         "text": "Cantai ao Senhor, bendizei o seu nome; anunciai a sua salvação de dia em dia."
@@ -4812,7 +4908,8 @@
     ],
     [
       {
-        "text": "O SENHOR reina; regozije-se a terra; alegrem-se as muitas ilhas."
+        "text": "O SENHOR reina; regozije-se a terra; alegrem-se as muitas ilhas.",
+        "title": "O SENHOR reina"
       },
       {
         "text": "Nuvens e escuridão estão ao redor dele; justiça e juízo são a base do seu trono."
@@ -4850,7 +4947,8 @@
     ],
     [
       {
-        "text": "Cantai ao SENHOR um cântico novo, porque fez maravilhas; a sua destra e o seu braço santo lhe alcançaram a salvação."
+        "text": "Cantai ao SENHOR um cântico novo, porque fez maravilhas; a sua destra e o seu braço santo lhe alcançaram a salvação.",
+        "title": "Cantai ao SENHOR: a sua vitória"
       },
       {
         "text": "O Senhor fez notória a sua salvação, manifestou a sua justiça perante os olhos dos gentios."
@@ -4879,7 +4977,8 @@
     ],
     [
       {
-        "text": "O SENHOR reina; tremam os povos. Ele está assentado entre os querubins; comova-se a terra."
+        "text": "O SENHOR reina; tremam os povos. Ele está assentado entre os querubins; comova-se a terra.",
+        "title": "O SENHOR é santo"
       },
       {
         "text": "O Senhor é grande em Sião, e mais alto do que todos os povos."
@@ -4908,7 +5007,8 @@
     ],
     [
       {
-        "text": "Celebrai com júbilo ao SENHOR, todas as terras."
+        "text": "Celebrai com júbilo ao SENHOR, todas as terras.",
+        "title": "Cântico de ação de graças"
       },
       {
         "text": "Servi ao Senhor com alegria; e entrai diante dele com canto."
@@ -4925,7 +5025,8 @@
     ],
     [
       {
-        "text": "Cantarei a misericórdia e o juízo; a ti, SENHOR, cantarei."
+        "text": "Cantarei a misericórdia e o juízo; a ti, SENHOR, cantarei.",
+        "title": "O pacto do rei justo"
       },
       {
         "text": "Portar-me-ei com inteligência no caminho reto. Quando virás a mim? Andarei em minha casa com um coração sincero."
@@ -4951,7 +5052,8 @@
     ],
     [
       {
-        "text": "SENHOR, ouve a minha oração, e chegue a ti o meu clamor."
+        "text": "SENHOR, ouve a minha oração, e chegue a ti o meu clamor.",
+        "title": "Oração no meio do sofrimento"
       },
       {
         "text": "Não escondas de mim o teu rosto no dia da minha angústia, inclina para mim os teus ouvidos; no dia em que eu clamar, ouve-me depressa."
@@ -5037,7 +5139,8 @@
     ],
     [
       {
-        "text": "Bendize, ó minha alma, ao SENHOR, e tudo o que há em mim bendiga o seu santo nome."
+        "text": "Bendize, ó minha alma, ao SENHOR, e tudo o que há em mim bendiga o seu santo nome.",
+        "title": "Bendize, ó minha alma, ao SENHOR"
       },
       {
         "text": "Bendize, ó minha alma, ao Senhor, e não te esqueças de nenhum de seus benefícios."
@@ -5105,7 +5208,8 @@
     ],
     [
       {
-        "text": "Bendize, ó minha alma, ao SENHOR! SENHOR Deus meu, tu és magnificentíssimo; estás vestido de glória e de majestade."
+        "text": "Bendize, ó minha alma, ao SENHOR! SENHOR Deus meu, tu és magnificentíssimo; estás vestido de glória e de majestade.",
+        "title": "Louvor ao Criador"
       },
       {
         "text": "Ele se cobre de luz como de um vestido, estende os céus como uma cortina."
@@ -5212,7 +5316,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR, e invocai o seu nome; fazei conhecidas as suas obras entre os povos."
+        "text": "Louvai ao SENHOR, e invocai o seu nome; fazei conhecidas as suas obras entre os povos.",
+        "title": "As obras do SENHOR na história de Israel"
       },
       {
         "text": "Cantai-lhe, cantai-lhe salmos; falai de todas as suas maravilhas."
@@ -5349,7 +5454,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvai ao SENHOR, porque ele é bom, porque a sua misericórdia dura para sempre."
+        "text": "Louvai ao SENHOR. Louvai ao SENHOR, porque ele é bom, porque a sua misericórdia dura para sempre.",
+        "title": "A infidelidade do povo e a misericórdia de Deus"
       },
       {
         "text": "Quem pode contar as obras poderosas do Senhor? Quem anunciará os seus louvores?"
@@ -5495,7 +5601,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR, porque ele é bom, porque a sua benignidade dura para sempre."
+        "text": "Louvai ao SENHOR, porque ele é bom, porque a sua benignidade dura para sempre.",
+        "title": "A fidelidade de Deus para com os errantes"
       },
       {
         "text": "Digam-no os remidos do Senhor, os que remiu da mão do inimigo,"
@@ -5626,7 +5733,8 @@
     ],
     [
       {
-        "text": "Preparado está o meu coração, ó Deus; cantarei e darei louvores até com a minha glória."
+        "text": "Preparado está o meu coração, ó Deus; cantarei e darei louvores até com a minha glória.",
+        "title": "Louvor e súplica pela vitória"
       },
       {
         "text": "Despertai, saltério e harpa; eu mesmo despertarei ao romper da alva."
@@ -5667,7 +5775,8 @@
     ],
     [
       {
-        "text": "Ó Deus do meu louvor, não te cales,"
+        "text": "Ó Deus do meu louvor, não te cales,",
+        "title": "Súplica contra o falso acusador"
       },
       {
         "text": "Pois a boca do ímpio e a boca do enganador estão abertas contra mim. Têm falado contra mim com uma língua mentirosa."
@@ -5762,7 +5871,8 @@
     ],
     [
       {
-        "text": "Disse o SENHOR ao meu Senhor: Assenta-te à minha mão direita, até que ponha os teus inimigos por escabelo dos teus pés."
+        "text": "Disse o SENHOR ao meu Senhor: Assenta-te à minha mão direita, até que ponha os teus inimigos por escabelo dos teus pés.",
+        "title": "O sacerdote segundo a ordem de Melquisedeque"
       },
       {
         "text": "O Senhor enviará o cetro da tua fortaleza desde Sião, dizendo: Domina no meio dos teus inimigos."
@@ -5785,7 +5895,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvarei ao SENHOR de todo o meu coração, na assembléia dos justos e na congregação."
+        "text": "Louvai ao SENHOR. Louvarei ao SENHOR de todo o meu coração, na assembléia dos justos e na congregação.",
+        "title": "As obras maravilhosas do SENHOR"
       },
       {
         "text": "Grandes são as obras do Senhor, procuradas por todos os que nelas tomam prazer."
@@ -5817,7 +5928,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Bem-aventurado o homem que teme ao SENHOR, que em seus mandamentos tem grande prazer."
+        "text": "Louvai ao SENHOR. Bem-aventurado o homem que teme ao SENHOR, que em seus mandamentos tem grande prazer.",
+        "title": "A felicidade do justo que teme a Deus"
       },
       {
         "text": "A sua semente será poderosa na terra; a geração dos retos será abençoada."
@@ -5849,7 +5961,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvai, servos do SENHOR, louvai o nome do SENHOR."
+        "text": "Louvai ao SENHOR. Louvai, servos do SENHOR, louvai o nome do SENHOR.",
+        "title": "Louvor ao Altíssimo"
       },
       {
         "text": "Seja bendito o nome do Senhor, desde agora para sempre."
@@ -5878,7 +5991,8 @@
     ],
     [
       {
-        "text": "Quando Israel saiu do Egito, e a casa de Jacó de um povo de língua estranha,"
+        "text": "Quando Israel saiu do Egito, e a casa de Jacó de um povo de língua estranha,",
+        "title": "A saída do Egito"
       },
       {
         "text": "Judá foi seu santuário, e Israel seu domínio."
@@ -5904,7 +6018,8 @@
     ],
     [
       {
-        "text": "Não a nós, SENHOR, não a nós, mas ao teu nome dá glória, por amor da tua benignidade e da tua verdade."
+        "text": "Não a nós, SENHOR, não a nós, mas ao teu nome dá glória, por amor da tua benignidade e da tua verdade.",
+        "title": "A glória pertence a Deus, e não aos ídolos"
       },
       {
         "text": "Porque dirão os gentios: Onde está o seu Deus?"
@@ -5960,7 +6075,8 @@
     ],
     [
       {
-        "text": "Amo ao SENHOR, porque ele ouviu a minha voz e a minha súplica."
+        "text": "Amo ao SENHOR, porque ele ouviu a minha voz e a minha súplica.",
+        "title": "Ação de graças pela libertação"
       },
       {
         "text": "Porque inclinou a mim os seus ouvidos; portanto, o invocarei enquanto viver."
@@ -6019,7 +6135,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR todas as nações, louvai-o todos os povos."
+        "text": "Louvai ao SENHOR todas as nações, louvai-o todos os povos.",
+        "title": "Louvor de todos os povos"
       },
       {
         "text": "Porque a sua benignidade é grande para conosco, e a verdade do Senhor dura para sempre. Louvai ao Senhor."
@@ -6027,7 +6144,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR, porque ele é bom, porque a sua benignidade dura para sempre."
+        "text": "Louvai ao SENHOR, porque ele é bom, porque a sua benignidade dura para sempre.",
+        "title": "O dia que o SENHOR fez"
       },
       {
         "text": "Diga agora Israel que a sua benignidade dura para sempre."
@@ -6116,7 +6234,8 @@
     ],
     [
       {
-        "text": "Bem-aventurados os retos em seus caminhos, que andam na lei do Senhor."
+        "text": "Bem-aventurados os retos em seus caminhos, que andam na lei do Senhor.",
+        "title": "A excelência da lei do SENHOR"
       },
       {
         "text": "Bem-aventurados os que guardam os seus testemunhos, e que o buscam com todo o coração."
@@ -6646,7 +6765,8 @@
     ],
     [
       {
-        "text": "Na minha angústia clamei ao SENHOR, e me ouviu."
+        "text": "Na minha angústia clamei ao SENHOR, e me ouviu.",
+        "title": "Oração diante dos inimigos"
       },
       {
         "text": "Senhor, livra a minha alma dos lábios mentirosos e da língua enganadora."
@@ -6669,7 +6789,8 @@
     ],
     [
       {
-        "text": "Levantarei os meus olhos para os montes, de onde vem o meu socorro."
+        "text": "Levantarei os meus olhos para os montes, de onde vem o meu socorro.",
+        "title": "O guarda de Israel"
       },
       {
         "text": "O meu socorro vem do Senhor que fez o céu e a terra."
@@ -6695,7 +6816,8 @@
     ],
     [
       {
-        "text": "Alegrei-me quando me disseram: Vamos á casa do SENHOR."
+        "text": "Alegrei-me quando me disseram: Vamos á casa do SENHOR.",
+        "title": "Oração pela paz de Jerusalém"
       },
       {
         "text": "Os nossos pés estão dentro das tuas portas, ó Jerusalém."
@@ -6724,7 +6846,8 @@
     ],
     [
       {
-        "text": "A ti levanto os meus olhos, ó tu que habitas nos céus."
+        "text": "A ti levanto os meus olhos, ó tu que habitas nos céus.",
+        "title": "Súplica dos que esperam em Deus"
       },
       {
         "text": "Assim como os olhos dos servos atentam para as mãos dos seus senhores, e os olhos da serva para as mãos de sua senhora, assim os nossos olhos atentam para o SENHOR nosso Deus, até que tenha piedade de nós."
@@ -6738,7 +6861,8 @@
     ],
     [
       {
-        "text": "Se não fora o Senhor, que esteve ao nosso lado, ora diga Israel;"
+        "text": "Se não fora o Senhor, que esteve ao nosso lado, ora diga Israel;",
+        "title": "O socorro vem do SENHOR"
       },
       {
         "text": "Se não fora o Senhor, que esteve ao nosso lado, quando os homens se levantaram contra nós,"
@@ -6764,7 +6888,8 @@
     ],
     [
       {
-        "text": "Os que confiam no SENHOR serão como o monte de Sião, que não se abala, mas permanece para sempre."
+        "text": "Os que confiam no SENHOR serão como o monte de Sião, que não se abala, mas permanece para sempre.",
+        "title": "A segurança dos que confiam no SENHOR"
       },
       {
         "text": "Assim como estão os montes à roda de Jerusalém, assim o Senhor está em volta do seu povo desde agora e para sempre."
@@ -6781,7 +6906,8 @@
     ],
     [
       {
-        "text": "Quando o SENHOR trouxe do cativeiro os que voltaram a Sião, estávamos como os que sonham."
+        "text": "Quando o SENHOR trouxe do cativeiro os que voltaram a Sião, estávamos como os que sonham.",
+        "title": "A alegria do retorno"
       },
       {
         "text": "Então a nossa boca se encheu de riso e a nossa língua de cântico; então se dizia entre os gentios: Grandes coisas fez o Senhor a estes."
@@ -6801,7 +6927,8 @@
     ],
     [
       {
-        "text": "Se o SENHOR não edificar a casa, em vão trabalham os que a edificam; se o SENHOR não guardar a cidade, em vão vigia a sentinela."
+        "text": "Se o SENHOR não edificar a casa, em vão trabalham os que a edificam; se o SENHOR não guardar a cidade, em vão vigia a sentinela.",
+        "title": "A bênção do trabalho e do lar"
       },
       {
         "text": "Inútil vos será levantar de madrugada, repousar tarde, comer o pão de dores, pois assim dá ele aos seus amados o sono."
@@ -6818,7 +6945,8 @@
     ],
     [
       {
-        "text": "Bem-aventurado aquele que teme ao SENHOR e anda nos seus caminhos."
+        "text": "Bem-aventurado aquele que teme ao SENHOR e anda nos seus caminhos.",
+        "title": "A bênção da família que teme a Deus"
       },
       {
         "text": "Pois comerás do trabalho das tuas mãos; feliz serás, e te irá bem."
@@ -6838,7 +6966,8 @@
     ],
     [
       {
-        "text": "Muitas vezes me angustiaram desde a minha mocidade, diga agora Israel;"
+        "text": "Muitas vezes me angustiaram desde a minha mocidade, diga agora Israel;",
+        "title": "A opressão passa; Deus mantém o seu povo"
       },
       {
         "text": "Muitas vezes me angustiaram desde a minha mocidade; todavia não prevaleceram contra mim."
@@ -6864,7 +6993,8 @@
     ],
     [
       {
-        "text": "Das profundezas a ti clamo, ó SENHOR."
+        "text": "Das profundezas a ti clamo, ó SENHOR.",
+        "title": "Das profundezas clamo a ti"
       },
       {
         "text": "Senhor, escuta a minha voz; sejam os teus ouvidos atentos à voz das minhas súplicas."
@@ -6890,7 +7020,8 @@
     ],
     [
       {
-        "text": "SENHOR, o meu coração não se elevou nem os meus olhos se levantaram; não me exercito em grandes matérias, nem em coisas muito elevadas para mim."
+        "text": "SENHOR, o meu coração não se elevou nem os meus olhos se levantaram; não me exercito em grandes matérias, nem em coisas muito elevadas para mim.",
+        "title": "A humildade diante de Deus"
       },
       {
         "text": "Certamente que me tenho portado e sossegado como uma criança desmamada de sua mãe; a minha alma está como uma criança desmamada."
@@ -6901,7 +7032,8 @@
     ],
     [
       {
-        "text": "Lembra-te, SENHOR, de Davi, e de todas as suas aflições."
+        "text": "Lembra-te, SENHOR, de Davi, e de todas as suas aflições.",
+        "title": "Deus escolhe Sião"
       },
       {
         "text": "Como jurou ao Senhor, e fez votos ao poderoso Deus de Jacó, dizendo:"
@@ -6957,7 +7089,8 @@
     ],
     [
       {
-        "text": "Oh! quão bom e quão suave é que os irmãos vivam em união."
+        "text": "Oh! quão bom e quão suave é que os irmãos vivam em união.",
+        "title": "A união fraterna"
       },
       {
         "text": "É como o óleo precioso sobre a cabeça, que desce sobre a barba, a barba de Arão, e que desce à orla das suas vestes."
@@ -6968,7 +7101,8 @@
     ],
     [
       {
-        "text": "Eis aqui, bendizei ao SENHOR todos vós, servos do SENHOR, que assistis na casa do SENHOR todas as noites."
+        "text": "Eis aqui, bendizei ao SENHOR todos vós, servos do SENHOR, que assistis na casa do SENHOR todas as noites.",
+        "title": "Louvor na casa do SENHOR"
       },
       {
         "text": "Levantai as vossas mãos no santuário, e bendizei ao Senhor."
@@ -6979,7 +7113,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvai o nome do SENHOR; louvai-o, servos do SENHOR."
+        "text": "Louvai ao SENHOR. Louvai o nome do SENHOR; louvai-o, servos do SENHOR.",
+        "title": "O SENHOR é o único Deus verdadeiro"
       },
       {
         "text": "Vós que assistis na casa do Senhor, nos átrios da casa do nosso Deus."
@@ -7044,7 +7179,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR, porque ele é bom; porque a sua benignidade dura para sempre."
+        "text": "Louvai ao SENHOR, porque ele é bom; porque a sua benignidade dura para sempre.",
+        "title": "A misericórdia eterna do SENHOR"
       },
       {
         "text": "Louvai ao Deus dos deuses; porque a sua benignidade dura para sempre."
@@ -7124,7 +7260,8 @@
     ],
     [
       {
-        "text": "Junto aos rios da Babilônia, ali nos assentamos e choramos, quando nos lembramos de Sião."
+        "text": "Junto aos rios da Babilônia, ali nos assentamos e choramos, quando nos lembramos de Sião.",
+        "title": "As saudades de Sião no exílio"
       },
       {
         "text": "Sobre os salgueiros que há no meio dela, penduramos as nossas harpas."
@@ -7153,7 +7290,8 @@
     ],
     [
       {
-        "text": "Eu te louvarei, de todo o meu coração; na presença dos deuses a ti cantarei louvores."
+        "text": "Eu te louvarei, de todo o meu coração; na presença dos deuses a ti cantarei louvores.",
+        "title": "Ação de graças pela fidelidade de Deus"
       },
       {
         "text": "Inclinar-me-ei para o teu santo templo, e louvarei o teu nome pela tua benignidade, e pela tua verdade; pois engrandeceste a tua palavra acima de todo o teu nome."
@@ -7179,7 +7317,8 @@
     ],
     [
       {
-        "text": "SENHOR, tu me sondaste, e me conheces."
+        "text": "SENHOR, tu me sondaste, e me conheces.",
+        "title": "A onisciência e onipresença de Deus"
       },
       {
         "text": "Tu sabes o meu assentar e o meu levantar; de longe entendes o meu pensamento."
@@ -7253,7 +7392,8 @@
     ],
     [
       {
-        "text": "Livra-me, ó SENHOR, do homem mau; guarda-me do homem violento,"
+        "text": "Livra-me, ó SENHOR, do homem mau; guarda-me do homem violento,",
+        "title": "Oração contra os caluniadores"
       },
       {
         "text": "Que pensa o mal no coração; continuamente se ajuntam para a guerra."
@@ -7294,7 +7434,8 @@
     ],
     [
       {
-        "text": "SENHOR, a ti clamo, escuta-me; inclina os teus ouvidos à minha voz, quando a ti clamar."
+        "text": "SENHOR, a ti clamo, escuta-me; inclina os teus ouvidos à minha voz, quando a ti clamar.",
+        "title": "Oração por proteção e pureza"
       },
       {
         "text": "Suba a minha oração perante a tua face como incenso, e as minhas mãos levantadas sejam como o sacrifício da tarde."
@@ -7326,7 +7467,8 @@
     ],
     [
       {
-        "text": "Com a minha voz clamei ao SENHOR; com a minha voz supliquei ao SENHOR."
+        "text": "Com a minha voz clamei ao SENHOR; com a minha voz supliquei ao SENHOR.",
+        "title": "Súplica do perseguido"
       },
       {
         "text": "Derramei a minha queixa perante a sua face; expus-lhe a minha angústia."
@@ -7349,7 +7491,8 @@
     ],
     [
       {
-        "text": "Ó Senhor, ouve a minha oração, inclina os ouvidos às minhas súplicas; escuta-me segundo a tua verdade, e segundo a tua justiça."
+        "text": "Ó Senhor, ouve a minha oração, inclina os ouvidos às minhas súplicas; escuta-me segundo a tua verdade, e segundo a tua justiça.",
+        "title": "Súplica por livramento e ensino"
       },
       {
         "text": "E não entres em juízo com o teu servo, porque à tua vista não se achará justo nenhum vivente."
@@ -7387,7 +7530,8 @@
     ],
     [
       {
-        "text": "Bendito seja o SENHOR, minha rocha, que ensina as minhas mãos para a peleja e os meus dedos para a guerra;"
+        "text": "Bendito seja o SENHOR, minha rocha, que ensina as minhas mãos para a peleja e os meus dedos para a guerra;",
+        "title": "Oração pelo bem-estar do povo"
       },
       {
         "text": "Benignidade minha e fortaleza minha; alto retiro meu e meu libertador és tu; escudo meu, em quem eu confio, e que me sujeita o meu povo."
@@ -7434,7 +7578,8 @@
     ],
     [
       {
-        "text": "Eu te exaltarei, ó Deus, rei meu, e bendirei o teu nome pelos séculos dos séculos e para sempre."
+        "text": "Eu te exaltarei, ó Deus, rei meu, e bendirei o teu nome pelos séculos dos séculos e para sempre.",
+        "title": "A grandeza e a bondade do SENHOR"
       },
       {
         "text": "Cada dia te bendirei, e louvarei o teu nome pelos séculos dos séculos e para sempre."
@@ -7499,7 +7644,8 @@
     ],
     [
       {
-        "text": "Louvai ao Senhor. Ó minha alma, louva ao Senhor."
+        "text": "Louvai ao Senhor. Ó minha alma, louva ao Senhor.",
+        "title": "Confiança não nos príncipes, mas em Deus"
       },
       {
         "text": "Louvarei ao Senhor durante a minha vida; cantarei louvores ao meu Deus enquanto eu for vivo."
@@ -7531,7 +7677,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR, porque é bom cantar louvores ao nosso Deus, porque é agradável; decoroso é o louvor."
+        "text": "Louvai ao SENHOR, porque é bom cantar louvores ao nosso Deus, porque é agradável; decoroso é o louvor.",
+        "title": "Louvor pela restauração de Jerusalém"
       },
       {
         "text": "O Senhor edifica a Jerusalém, congrega os dispersos de Israel."
@@ -7593,7 +7740,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvai ao SENHOR desde os céus, louvai-o nas alturas."
+        "text": "Louvai ao SENHOR. Louvai ao SENHOR desde os céus, louvai-o nas alturas.",
+        "title": "Toda a criação louva ao SENHOR"
       },
       {
         "text": "Louvai-o, todos os seus anjos; louvai-o, todos os seus exércitos."
@@ -7637,7 +7785,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Cantai ao SENHOR um cântico novo, e o seu louvor na congregação dos santos."
+        "text": "Louvai ao SENHOR. Cantai ao SENHOR um cântico novo, e o seu louvor na congregação dos santos.",
+        "title": "Cântico de vitória dos santos"
       },
       {
         "text": "Alegre-se Israel naquele que o fez, regozijem-se os filhos de Sião no seu Rei."
@@ -7666,7 +7815,8 @@
     ],
     [
       {
-        "text": "Louvai ao SENHOR. Louvai a Deus no seu santuário; louvai-o no firmamento do seu poder."
+        "text": "Louvai ao SENHOR. Louvai a Deus no seu santuário; louvai-o no firmamento do seu poder.",
+        "title": "Louvai ao SENHOR"
       },
       {
         "text": "Louvai-o pelos seus atos poderosos; louvai-o conforme a excelência da sua grandeza."

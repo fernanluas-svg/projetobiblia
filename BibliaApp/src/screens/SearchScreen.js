@@ -40,7 +40,7 @@ function splitHighlight(verseText, normalizedTerm) {
 }
 
 export default function SearchScreen({ navigation }) {
-  const { theme, t } = useApp();
+  const { theme, t, activeVersion } = useApp();
   const [query, setQuery] = useState('');
   const [allResults, setAllResults] = useState([]);
   const [visibleResults, setVisibleResults] = useState([]);
@@ -50,11 +50,14 @@ export default function SearchScreen({ navigation }) {
   const [hasSearched, setHasSearched] = useState(false);
   const [bibleData, setBibleData] = useState([]);
 
-  // Carregar histórico recente e pré-carregar os dados dos livros
+  // Carregar histórico recente e pré-carregar os dados dos livros.
+  // Recarrega o índice sempre que a tradução ativa muda.
   useEffect(() => {
     loadRecentSearches();
+    setBibleData([]);
     loadAllBibleData();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeVersion]);
 
   const loadRecentSearches = async () => {
     try {

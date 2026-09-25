@@ -35,7 +35,28 @@ const ADVICE_VERSES = {
     '1 Pedro 5.6-7',
   ],
   guilt: ['Salmo 32', '51', '130', 'Isaias 1.18', 'Lucas 15', 'João 6.37'],
-  worried: ['Mateus 6.19-21', 'Eclesiastes 5.10', '1 Timóteo 6.6-10', 'Hebreus 13.5-6'],
+  worried: [
+    {
+      ref: 'Filipenses 4.6-8',
+      text: 'N\u00e3o estejais inquietos por coisa alguma; antes as vossas peti\u00e7\u00f5es sejam em tudo conhecidas diante de Deus pela ora\u00e7\u00e3o e s\u00faplica, com a\u00e7\u00e3o de gra\u00e7as. E a paz de Deus, que excede todo o entendimento, guardar\u00e1 os vossos cora\u00e7\u00f5es e os vossos pensamentos em Cristo Jesus. Quanto ao mais, irm\u00e3os, tudo o que \u00e9 verdadeiro, tudo o que \u00e9 honesto, tudo o que \u00e9 justo, tudo o que \u00e9 puro, tudo o que \u00e9 am\u00e1vel, tudo o que \u00e9 de boa fama, se h\u00e1 alguma virtude, e se h\u00e1 algum louvor, nisso pensai.',
+    },
+    {
+      ref: '1 Pedro 5.7',
+      text: 'Lan\u00e7ando sobre ele toda a vossa ansiedade, porque ele tem cuidado de v\u00f3s.',
+    },
+    {
+      ref: 'Mateus 6.31-34',
+      text: 'N\u00e3o andeis, pois, inquietos, dizendo: Que comeremos, ou que beberemos, ou com que nos vestiremos? Porque todas estas coisas os gentios procuram. Decerto vosso Pai celestial bem sabe que necessitais de todas estas coisas; Mas, buscai primeiro o reino de Deus, e a sua justi\u00e7a, e todas estas coisas vos ser\u00e3o acrescentadas. N\u00e3o vos inquieteis, pois, pelo dia de amanh\u00e3, porque o dia de amanh\u00e3 cuidar\u00e1 de si mesmo. Basta a cada dia o seu mal.',
+    },
+    {
+      ref: 'Salmos 94.19',
+      text: 'Na multid\u00e3o dos meus pensamentos dentro de mim, as tuas consola\u00e7\u00f5es recrearam a minha alma.',
+    },
+    {
+      ref: 'Salmos 121.1-2',
+      text: 'Levantarei os meus olhos para os montes, de onde vem o meu socorro. O meu socorro vem do Senhor que fez o c\u00e9u e a terra.',
+    },
+  ],
   fear: ['Salmo 4.8', 'Isaías 41.13', 'Lucas 8.22-25', 'João 14.27', '16.33'],
   tired: ['Salmo 34.15-22', 'Isaias 40.25-31', 'Mateus 11.28-30', 'Hebreus 12.1-3'],
   anger: [
@@ -142,19 +163,27 @@ function parseRest(rest, book) {
 }
 
 function parseItem(raw, prevAbbrev) {
-  const trimmed = String(raw).trim();
+  const isObj = raw && typeof raw === 'object';
+  const rawRef = isObj ? raw.ref : raw;
+  const trimmed = String(rawRef).trim();
   if (!trimmed) return null;
 
   const m = trimmed.match(/^(.*?)\s+(\d[\d\s.,\-\s]*)$/);
   if (m) {
     const book = findBook(m[1]);
-    if (book) return parseRest(m[2], book);
+    if (book) {
+      const parsed = parseRest(m[2], book);
+      if (parsed && isObj) parsed.text = raw.text;
+      return parsed;
+    }
   }
 
   if (!prevAbbrev) return null;
   const prevBook = getBooks().find((b) => b.abbrev === prevAbbrev);
   if (!prevBook) return null;
-  return parseRest(trimmed, { abbrev: prevAbbrev, name: prevBook.name });
+  const parsed = parseRest(trimmed, { abbrev: prevAbbrev, name: prevBook.name });
+  if (parsed && isObj) parsed.text = raw.text;
+  return parsed;
 }
 
 export function getAdviceVerseEntries(categoryKey) {

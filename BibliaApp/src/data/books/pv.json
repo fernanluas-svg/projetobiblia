@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "Provérbios de Salomão, filho de Davi, rei de Israel;"
+        "text": "Provérbios de Salomão, filho de Davi, rei de Israel;",
+        "title": "O propósito dos Provérbios; o convite ao conhecimento"
       },
       {
         "text": "Para se conhecer a sabedoria e a instrução; para se entenderem, as palavras da prudência."
@@ -104,7 +105,8 @@
     ],
     [
       {
-        "text": "Filho meu, se aceitares as minhas palavras, e esconderes contigo os meus mandamentos,"
+        "text": "Filho meu, se aceitares as minhas palavras, e esconderes contigo os meus mandamentos,",
+        "title": "A proteção da sabedoria"
       },
       {
         "text": "Para fazeres o teu ouvido atento à sabedoria; e inclinares o teu coração ao entendimento;"
@@ -172,7 +174,8 @@
     ],
     [
       {
-        "text": "Filho meu, não te esqueças da minha lei, e o teu coração guarde os meus mandamentos."
+        "text": "Filho meu, não te esqueças da minha lei, e o teu coração guarde os meus mandamentos.",
+        "title": "Confia no SENHOR de todo o coração"
       },
       {
         "text": "Porque eles aumentarão os teus dias e te acrescentarão anos de vida e paz."
@@ -279,7 +282,8 @@
     ],
     [
       {
-        "text": "Ouvi, filhos, a instrução do pai, e estai atentos para conhecerdes a prudência."
+        "text": "Ouvi, filhos, a instrução do pai, e estai atentos para conhecerdes a prudência.",
+        "title": "Adquire a sabedoria; guarda a instrução"
       },
       {
         "text": "Pois dou-vos boa doutrina; não deixeis a minha lei."
@@ -362,7 +366,8 @@
     ],
     [
       {
-        "text": "Filho meu, atende à minha sabedoria; à minha inteligência inclina o teu ouvido;"
+        "text": "Filho meu, atende à minha sabedoria; à minha inteligência inclina o teu ouvido;",
+        "title": "Foge da mulher imoral"
       },
       {
         "text": "Para que guardes os meus conselhos e os teus lábios observem o conhecimento."
@@ -433,7 +438,8 @@
     ],
     [
       {
-        "text": "Filho meu, se ficaste por fiador do teu companheiro, se deste a tua mão ao estranho,"
+        "text": "Filho meu, se ficaste por fiador do teu companheiro, se deste a tua mão ao estranho,",
+        "title": "Advertências: fiador, preguiça e falsidade"
       },
       {
         "text": "E te deixaste enredar pelas próprias palavras; e te prendeste nas palavras da tua boca;"
@@ -540,7 +546,8 @@
     ],
     [
       {
-        "text": "Filho meu, guarda as minhas palavras, e esconde dentro de ti os meus mandamentos."
+        "text": "Filho meu, guarda as minhas palavras, e esconde dentro de ti os meus mandamentos.",
+        "title": "A sedução da mulher adúltera"
       },
       {
         "text": "Guarda os meus mandamentos e vive; e a minha lei, como a menina dos teus olhos."
@@ -623,7 +630,8 @@
     ],
     [
       {
-        "text": "Não clama porventura a sabedoria, e a inteligência não faz ouvir a sua voz?"
+        "text": "Não clama porventura a sabedoria, e a inteligência não faz ouvir a sua voz?",
+        "title": "O chamado da sabedoria"
       },
       {
         "text": "No cume das alturas, junto ao caminho, nas encruzilhadas das veredas se posta."
@@ -733,7 +741,8 @@
     ],
     [
       {
-        "text": "A sabedoria já edificou a sua casa, já lavrou as suas sete colunas."
+        "text": "A sabedoria já edificou a sua casa, já lavrou as suas sete colunas.",
+        "title": "O convite da sabedoria e o convite da insensatez"
       },
       {
         "text": "Já abateu os seus animais e misturou o seu vinho, e já preparou a sua mesa."
@@ -789,7 +798,8 @@
     ],
     [
       {
-        "text": "Provérbios de Salomão: O filho sábio alegra a seu pai, mas o filho insensato é a tristeza de sua mãe."
+        "text": "Provérbios de Salomão: O filho sábio alegra a seu pai, mas o filho insensato é a tristeza de sua mãe.",
+        "title": "Os justos e os ímpios"
       },
       {
         "text": "Os tesouros da impiedade de nada aproveitam; mas a justiça livra da morte."
@@ -887,7 +897,8 @@
     ],
     [
       {
-        "text": "Balança enganosa é abominação para o SENHOR, mas o peso justo é o seu prazer."
+        "text": "Balança enganosa é abominação para o SENHOR, mas o peso justo é o seu prazer.",
+        "title": "A honestidade e a confiança"
       },
       {
         "text": "Em vindo a soberba, virá também a afronta; mas com os humildes está a sabedoria."
@@ -982,7 +993,8 @@
     ],
     [
       {
-        "text": "O que ama a instrução ama o conhecimento, mas o que odeia a repreensão é estúpido."
+        "text": "O que ama a instrução ama o conhecimento, mas o que odeia a repreensão é estúpido.",
+        "title": "A disciplina e a correção"
       },
       {
         "text": "O homem de bem alcançará o favor do Senhor, mas ao homem de intenções perversas ele condenará."
@@ -1068,7 +1080,8 @@
     ],
     [
       {
-        "text": "O filho sábio atende à instrução do pai; mas o escarnecedor não ouve a repreensão."
+        "text": "O filho sábio atende à instrução do pai; mas o escarnecedor não ouve a repreensão.",
+        "title": "A companhia dos sábios"
       },
       {
         "text": "Do fruto da boca cada um comerá o bem, mas a alma dos prevaricadores comerá a violência."
@@ -1145,7 +1158,8 @@
     ],
     [
       {
-        "text": "Toda mulher sábia edifica a sua casa; mas a tola a derruba com as próprias mãos."
+        "text": "Toda mulher sábia edifica a sua casa; mas a tola a derruba com as próprias mãos.",
+        "title": "O temor do SENHOR"
       },
       {
         "text": "O que anda na retidão teme ao Senhor, mas o que se desvia de seus caminhos o despreza."
@@ -1252,7 +1266,8 @@
     ],
     [
       {
-        "text": "A resposta branda desvia o furor, mas a palavra dura suscita a ira."
+        "text": "A resposta branda desvia o furor, mas a palavra dura suscita a ira.",
+        "title": "A resposta branda e o coração alegre"
       },
       {
         "text": "A língua dos sábios adorna a sabedoria, mas a boca dos tolos derrama a estultícia."
@@ -1353,7 +1368,8 @@
     ],
     [
       {
-        "text": "Do homem são as preparações do coração, mas do SENHOR a resposta da língua."
+        "text": "Do homem são as preparações do coração, mas do SENHOR a resposta da língua.",
+        "title": "Os planos do coração pertencem ao SENHOR"
       },
       {
         "text": "Todos os caminhos do homem são puros aos seus olhos, mas o Senhor pesa o espírito."
@@ -1454,7 +1470,8 @@
     ],
     [
       {
-        "text": "É melhor um bocado seco, e com ele a tranqüilidade, do que a casa cheia de iguarias e com desavença."
+        "text": "É melhor um bocado seco, e com ele a tranqüilidade, do que a casa cheia de iguarias e com desavença.",
+        "title": "O coração alegre; o amigo que ama em todo o tempo"
       },
       {
         "text": "O servo prudente dominará sobre o filho que faz envergonhar; e repartirá a herança entre os irmãos."
@@ -1540,7 +1557,8 @@
     ],
     [
       {
-        "text": "Busca satisfazer seu próprio desejo aquele que se isola; ele se insurge contra toda sabedoria."
+        "text": "Busca satisfazer seu próprio desejo aquele que se isola; ele se insurge contra toda sabedoria.",
+        "title": "O poder das palavras"
       },
       {
         "text": "O tolo não tem prazer na sabedoria, mas só em que se manifeste aquilo que agrada o seu coração."
@@ -1614,7 +1632,8 @@
     ],
     [
       {
-        "text": "Melhor é o pobre que anda na sua integridade do que o perverso de lábios e tolo."
+        "text": "Melhor é o pobre que anda na sua integridade do que o perverso de lábios e tolo.",
+        "title": "A boa reputação; os filhos do pobre"
       },
       {
         "text": "Assim como não é bom ficar a alma sem conhecimento, peca aquele que se apressa com seus pés."
@@ -1703,7 +1722,8 @@
     ],
     [
       {
-        "text": "O vinho é escarnecedor, a bebida forte alvoroçadora; e todo aquele que neles errar nunca será sábio."
+        "text": "O vinho é escarnecedor, a bebida forte alvoroçadora; e todo aquele que neles errar nunca será sábio.",
+        "title": "O vinho e a justiça; a mãe sábia"
       },
       {
         "text": "Como o rugido do leão é o terror do rei; o que o provoca à ira peca contra a sua própria alma."
@@ -1795,7 +1815,8 @@
     ],
     [
       {
-        "text": "Como ribeiros de águas assim é o coração do rei na mão do SENHOR, que o inclina a todo o seu querer."
+        "text": "Como ribeiros de águas assim é o coração do rei na mão do SENHOR, que o inclina a todo o seu querer.",
+        "title": "O coração do rei está na mão do SENHOR"
       },
       {
         "text": "Todo caminho do homem é reto aos seus olhos, mas o Senhor sonda os corações."
@@ -1890,7 +1911,8 @@
     ],
     [
       {
-        "text": "Vale mais ter um bom nome do que muitas riquezas; e o ser estimado é melhor do que a riqueza e o ouro."
+        "text": "Vale mais ter um bom nome do que muitas riquezas; e o ser estimado é melhor do que a riqueza e o ouro.",
+        "title": "A boa reputação e a bênção de Deus"
       },
       {
         "text": "O rico e o pobre se encontram; a todos o Senhor os fez."
@@ -1979,7 +2001,8 @@
     ],
     [
       {
-        "text": "Quando te assentares a comer com um governador, atenta bem para o que é posto diante de ti,"
+        "text": "Quando te assentares a comer com um governador, atenta bem para o que é posto diante de ti,",
+        "title": "A disciplina e a mesa do rei"
       },
       {
         "text": "E se és homem de grande apetite, põe uma faca à tua garganta."
@@ -2086,7 +2109,8 @@
     ],
     [
       {
-        "text": "Não tenhas inveja dos homens malignos, nem desejes estar com eles."
+        "text": "Não tenhas inveja dos homens malignos, nem desejes estar com eles.",
+        "title": "Não invejes os maus"
       },
       {
         "text": "Porque o seu coração medita a rapina, e os seus lábios falam a malícia."
@@ -2190,7 +2214,8 @@
     ],
     [
       {
-        "text": "Também estes são provérbios de Salomão, os quais transcreveram os homens de Ezequias, rei de Judá."
+        "text": "Também estes são provérbios de Salomão, os quais transcreveram os homens de Ezequias, rei de Judá.",
+        "title": "Os provérbios de Salomão transcritos: comparações"
       },
       {
         "text": "A glória de Deus está nas coisas encobertas; mas a honra dos reis, está em descobri-las."
@@ -2276,7 +2301,8 @@
     ],
     [
       {
-        "text": "Como a neve no verão, e como a chuva na sega, assim não fica bem para o tolo a honra."
+        "text": "Como a neve no verão, e como a chuva na sega, assim não fica bem para o tolo a honra.",
+        "title": "O tolo, o preguiçoso e o maldizente"
       },
       {
         "text": "Como ao pássaro o vaguear, como à andorinha o voar, assim a maldição sem causa não virá."
@@ -2362,7 +2388,8 @@
     ],
     [
       {
-        "text": "Não presumas do dia de amanhã, porque não sabes o que ele trará."
+        "text": "Não presumas do dia de amanhã, porque não sabes o que ele trará.",
+        "title": "A amizade e o zelo; o dia de amanhã"
       },
       {
         "text": "Que um outro te louve, e não a tua própria boca; o estranho, e não os teus lábios."
@@ -2445,7 +2472,8 @@
     ],
     [
       {
-        "text": "Os ímpios fogem sem que haja ninguém a persegui-los; mas os justos são ousados como um leão."
+        "text": "Os ímpios fogem sem que haja ninguém a persegui-los; mas os justos são ousados como um leão.",
+        "title": "A lei de Deus e a prosperidade do justo"
       },
       {
         "text": "Pela transgressão da terra muitos são os seus príncipes, mas por homem prudente e entendido a sua continuidade será prolongada."
@@ -2531,7 +2559,8 @@
     ],
     [
       {
-        "text": "O Homem que muitas vezes repreendido endurece a cerviz, de repente será destruído sem que haja remédio."
+        "text": "O Homem que muitas vezes repreendido endurece a cerviz, de repente será destruído sem que haja remédio.",
+        "title": "A correção que transforma o coração"
       },
       {
         "text": "Quando os justos se engrandecem, o povo se alegra, mas quando o ímpio domina, o povo geme."
@@ -2614,7 +2643,8 @@
     ],
     [
       {
-        "text": "Palavras de Agur, filho de Jaque, o masaíta, que proferiu este homem a Itiel, a Itiel e a Ucal:"
+        "text": "Palavras de Agur, filho de Jaque, o masaíta, que proferiu este homem a Itiel, a Itiel e a Ucal:",
+        "title": "As palavras de Agur"
       },
       {
         "text": "Na verdade eu sou o mais bruto dos homens, nem mesmo tenho o conhecimento de homem."
@@ -2715,7 +2745,8 @@
     ],
     [
       {
-        "text": "Palavras do rei Lemuel, a profecia que lhe ensinou a sua mãe."
+        "text": "Palavras do rei Lemuel, a profecia que lhe ensinou a sua mãe.",
+        "title": "As palavras do rei Lemuel; a mulher virtuosa"
       },
       {
         "text": "Como, filho meu? e como, filho do meu ventre? e como, filho dos meus votos?"

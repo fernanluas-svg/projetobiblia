@@ -76,7 +76,7 @@ function SwitchRow({ label, description, value, onValueChange, theme, disabled }
   );
 }
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
   const {
     theme,
     themeKey,
@@ -340,6 +340,21 @@ export default function SettingsScreen() {
           );
         })}
       </View>
+
+      <View style={[styles.group, styles.groupSpacing, { backgroundColor: theme.surface, borderColor: theme.border, borderWidth: 1, marginTop: 16 }]}>
+        <TouchableOpacity
+          style={styles.languageRow}
+          activeOpacity={0.7}
+          onPress={() => navigation.navigate('Legal')}
+        >
+          <View style={styles.legalWrap}>
+            <Text style={[styles.languageLabel, { color: theme.text, fontWeight: '500' }]}>
+              {t('nav.legal')}
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color={theme.textMuted} />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -528,5 +543,9 @@ const styles = StyleSheet.create({
   },
   languageLabel: {
     fontSize: 16,
+  },
+  legalWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

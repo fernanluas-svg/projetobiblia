@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   FlatList,
   Modal,
@@ -14,8 +14,25 @@ import { getBooks } from '../data/books';
 
 export default function FavoritesScreen({ navigation }) {
   const { favorites, toggleFavorite, theme, t } = useApp();
+  const [sortOrder, setSortOrder] = useState('recent');
   const [deleteTarget, setDeleteTarget] = useState(null);
   const books = getBooks();
+
+  const sortedFavorites = useMemo(() => {
+    const list = [...favorites];
+    const timeOf = (favorite) => favorite?.createdAt ?? 0;
+    list.sort((a, b) =>
+      sortOrder === 'oldest'
+        ? timeOf(a) - timeOf(b)
+        : timeOf(b) - timeOf(a)
+    );
+    return list;
+  }, [favorites, sortOrder]);
+
+  const SORT_OPTIONS = [
+    { key: 'recent', label: t('favoritesMostRecent') },
+    { key: 'oldest', label: t('favoritesOldest') },
+  ];
 
   const parseKey = (key) => {
     const parts = String(key).split(':');
@@ -56,36 +73,69 @@ export default function FavoritesScreen({ navigation }) {
           </Text>
         </View>
       ) : (
-        <FlatList
-          data={favorites}
-          keyExtractor={(item) => item.key}
-          contentContainerStyle={styles.content}
-          renderItem={({ item }) => (
-            <Pressable
-              style={[styles.verseContainer, { backgroundColor: theme.surface }]}
-              onPress={() => openFavorite(item)}
-              onLongPress={() => setDeleteTarget(item)}
-              delayLongPress={350}
-            >
-              <View style={styles.referenceRow}>
-                <Text style={[styles.reference, { color: theme.primary }]}>
-                  {item.reference}
-                </Text>
-                <Text style={[styles.hint, { color: theme.textMuted }]}>
-                  {t('favoritesHoldToDelete')}
-                </Text>
-              </View>
-              <View style={styles.verseRow}>
-                <Text style={[styles.verseNumber, { color: theme.primary }]}>
-                  {item.verseIndex + 1}
-                </Text>
-                <Text style={[styles.verseText, { color: theme.text }]}>
-                  {resolveText(item)}
-                </Text>
-              </View>
-            </Pressable>
-          )}
-        />
+        <>
+          <View style={styles.sortRow}>
+            {SORT_OPTIONS.map((option) => {
+              const active = option.key === sortOrder;
+              return (
+                <TouchableOpacity
+                  key={option.key}
+                  style={[
+                    styles.sortButton,
+                    {
+                      backgroundColor: active ? theme.primary : theme.surface,
+                      borderColor: active ? theme.primary : theme.border,
+                    },
+                  ]}
+                  onPress={() => setSortOrder(option.key)}
+                  activeOpacity={0.75}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: active }}
+                >
+                  <Text
+                    style={[
+                      styles.sortButtonText,
+                      { color: active ? '#FFFFFF' : theme.text },
+                    ]}
+                  >
+                    {option.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          <FlatList
+            data={sortedFavorites}
+            keyExtractor={(item) => item.key}
+            contentContainerStyle={styles.content}
+            renderItem={({ item }) => (
+              <Pressable
+                style={[styles.verseContainer, { backgroundColor: theme.surface }]}
+                onPress={() => openFavorite(item)}
+                onLongPress={() => setDeleteTarget(item)}
+                delayLongPress={350}
+              >
+                <View style={styles.referenceRow}>
+                  <Text style={[styles.reference, { color: theme.primary }]}>
+                    {item.reference}
+                  </Text>
+                  <Text style={[styles.hint, { color: theme.textMuted }]}>
+                    {t('favoritesHoldToDelete')}
+                  </Text>
+                </View>
+                <View style={styles.verseRow}>
+                  <Text style={[styles.verseNumber, { color: theme.primary }]}>
+                    {item.verseIndex + 1}
+                  </Text>
+                  <Text style={[styles.verseText, { color: theme.text }]}>
+                    {resolveText(item)}
+                  </Text>
+                </View>
+              </Pressable>
+            )}
+          />
+        </>
       )}
 
       <Modal
@@ -150,6 +200,25 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+  },
+  sortRow: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  },
+  sortButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  sortButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
   },
   verseContainer: {
     borderRadius: 10,

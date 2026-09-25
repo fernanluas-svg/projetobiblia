@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "E chamou o SENHOR a Moisés, e falou com ele da tenda da congregação, dizendo:"
+        "text": "E chamou o SENHOR a Moisés, e falou com ele da tenda da congregação, dizendo:",
+        "title": "O holocausto"
       },
       {
         "text": "Fala aos filhos de Israel, e dize-lhes: Quando algum de vós oferecer oferta ao Senhor, oferecerá a sua oferta de gado, isto é, de gado vacum e de ovelha."
@@ -56,7 +57,8 @@
     ],
     [
       {
-        "text": "E quando alguma pessoa oferecer oferta de alimentos ao SENHOR, a sua oferta será de flor de farinha, e nela deitará azeite, e porá o incenso sobre ela;"
+        "text": "E quando alguma pessoa oferecer oferta de alimentos ao SENHOR, a sua oferta será de flor de farinha, e nela deitará azeite, e porá o incenso sobre ela;",
+        "title": "A oferta de cereais"
       },
       {
         "text": "E a trará aos filhos de Arão, os sacerdotes, um dos quais tomará dela um punhado da flor de farinha, e do seu azeite com todo o seu incenso; e o sacerdote queimará como memorial sobre o altar; oferta queimada é, de cheiro suave ao Senhor."
@@ -106,7 +108,8 @@
     ],
     [
       {
-        "text": "E se a sua oferta for sacrifício pacífico; se a oferecer de gado, macho ou fêmea, a oferecerá sem defeito diante do SENHOR."
+        "text": "E se a sua oferta for sacrifício pacífico; se a oferecer de gado, macho ou fêmea, a oferecerá sem defeito diante do SENHOR.",
+        "title": "O sacrifício de comunhão"
       },
       {
         "text": "E porá a sua mão sobre a cabeça da sua oferta, e a degolará diante da porta da tenda da congregação; e os filhos de Arão, os sacerdotes, espargirão o sangue sobre o altar em redor."
@@ -159,7 +162,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "A oferta pelo pecado"
       },
       {
         "text": "Fala aos filhos de Israel, dizendo: Quando uma alma pecar, por ignorância, contra alguns dos mandamentos do Senhor, acerca do que não se deve fazer, e proceder contra algum deles;"
@@ -266,7 +270,8 @@
     ],
     [
       {
-        "text": "E quando alguma pessoa pecar, ouvindo uma voz de blasfêmia, de que for testemunha, seja porque viu, ou porque soube, se o não denunciar, então levará a sua iniqüidade."
+        "text": "E quando alguma pessoa pecar, ouvindo uma voz de blasfêmia, de que for testemunha, seja porque viu, ou porque soube, se o não denunciar, então levará a sua iniqüidade.",
+        "title": "A oferta pela culpa"
       },
       {
         "text": "Ou, quando alguma pessoa tocar em alguma coisa imunda, seja corpo morto de fera imunda, seja corpo morto de animal imundo, seja corpo morto de réptil imundo, ainda que não soubesse, contudo será ele imundo e culpado."
@@ -325,7 +330,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "Regulamentos das ofertas"
       },
       {
         "text": "Quando alguma pessoa pecar, e transgredir contra o Senhor, e negar ao seu próximo o que lhe deu em guarda, ou o que deixou na sua mão, ou o roubo, ou o que reteve violentamente ao seu próximo,"
@@ -417,7 +423,8 @@
     ],
     [
       {
-        "text": "E esta é a lei da expiação da culpa; coisa santíssima é."
+        "text": "E esta é a lei da expiação da culpa; coisa santíssima é.",
+        "title": "Regulamentos da oferta de comunhão"
       },
       {
         "text": "No lugar onde degolam o holocausto, degolarão a oferta pela expiação da culpa, e o seu sangue se espargirá sobre o altar em redor."
@@ -533,7 +540,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "A ordenação de Arão e seus filhos"
       },
       {
         "text": "Toma a Arão e a seus filhos com ele, e as vestes, e o azeite da unção, como também o novilho da expiação do pecado, e os dois carneiros, e o cesto dos pães ázimos,"
@@ -643,7 +651,8 @@
     ],
     [
       {
-        "text": "E aconteceu, ao dia oitavo, que Moisés chamou a Arão e seus filhos, e os anciãos de Israel,"
+        "text": "E aconteceu, ao dia oitavo, que Moisés chamou a Arão e seus filhos, e os anciãos de Israel,",
+        "title": "Os primeiros sacrifícios de Arão"
       },
       {
         "text": "E disse a Arão: Toma um bezerro, para expiação do pecado, e um carneiro para holocausto, sem defeito; e traze-os perante o Senhor."
@@ -717,7 +726,8 @@
     ],
     [
       {
-        "text": "E os filhos de Arão, Nadabe e Abiú, tomaram cada um o seu incensário e puseram neles fogo, e colocaram incenso sobre ele, e ofereceram fogo estranho perante o SENHOR, o que não lhes ordenara."
+        "text": "E os filhos de Arão, Nadabe e Abiú, tomaram cada um o seu incensário e puseram neles fogo, e colocaram incenso sobre ele, e ofereceram fogo estranho perante o SENHOR, o que não lhes ordenara.",
+        "title": "Nadabe e Abiú; leis para os sacerdotes"
       },
       {
         "text": "Então saiu fogo de diante do Senhor e os consumiu; e morreram perante o Senhor."
@@ -779,7 +789,8 @@
     ],
     [
       {
-        "text": "E falou o SENHOR a Moisés e a Arão, dizendo-lhes:"
+        "text": "E falou o SENHOR a Moisés e a Arão, dizendo-lhes:",
+        "title": "Animais puros e impuros"
       },
       {
         "text": "Fala aos filhos de Israel, dizendo: Estes são os animais, que comereis dentre todos os animais que há sobre a terra;"
@@ -922,7 +933,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "A purificação após o parto"
       },
       {
         "text": "Fala aos filhos de Israel, dizendo: Se uma mulher conceber e der à luz um menino, será imunda sete dias, assim como nos dias da separação da sua enfermidade, será imunda."
@@ -948,7 +960,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés e a Arão, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés e a Arão, dizendo:",
+        "title": "Leis sobre a lepra"
       },
       {
         "text": "Quando um homem tiver na pele da sua carne, inchação, ou pústula, ou mancha lustrosa, na pele de sua carne como praga da lepra, então será levado a Arão, o sacerdote, ou a um de seus filhos, os sacerdotes."
@@ -1127,7 +1140,8 @@
     ],
     [
       {
-        "text": "Depois falou o SENHOR a Moisés, dizendo:"
+        "text": "Depois falou o SENHOR a Moisés, dizendo:",
+        "title": "A purificação do leproso"
       },
       {
         "text": "Esta será a lei do leproso no dia da sua purificação: será levado ao sacerdote,"
@@ -1300,7 +1314,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés e a Arão dizendo:"
+        "text": "Falou mais o SENHOR a Moisés e a Arão dizendo:",
+        "title": "A purificação das secreções corporais"
       },
       {
         "text": "Falai aos filhos de Israel, e dizei-lhes: Qualquer homem que tiver fluxo da sua carne, será imundo por causa do seu fluxo."
@@ -1401,7 +1416,8 @@
     ],
     [
       {
-        "text": "E falou o SENHOR a Moisés, depois da morte dos dois filhos de Arão, que morreram quando se chegaram diante do SENHOR."
+        "text": "E falou o SENHOR a Moisés, depois da morte dos dois filhos de Arão, que morreram quando se chegaram diante do SENHOR.",
+        "title": "O dia da expiação"
       },
       {
         "text": "Disse, pois, o Senhor a Moisés: Dize a Arão, teu irmão, que não entre no santuário em todo o tempo, para dentro do véu, diante do propiciatório que está sobre a arca, para que não morra; porque eu aparecerei na nuvem sobre o propiciatório."
@@ -1505,7 +1521,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "O sangue e a santidade da vida"
       },
       {
         "text": "Fala a Arão e aos seus filhos, e a todos os filhos de Israel, e dize-lhes: Esta é a palavra que o Senhor ordenou, dizendo:"
@@ -1555,7 +1572,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "Práticas sexuais proibidas"
       },
       {
         "text": "Fala aos filhos de Israel, e dize-lhes: Eu sou o Senhor vosso Deus."
@@ -1647,7 +1665,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "Leis para uma vida santa"
       },
       {
         "text": "Fala a toda a congregação dos filhos de Israel, e dize-lhes: Santos sereis, porque eu, o Senhor vosso Deus, sou santo."
@@ -1760,7 +1779,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "Castigos por pecados graves"
       },
       {
         "text": "Também dirás aos filhos de Israel: Qualquer que, dos filhos de Israel, ou dos estrangeiros que peregrinam em Israel, der da sua descendência a Moloque, certamente morrerá; o povo da terra o apedrejará."
@@ -1843,7 +1863,8 @@
     ],
     [
       {
-        "text": "Depois disse o SENHOR a Moisés: Fala aos sacerdotes, filhos de Arão, e dize-lhes: O sacerdote não se contaminará por causa de um morto entre o seu povo,"
+        "text": "Depois disse o SENHOR a Moisés: Fala aos sacerdotes, filhos de Arão, e dize-lhes: O sacerdote não se contaminará por causa de um morto entre o seu povo,",
+        "title": "A santidade dos sacerdotes"
       },
       {
         "text": "Salvo por seu parente mais chegado: por sua mãe, e por seu pai, e por seu filho, e por sua filha, e por seu irmão."
@@ -1917,7 +1938,8 @@
     ],
     [
       {
-        "text": "Depois falou o SENHOR a Moisés, dizendo:"
+        "text": "Depois falou o SENHOR a Moisés, dizendo:",
+        "title": "As ofertas e a santidade"
       },
       {
         "text": "Dize a Arão e a seus filhos que se apartem das coisas santas dos filhos de Israel, que a mim me santificam, para que não profanem o meu santo nome. Eu sou o Senhor."
@@ -2018,7 +2040,8 @@
     ],
     [
       {
-        "text": "Depois falou o SENHOR a Moisés, dizendo:"
+        "text": "Depois falou o SENHOR a Moisés, dizendo:",
+        "title": "As festas do SENHOR"
       },
       {
         "text": "Fala aos filhos de Israel, e dize-lhes: As solenidades do Senhor, que convocareis, serão santas convocações; estas são as minhas solenidades:"
@@ -2152,7 +2175,8 @@
     ],
     [
       {
-        "text": "E falou o SENHOR a Moisés, dizendo:"
+        "text": "E falou o SENHOR a Moisés, dizendo:",
+        "title": "O candelabro, os pães e o blasfemo"
       },
       {
         "text": "Ordena aos filhos de Israel que te tragam azeite de oliveira, puro, batido, para a luminária, para manter as lâmpadas acesas continuamente."
@@ -2223,7 +2247,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés no monte Sinai, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés no monte Sinai, dizendo:",
+        "title": "O ano sabático e o jubileu"
       },
       {
         "text": "Fala aos filhos de Israel, e dize-lhes: Quando tiverdes entrado na terra, que eu vos dou, então a terra descansará um sábado ao Senhor."
@@ -2390,7 +2415,8 @@
     ],
     [
       {
-        "text": "Não fareis para vós ídolos, nem vos levantareis imagem de escultura, nem estátua, nem poreis pedra figurada na vossa terra, para inclinar-vos a ela; porque eu sou o SENHOR vosso Deus."
+        "text": "Não fareis para vós ídolos, nem vos levantareis imagem de escultura, nem estátua, nem poreis pedra figurada na vossa terra, para inclinar-vos a ela; porque eu sou o SENHOR vosso Deus.",
+        "title": "Bênçãos e maldições"
       },
       {
         "text": "Guardareis os meus sábados, e reverenciareis o meu santuário. Eu sou o Senhor."
@@ -2530,7 +2556,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "Votos e dedicações"
       },
       {
         "text": "Fala aos filhos de Israel, e dize-lhes: Quando alguém fizer particular voto, segundo a tua avaliação serão as pessoas ao Senhor."

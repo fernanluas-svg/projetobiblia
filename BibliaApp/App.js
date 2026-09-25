@@ -16,9 +16,13 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import StubScreen from './src/screens/StubScreen';
 import StoreScreen from './src/screens/StoreScreen';
+import DonateScreen from './src/screens/DonateScreen';
+import VersionsScreen from './src/screens/VersionsScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import AdviceScreen from './src/screens/AdviceScreen';
 import AdviceDetailScreen from './src/screens/AdviceDetailScreen';
+import LegalScreen from './src/screens/LegalScreen';
+import ImageShareScreen from './src/screens/ImageShareScreen';
 import CustomDrawerContent from './src/components/CustomDrawer';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 
@@ -110,6 +114,8 @@ function RootNavigator() {
           {() => <DrawerContent />}
         </RootStack.Screen>
         <RootStack.Screen name="Read" component={ReadScreen} />
+        <RootStack.Screen name="ImageShare" component={ImageShareScreen} />
+        <RootStack.Screen name="Legal" component={LegalScreen} />
       </RootStack.Navigator>
       <StatusBar style={theme.dark ? 'light' : 'dark'} />
     </NavigationContainer>
@@ -255,9 +261,26 @@ function DrawerContent() {
           })}
         />
         <Drawer.Screen
+          name="Versões"
+          component={VersionsScreen}
+          options={({ navigation, theme }) => ({
+            title: t('nav.versions'),
+            headerTitleAlign: 'center',
+            drawerIcon: ({ focused, color, size }) => (
+              <Ionicons name={focused ? 'albums' : 'albums-outline'} color={color} size={size} />
+            ),
+            headerLeft: () => (
+              <Hamburger
+                onPress={() => navigation.openDrawer()}
+                color={theme.colors.text}
+                backgroundColor={theme.colors.card}
+              />
+            ),
+          })}
+        />
+        <Drawer.Screen
           name="Donate"
-          component={StubScreen}
-          initialParams={{ title: t('nav.donate'), icon: 'heart-outline', message: t('stubDonateMessage') }}
+          component={DonateScreen}
           options={({ navigation, theme }) => ({
             title: t('nav.donate'),
             headerTitleAlign: 'center',

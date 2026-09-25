@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "Estes pois são os nomes dos filhos de Israel, que entraram no Egito com Jacó; cada um entrou com sua casa:"
+        "text": "Estes pois são os nomes dos filhos de Israel, que entraram no Egito com Jacó; cada um entrou com sua casa:",
+        "title": "A opressão de Israel no Egito"
       },
       {
         "text": "Rúben, Simeão, Levi, e Judá;"
@@ -71,7 +72,8 @@
     ],
     [
       {
-        "text": "E foi um homem da casa de Levi e casou com uma filha de Levi."
+        "text": "E foi um homem da casa de Levi e casou com uma filha de Levi.",
+        "title": "O nascimento de Moisés"
       },
       {
         "text": "E a mulher concebeu e deu à luz um filho; e, vendo que ele era formoso, escondeu-o três meses."
@@ -148,7 +150,8 @@
     ],
     [
       {
-        "text": "E apascentava Moisés o rebanho de Jetro, seu sogro, sacerdote em Midiã; e levou o rebanho atrás do deserto, e chegou ao monte de Deus, a Horebe."
+        "text": "E apascentava Moisés o rebanho de Jetro, seu sogro, sacerdote em Midiã; e levou o rebanho atrás do deserto, e chegou ao monte de Deus, a Horebe.",
+        "title": "A sarça ardente"
       },
       {
         "text": "E apareceu-lhe o anjo do Senhor em uma chama de fogo do meio duma sarça; e olhou, e eis que a sarça ardia no fogo, e a sarça não se consumia."
@@ -216,7 +219,8 @@
     ],
     [
       {
-        "text": "Então respondeu Moisés, e disse: Mas eis que não me crerão, nem ouvirão a minha voz, porque dirão: O SENHOR não te apareceu."
+        "text": "Então respondeu Moisés, e disse: Mas eis que não me crerão, nem ouvirão a minha voz, porque dirão: O SENHOR não te apareceu.",
+        "title": "Os sinais de Deus para Moisés"
       },
       {
         "text": "E o Senhor disse-lhe: Que é isso na tua mão? E ele disse: Uma vara."
@@ -311,7 +315,8 @@
     ],
     [
       {
-        "text": "E depois foram Moisés e Arão e disseram a Faraó: Assim diz o SENHOR Deus de Israel: Deixa ir o meu povo, para que me celebre uma festa no deserto."
+        "text": "E depois foram Moisés e Arão e disseram a Faraó: Assim diz o SENHOR Deus de Israel: Deixa ir o meu povo, para que me celebre uma festa no deserto.",
+        "title": "Moisés e Arão diante do faraó"
       },
       {
         "text": "Mas Faraó disse: Quem é o Senhor, cuja voz eu ouvirei, para deixar ir Israel? Não conheço o Senhor, nem tampouco deixarei ir Israel."
@@ -382,7 +387,8 @@
     ],
     [
       {
-        "text": "Então disse o SENHOR a Moisés: Agora verás o que hei de fazer a Faraó; porque por uma mão poderosa os deixará ir, sim, por uma mão poderosa os lançará de sua terra."
+        "text": "Então disse o SENHOR a Moisés: Agora verás o que hei de fazer a Faraó; porque por uma mão poderosa os deixará ir, sim, por uma mão poderosa os lançará de sua terra.",
+        "title": "Deus promete libertar Israel"
       },
       {
         "text": "Falou mais Deus a Moisés, e disse: Eu sou o Senhor."
@@ -474,7 +480,8 @@
     ],
     [
       {
-        "text": "Então disse o SENHOR a Moisés: Eis que te tenho posto por deus sobre Faraó, e Arão, teu irmão, será o teu profeta."
+        "text": "Então disse o SENHOR a Moisés: Eis que te tenho posto por deus sobre Faraó, e Arão, teu irmão, será o teu profeta.",
+        "title": "A vara de Arão e a primeira praga"
       },
       {
         "text": "Tu falarás tudo o que eu te mandar; e Arão, teu irmão, falará a Faraó, que deixe ir os filhos de Israel da sua terra."
@@ -551,7 +558,8 @@
     ],
     [
       {
-        "text": "Depois disse o SENHOR a Moisés: Vai a Faraó e dize-lhe: Assim diz o SENHOR: Deixa ir o meu povo, para que me sirva."
+        "text": "Depois disse o SENHOR a Moisés: Vai a Faraó e dize-lhe: Assim diz o SENHOR: Deixa ir o meu povo, para que me sirva.",
+        "title": "As pragas: rãs e piolhos"
       },
       {
         "text": "E se recusares deixá-lo ir, eis que ferirei com rãs todos os teus termos."
@@ -649,7 +657,8 @@
     ],
     [
       {
-        "text": "Depois o SENHOR disse a Moisés: Vai a Faraó, e dize-lhe: Assim diz o SENHOR Deus dos hebreus: Deixa ir o meu povo, para que me sirva."
+        "text": "Depois o SENHOR disse a Moisés: Vai a Faraó, e dize-lhe: Assim diz o SENHOR Deus dos hebreus: Deixa ir o meu povo, para que me sirva.",
+        "title": "As pragas: doenças, chagas e saraiva"
       },
       {
         "text": "Porque se recusares deixá-los ir, e ainda por força os detiveres,"
@@ -756,7 +765,8 @@
     ],
     [
       {
-        "text": "Depois disse o SENHOR a Moisés: Vai a Faraó, porque tenho endurecido o seu coração, e o coração de seus servos, para fazer estes meus sinais no meio deles,"
+        "text": "Depois disse o SENHOR a Moisés: Vai a Faraó, porque tenho endurecido o seu coração, e o coração de seus servos, para fazer estes meus sinais no meio deles,",
+        "title": "As pragas: gafanhotos e trevas"
       },
       {
         "text": "E para que contes aos ouvidos de teus filhos, e dos filhos de teus filhos, as coisas que fiz no Egito, e os meus sinais, que tenho feito entre eles; para que saibais que eu sou o Senhor."
@@ -845,7 +855,8 @@
     ],
     [
       {
-        "text": "E o Senhor disse a Moisés: Ainda uma praga trarei sobre Faraó, e sobre o Egito; depois vos deixará ir daqui; e, quando vos deixar ir totalmente, a toda a pressa vos lançará daqui."
+        "text": "E o Senhor disse a Moisés: Ainda uma praga trarei sobre Faraó, e sobre o Egito; depois vos deixará ir daqui; e, quando vos deixar ir totalmente, a toda a pressa vos lançará daqui.",
+        "title": "A última praga anunciada"
       },
       {
         "text": "Fala agora aos ouvidos do povo, que cada homem peça ao seu vizinho, e cada mulher à sua vizinha, jóias de prata e jóias de ouro."
@@ -877,7 +888,8 @@
     ],
     [
       {
-        "text": "E falou o Senhor a Moisés e a Arão na terra do Egito, dizendo:"
+        "text": "E falou o Senhor a Moisés e a Arão na terra do Egito, dizendo:",
+        "title": "A Páscoa e a saída do Egito"
       },
       {
         "text": "Este mesmo mês vos será o princípio dos meses; este vos será o primeiro dos meses do ano."
@@ -1032,7 +1044,8 @@
     ],
     [
       {
-        "text": "Então falou o SENHOR a Moisés, dizendo:"
+        "text": "Então falou o SENHOR a Moisés, dizendo:",
+        "title": "A consagração dos primogênitos"
       },
       {
         "text": "Santifica-me todo o primogênito, o que abrir toda a madre entre os filhos de Israel, de homens e de animais; porque meu é."
@@ -1100,7 +1113,8 @@
     ],
     [
       {
-        "text": "Então falou o SENHOR a Moisés, dizendo:"
+        "text": "Então falou o SENHOR a Moisés, dizendo:",
+        "title": "A travessia do mar Vermelho"
       },
       {
         "text": "Fala aos filhos de Israel que voltem, e que se acampem diante de Pi-Hairote, entre Migdol e o mar, diante de Baal-Zefom; em frente dele assentareis o campo junto ao mar."
@@ -1195,7 +1209,8 @@
     ],
     [
       {
-        "text": "Então cantou Moisés e os filhos de Israel este cântico ao SENHOR, e falaram, dizendo: Cantarei ao SENHOR, porque gloriosamente triunfou; lançou no mar o cavalo e o seu cavaleiro."
+        "text": "Então cantou Moisés e os filhos de Israel este cântico ao SENHOR, e falaram, dizendo: Cantarei ao SENHOR, porque gloriosamente triunfou; lançou no mar o cavalo e o seu cavaleiro.",
+        "title": "O cântico de Moisés"
       },
       {
         "text": "O Senhor é a minha força, e o meu cântico; ele me foi por salvação; este é o meu Deus, portanto lhe farei uma habitação; ele é o Deus de meu pai, por isso o exaltarei."
@@ -1278,7 +1293,8 @@
     ],
     [
       {
-        "text": "E partindo de Elim, toda a congregação dos filhos de Israel veio ao deserto de Sim, que está entre Elim e Sinai, aos quinze dias do mês segundo, depois de sua saída da terra do Egito."
+        "text": "E partindo de Elim, toda a congregação dos filhos de Israel veio ao deserto de Sim, que está entre Elim e Sinai, aos quinze dias do mês segundo, depois de sua saída da terra do Egito.",
+        "title": "O maná no deserto"
       },
       {
         "text": "E toda a congregação dos filhos de Israel murmurou contra Moisés e contra Arão no deserto."
@@ -1388,7 +1404,8 @@
     ],
     [
       {
-        "text": "Depois toda a congregação dos filhos de Israel partiu do deserto de Sim pelas suas jornadas, segundo o mandamento do Senhor, e acampou em Refidim; não havia ali água para o povo beber."
+        "text": "Depois toda a congregação dos filhos de Israel partiu do deserto de Sim pelas suas jornadas, segundo o mandamento do Senhor, e acampou em Refidim; não havia ali água para o povo beber.",
+        "title": "A água da rocha e a vitória sobre Amaleque"
       },
       {
         "text": "Então contendeu o povo com Moisés, e disse: Dá-nos água para beber. E Moisés lhes disse: Por que contendeis comigo? Por que tentais ao Senhor?"
@@ -1438,7 +1455,8 @@
     ],
     [
       {
-        "text": "Ora Jetro, sacerdote de Midiã, sogro de Moisés, ouviu todas as coisas que Deus tinha feito a Moisés e a Israel seu povo, como o SENHOR tinha tirado a Israel do Egito."
+        "text": "Ora Jetro, sacerdote de Midiã, sogro de Moisés, ouviu todas as coisas que Deus tinha feito a Moisés e a Israel seu povo, como o SENHOR tinha tirado a Israel do Egito.",
+        "title": "Jetro visita Moisés"
       },
       {
         "text": "E Jetro, sogro de Moisés, tomou a Zípora, a mulher de Moisés, depois que ele lha enviara,"
@@ -1521,7 +1539,8 @@
     ],
     [
       {
-        "text": "Ao terceiro mês da saída dos filhos de Israel da terra do Egito, no mesmo dia chegaram ao deserto de Sinai,"
+        "text": "Ao terceiro mês da saída dos filhos de Israel da terra do Egito, no mesmo dia chegaram ao deserto de Sinai,",
+        "title": "Israel chega ao monte Sinai"
       },
       {
         "text": "Porque partiram de Refidim e entraram no deserto de Sinai, onde se acamparam. Israel, pois, ali se acampou em frente ao monte."
@@ -1598,7 +1617,8 @@
     ],
     [
       {
-        "text": "Então falou Deus todas estas palavras, dizendo:"
+        "text": "Então falou Deus todas estas palavras, dizendo:",
+        "title": "Os dez mandamentos"
       },
       {
         "text": "Eu sou o Senhor teu Deus, que te tirei da terra do Egito, da casa da servidão."
@@ -1678,7 +1698,8 @@
     ],
     [
       {
-        "text": "Estes são os estatutos que lhes proporás."
+        "text": "Estes são os estatutos que lhes proporás.",
+        "title": "Leis sobre escravos e danos pessoais"
       },
       {
         "text": "Se comprares um servo hebreu, seis anos servirá; mas ao sétimo sairá livre, de graça."
@@ -1788,7 +1809,8 @@
     ],
     [
       {
-        "text": "Se alguém furtar boi ou ovelha, e o degolar ou vender, por um boi pagará cinco bois, e pela ovelha quatro ovelhas."
+        "text": "Se alguém furtar boi ou ovelha, e o degolar ou vender, por um boi pagará cinco bois, e pela ovelha quatro ovelhas.",
+        "title": "Leis sobre propriedade e restituição"
       },
       {
         "text": "Se o ladrão for achado roubando, e for ferido, e morrer, o que o feriu não será culpado do sangue."
@@ -1883,7 +1905,8 @@
     ],
     [
       {
-        "text": "Não admitirás falso boato, e não porás a tua mão com o ímpio, para seres testemunha falsa."
+        "text": "Não admitirás falso boato, e não porás a tua mão com o ímpio, para seres testemunha falsa.",
+        "title": "Leis de justiça e as festas"
       },
       {
         "text": "Não seguirás a multidão para fazeres o mal; nem numa demanda falarás, tomando parte com a maioria para torcer o direito."
@@ -1984,7 +2007,8 @@
     ],
     [
       {
-        "text": "Depois disse a Moisés: Sobe ao SENHOR, tu e Arão, Nadabe e Abiú, e setenta dos anciãos de Israel; e adorai de longe."
+        "text": "Depois disse a Moisés: Sobe ao SENHOR, tu e Arão, Nadabe e Abiú, e setenta dos anciãos de Israel; e adorai de longe.",
+        "title": "A aliança é selada"
       },
       {
         "text": "E só Moisés se chegará ao Senhor; mas eles não se cheguem, nem o povo suba com ele."
@@ -2040,7 +2064,8 @@
     ],
     [
       {
-        "text": "Então falou o SENHOR a Moisés, dizendo:"
+        "text": "Então falou o SENHOR a Moisés, dizendo:",
+        "title": "Ofertas para o tabernáculo"
       },
       {
         "text": "Fala aos filhos de Israel, que me tragam uma oferta alçada; de todo o homem cujo coração se mover voluntariamente, dele tomareis a minha oferta alçada."
@@ -2162,7 +2187,8 @@
     ],
     [
       {
-        "text": "E o tabernáculo farás de dez cortinas de linho fino torcido, e azul, púrpura, e carmesim; com querubins as farás de obra esmerada."
+        "text": "E o tabernáculo farás de dez cortinas de linho fino torcido, e azul, púrpura, e carmesim; com querubins as farás de obra esmerada.",
+        "title": "O tabernáculo: cortinas e coberturas"
       },
       {
         "text": "O comprimento de uma cortina será de vinte e oito côvados, e a largura de uma cortina de quatro côvados; todas estas cortinas serão de uma medida."
@@ -2275,7 +2301,8 @@
     ],
     [
       {
-        "text": "Farás também o altar de madeira de acácia; cinco côvados será o comprimento, e cinco côvados a largura (será quadrado o altar), e três côvados a sua altura."
+        "text": "Farás também o altar de madeira de acácia; cinco côvados será o comprimento, e cinco côvados a largura (será quadrado o altar), e três côvados a sua altura.",
+        "title": "O altar do holocausto e o pátio"
       },
       {
         "text": "E farás as suas pontas nos seus quatro cantos; as suas pontas serão do mesmo, e o cobrirás de cobre."
@@ -2340,7 +2367,8 @@
     ],
     [
       {
-        "text": "Depois tu farás chegar a ti teu irmão Arão, e seus filhos com ele, do meio dos filhos de Israel, para me administrarem o ofício sacerdotal; a saber: Arão, Nadabe, e Abiú, Eleazar e Itamar, os filhos de Arão."
+        "text": "Depois tu farás chegar a ti teu irmão Arão, e seus filhos com ele, do meio dos filhos de Israel, para me administrarem o ofício sacerdotal; a saber: Arão, Nadabe, e Abiú, Eleazar e Itamar, os filhos de Arão.",
+        "title": "As vestes sacerdotais"
       },
       {
         "text": "E farás vestes sagradas a Arão teu irmão, para glória e ornamento."
@@ -2471,7 +2499,8 @@
     ],
     [
       {
-        "text": "Isto é o que lhes hás de fazer, para os santificar, para que me administrem o sacerdócio: Toma um novilho e dois carneiros sem mácula,"
+        "text": "Isto é o que lhes hás de fazer, para os santificar, para que me administrem o sacerdócio: Toma um novilho e dois carneiros sem mácula,",
+        "title": "A consagração dos sacerdotes"
       },
       {
         "text": "E pão ázimo, e bolos ázimos, amassados com azeite, e coscorões ázimos, untados com azeite; com flor de farinha de trigo os farás,"
@@ -2611,7 +2640,8 @@
     ],
     [
       {
-        "text": "E farás um altar para queimar o incenso; de madeira de acácia o farás."
+        "text": "E farás um altar para queimar o incenso; de madeira de acácia o farás.",
+        "title": "O altar do incenso, o censo e a bacia"
       },
       {
         "text": "O seu comprimento será de um côvado, e a sua largura de um côvado; será quadrado, e dois côvados a sua altura; dele mesmo serão as suas pontas."
@@ -2727,7 +2757,8 @@
     ],
     [
       {
-        "text": "Depois falou o SENHOR a Moisés, dizendo:"
+        "text": "Depois falou o SENHOR a Moisés, dizendo:",
+        "title": "Bezalel e Aoliabe; o sábado"
       },
       {
         "text": "Eis que eu tenho chamado por nome a Bezalel, o filho de Uri, filho de Hur, da tribo de Judá,"
@@ -2783,7 +2814,8 @@
     ],
     [
       {
-        "text": "Mas vendo o povo que Moisés tardava em descer do monte, acercou-se de Arão, e disse-lhe: Levanta-te, faze-nos deuses, que vão adiante de nós; porque quanto a este Moisés, o homem que nos tirou da terra do Egito, não sabemos o que lhe sucedeu."
+        "text": "Mas vendo o povo que Moisés tardava em descer do monte, acercou-se de Arão, e disse-lhe: Levanta-te, faze-nos deuses, que vão adiante de nós; porque quanto a este Moisés, o homem que nos tirou da terra do Egito, não sabemos o que lhe sucedeu.",
+        "title": "O bezerro de ouro"
       },
       {
         "text": "E Arão lhes disse: Arrancai os pendentes de ouro, que estão nas orelhas de vossas mulheres, e de vossos filhos, e de vossas filhas, e trazei-mos."
@@ -2890,7 +2922,8 @@
     ],
     [
       {
-        "text": "Disse mais o SENHOR a Moisés: Vai, sobe daqui, tu e o povo que fizeste subir da terra do Egito, à terra que jurei a Abraão, a Isaque, e a Jacó, dizendo: À tua descendência a darei."
+        "text": "Disse mais o SENHOR a Moisés: Vai, sobe daqui, tu e o povo que fizeste subir da terra do Egito, à terra que jurei a Abraão, a Isaque, e a Jacó, dizendo: À tua descendência a darei.",
+        "title": "Moisés e a presença de Deus"
       },
       {
         "text": "E enviarei um anjo adiante de ti, e lançarei fora os cananeus, e os amorreus, e os heteus, e os perizeus, e os heveus, e os jebuseus,"
@@ -2961,7 +2994,8 @@
     ],
     [
       {
-        "text": "Então disse o SENHOR a Moisés: Lavra duas tábuas de pedra, como as primeiras; e eu escreverei nas tábuas as mesmas palavras que estavam nas primeiras tábuas, que tu quebraste."
+        "text": "Então disse o SENHOR a Moisés: Lavra duas tábuas de pedra, como as primeiras; e eu escreverei nas tábuas as mesmas palavras que estavam nas primeiras tábuas, que tu quebraste.",
+        "title": "Novas tábuas e renovação da aliança"
       },
       {
         "text": "E prepara-te para amanhã, para que subas pela manhã ao monte Sinai, e ali põe-te diante de mim no cume do monte."
@@ -3068,7 +3102,8 @@
     ],
     [
       {
-        "text": "Então Moisés convocou toda a congregação dos filhos de Israel, e disse-lhes: Estas são as palavras que o SENHOR ordenou que se cumprissem."
+        "text": "Então Moisés convocou toda a congregação dos filhos de Israel, e disse-lhes: Estas são as palavras que o SENHOR ordenou que se cumprissem.",
+        "title": "Ofertas voluntárias para o tabernáculo"
       },
       {
         "text": "Seis dias se trabalhará, mas o sétimo dia vos será santo, o sábado do repouso ao Senhor; todo aquele que nele fizer qualquer trabalho morrerá."
@@ -3175,7 +3210,8 @@
     ],
     [
       {
-        "text": "Assim trabalharam Bezalel e Aoliabe, e todo o homem sábio de coração, a quem o SENHOR dera sabedoria e inteligência, para saber como haviam de fazer toda a obra para o serviço do santuário, conforme a tudo o que o SENHOR tinha ordenado."
+        "text": "Assim trabalharam Bezalel e Aoliabe, e todo o homem sábio de coração, a quem o SENHOR dera sabedoria e inteligência, para saber como haviam de fazer toda a obra para o serviço do santuário, conforme a tudo o que o SENHOR tinha ordenado.",
+        "title": "A construção do tabernáculo"
       },
       {
         "text": "Então Moisés chamou a Bezalel e a Aoliabe, e a todo o homem sábio de coração, em cujo coração o Senhor tinha dado sabedoria; a todo aquele a quem o seu coração moveu a se chegar à obra para fazê-la."
@@ -3291,7 +3327,8 @@
     ],
     [
       {
-        "text": "Fez também Bezalel a arca de madeira de acácia; o seu comprimento era de dois côvados e meio; e a sua largura de um côvado e meio; e a sua altura de um côvado e meio."
+        "text": "Fez também Bezalel a arca de madeira de acácia; o seu comprimento era de dois côvados e meio; e a sua largura de um côvado e meio; e a sua altura de um côvado e meio.",
+        "title": "A arca, a mesa, o candelabro e o altar do incenso"
       },
       {
         "text": "E cobriu-a de ouro puro por dentro e por fora; e fez-lhe uma coroa de ouro ao redor;"
@@ -3380,7 +3417,8 @@
     ],
     [
       {
-        "text": "Fez também o altar do holocausto de madeira de acácia; de cinco côvados era o seu comprimento, e de cinco côvados a sua largura, era quadrado; e de três côvados a sua altura."
+        "text": "Fez também o altar do holocausto de madeira de acácia; de cinco côvados era o seu comprimento, e de cinco côvados a sua largura, era quadrado; e de três côvados a sua altura.",
+        "title": "O altar do holocausto, o pátio e o censo"
       },
       {
         "text": "E fez-lhe as suas pontas nos seus quatro cantos; da mesma peça eram as suas pontas; e cobriu-o de cobre."
@@ -3475,7 +3513,8 @@
     ],
     [
       {
-        "text": "Fizeram também as vestes do ministério, para ministrar no santuário, de azul, e de púrpura e de carmesim; também fizeram as vestes santas, para Arão, como o SENHOR ordenara a Moisés."
+        "text": "Fizeram também as vestes do ministério, para ministrar no santuário, de azul, e de púrpura e de carmesim; também fizeram as vestes santas, para Arão, como o SENHOR ordenara a Moisés.",
+        "title": "As vestes sacerdotais confeccionadas"
       },
       {
         "text": "Assim se fez o éfode de ouro, de azul, e de púrpura, e de carmesim e de linho fino torcido."
@@ -3606,7 +3645,8 @@
     ],
     [
       {
-        "text": "Falou mais o SENHOR a Moisés, dizendo:"
+        "text": "Falou mais o SENHOR a Moisés, dizendo:",
+        "title": "A consagração do tabernáculo e a glória do SENHOR"
       },
       {
         "text": "No primeiro mês, no primeiro dia do mês, levantarás o tabernáculo da tenda da congregação,"

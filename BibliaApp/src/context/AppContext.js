@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
 import { translate, SUPPORTED_LANGUAGES } from '../i18n';
+import { setActiveTranslationSource } from '../data/books';
+import { loadTranslatedBook } from '../services/translationsService';
 
 const AppContext = createContext(null);
 
@@ -217,6 +219,8 @@ export function AppProvider({ children }) {
   const [notificationsEnabled, setNotificationsEnabledState] = useState(false);
   const [dailyVerseEnabled, setDailyVerseEnabledState] = useState(false);
   const [dailyVerseTime, setDailyVerseTimeState] = useState('07:00');
+  const [activeVersion, setActiveVersionState] = useState(null);
+  const [installedVersions, setInstalledVersionsState] = useState([]);
 
   const LAST_READ_KEY = '@bibliaapp/lastRead';
   const HOME_THEME_KEY = '@bibliaapp/homeTheme';
@@ -229,6 +233,8 @@ export function AppProvider({ children }) {
   const NOTIFICATIONS_ENABLED_KEY = '@bibliaapp/notificationsEnabled';
   const DAILY_VERSE_ENABLED_KEY = '@bibliaapp/dailyVerseEnabled';
   const DAILY_VERSE_TIME_KEY = '@bibliaapp/dailyVerseTime';
+  const ACTIVE_VERSION_KEY = '@bibliaapp/activeVersion';
+  const INSTALLED_VERSIONS_KEY = '@bibliaapp/installedVersions';
 
   const TEXT_ALIGN_OPTIONS = ['left', 'right', 'center', 'justify'];
 
@@ -244,7 +250,7 @@ export function AppProvider({ children }) {
     let active = true;
     (async () => {
       try {
-        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw, textAlignRaw, fontFamilyRaw, languageRaw, notifEnabledRaw, dailyVerseEnabledRaw, dailyVerseTimeRaw] =
+        const [raw, themeRaw, readRaw, favoritesRaw, highlightsRaw, textAlignRaw, fontFamilyRaw, languageRaw, notifEnabledRaw, dailyVerseEnabledRaw, dailyVerseTimeRaw, activeVersionRaw, installedVersionsRaw] =
           await Promise.all([
             AsyncStorage.getItem(LAST_READ_KEY),
             AsyncStorage.getItem(HOME_THEME_KEY),
@@ -257,6 +263,8 @@ export function AppProvider({ children }) {
             AsyncStorage.getItem(NOTIFICATIONS_ENABLED_KEY),
             AsyncStorage.getItem(DAILY_VERSE_ENABLED_KEY),
             AsyncStorage.getItem(DAILY_VERSE_TIME_KEY),
+            AsyncStorage.getItem(ACTIVE_VERSION_KEY),
+            AsyncStorage.getItem(INSTALLED_VERSIONS_KEY),
           ]);
         if (active && raw) {
           setLastReadState(JSON.parse(raw));
@@ -310,6 +318,24 @@ export function AppProvider({ children }) {
             // ignora dados corrompidos
           }
         }
+        if (active && activeVersionRaw) {
+          try {
+            const parsed = JSON.parse(activeVersionRaw);
+            setActiveVersionState(parsed === 'null' || parsed === null ? null : parsed);
+          } catch (e) {
+            setActiveVersionState(activeVersionRaw === 'null' ? null : activeVersionRaw);
+          }
+        }
+        if (active && installedVersionsRaw) {
+          try {
+            const parsed = JSON.parse(installedVersionsRaw);
+            if (Array.isArray(parsed)) {
+              setInstalledVersionsState(parsed.filter((v) => typeof v === 'string'));
+            }
+          } catch (e) {
+            // ignora dados corrompidos
+          }
+        }
         if (active && readRaw) {
           try {
             setReadChapters(JSON.parse(readRaw));
@@ -321,14 +347,18 @@ export function AppProvider({ children }) {
           try {
             const parsedFavorites = JSON.parse(favoritesRaw);
             if (Array.isArray(parsedFavorites)) {
-              setFavorites(
-                parsedFavorites.map((f) => {
-                  if (f && f.text && typeof f.text === 'object') {
-                    return { ...f, text: f.text.text ?? f.text.verse ?? '' };
-                  }
-                  return f;
-                })
-              );
+              const now = Date.now();
+              const normalized = parsedFavorites.map((f, index) => {
+                const item =
+                  f && f.text && typeof f.text === 'object'
+                    ? { ...f, text: f.text.text ?? f.text.verse ?? '' }
+                    : { ...f };
+                if (!item.createdAt) {
+                  item.createdAt = now - index * 1000;
+                }
+                return item;
+              });
+              setFavorites(normalized);
             }
           } catch (e) {
             // ignora dados corrompidos
@@ -351,6 +381,41 @@ export function AppProvider({ children }) {
       active = false;
     };
   }, []);
+
+  // Mantém a fonte de leitura (getBook) sincronizada com a tradução ativa.
+  useEffect(() => {
+    if (!activeVersion) {
+      setActiveTranslationSource(null);
+      return;
+    }
+    setActiveTranslationSource((abbrev) => loadTranslatedBook(activeVersion, abbrev));
+  }, [activeVersion]);
+
+  const selectVersion = (sigla) => {
+    setActiveVersionState(sigla || null);
+    persist(ACTIVE_VERSION_KEY, sigla || null);
+  };
+
+  const setInstalledVersion = (sigla, installed) => {
+    setInstalledVersionsState((prev) => {
+      const list = Array.isArray(prev) ? prev : [];
+      const next = installed
+        ? list.includes(sigla)
+          ? list
+          : [...list, sigla]
+        : list.filter((v) => v !== sigla);
+      persist(INSTALLED_VERSIONS_KEY, next);
+      return next;
+    });
+    if (!installed && activeVersion === sigla) {
+      selectVersion(null);
+    }
+  };
+
+  const isVersionInstalled = useCallback(
+    (sigla) => installedVersions.includes(sigla),
+    [installedVersions]
+  );
 
   const setLastRead = (value) => {
     setLastReadState(value);
@@ -458,7 +523,7 @@ export function AppProvider({ children }) {
       const exists = list.some((f) => f.key === verse.key);
       return exists
         ? list.filter((f) => f.key !== verse.key)
-        : [verse, ...list];
+        : [{ ...verse, createdAt: Date.now() }, ...list];
     });
   };
 
@@ -471,27 +536,47 @@ export function AppProvider({ children }) {
   const isFavorite = (verseKey) => (Array.isArray(favorites) ? favorites.some((f) => f.key === verseKey) : false);
 
   const toggleHighlight = (verseKey, color) => {
-    const next = { ...highlights };
-    if (next[verseKey] === color) {
-      delete next[verseKey];
-    } else {
-      next[verseKey] = color;
-    }
-    setHighlights(next);
-    persist(HIGHLIGHTS_KEY, next);
+    setHighlights((prev) => {
+      const next = { ...prev };
+      if (next[verseKey] === color) {
+        delete next[verseKey];
+      } else {
+        next[verseKey] = color;
+      }
+      persist(HIGHLIGHTS_KEY, next);
+      return next;
+    });
   };
 
   const getHighlight = (verseKey) => highlights[verseKey] ?? null;
 
   const setHighlight = (verseKey, color) => {
-    const next = { ...highlights };
-    if (!color) {
-      delete next[verseKey];
-    } else {
-      next[verseKey] = color;
-    }
-    setHighlights(next);
-    persist(HIGHLIGHTS_KEY, next);
+    setHighlights((prev) => {
+      const next = { ...prev };
+      if (!color) {
+        delete next[verseKey];
+      } else {
+        next[verseKey] = color;
+      }
+      persist(HIGHLIGHTS_KEY, next);
+      return next;
+    });
+  };
+
+  const setBulkHighlight = (verseKeys, color) => {
+    if (!Array.isArray(verseKeys) || verseKeys.length === 0) return;
+    setHighlights((prev) => {
+      const next = { ...prev };
+      verseKeys.forEach((k) => {
+        if (!color) {
+          delete next[k];
+        } else {
+          next[k] = color;
+        }
+      });
+      persist(HIGHLIGHTS_KEY, next);
+      return next;
+    });
   };
 
   const toggleChapterRead = (chapterKey) => {
@@ -520,7 +605,12 @@ export function AppProvider({ children }) {
       notificationsEnabled,
       dailyVerseEnabled,
       dailyVerseTime,
+      activeVersion,
+      installedVersions,
       t,
+      selectVersion,
+      setInstalledVersion,
+      isVersionInstalled,
       toggleFavorite,
       isFavorite,
       toggleChapterRead,
@@ -528,6 +618,7 @@ export function AppProvider({ children }) {
       toggleHighlight,
       getHighlight,
       setHighlight,
+      setBulkHighlight,
       setLastRead,
       updateTheme,
       setFontSize,
@@ -553,6 +644,9 @@ export function AppProvider({ children }) {
       notificationsEnabled,
       dailyVerseEnabled,
       dailyVerseTime,
+      activeVersion,
+      installedVersions,
+      isVersionInstalled,
       t,
     ]
   );

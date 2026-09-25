@@ -17,7 +17,9 @@ export default function CustomDrawerContent(props) {
 { label: t('nav.home'), icon: 'home', color: theme.dark ? '#81C784' : '#2E7D32', bgColor: theme.dark ? '#2E5C44' : '#DCEFE2', route: 'Início' },
     { label: t('nav.livros'), icon: 'book', color: theme.dark ? '#BCAAA4' : '#795548', bgColor: theme.dark ? '#3E2F2B' : '#EFEBE9', route: 'Livros' },
     { label: t('nav.search'), icon: 'search', color: theme.dark ? '#64B5F6' : '#0288D1', bgColor: theme.dark ? '#2A4A6B' : '#D8EAFB', route: 'Search' },
+    { label: t('nav.favorites'), icon: 'star', color: theme.dark ? '#FFD54F' : '#F59E0B', bgColor: theme.dark ? '#4A3B12' : '#FEF3C7', route: 'Favoritos' },
     { label: t('nav.progress'), icon: 'checkmark-circle', color: theme.dark ? '#4DD0B2' : '#10B981', bgColor: theme.dark ? '#2B5F55' : '#C9F0E0', route: 'Progresso' },
+    { label: t('nav.versions'), icon: 'albums', color: theme.dark ? '#B39DDB' : '#7C3AED', bgColor: theme.dark ? '#34295C' : '#EDE9FE', route: 'Versões' },
   ];
 
   const resourceItems = [

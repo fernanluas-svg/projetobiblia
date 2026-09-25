@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus."
+        "text": "No princípio era o Verbo, e o Verbo estava com Deus, e o Verbo era Deus.",
+        "title": "O Verbo se fez carne"
       },
       {
         "text": "Ele estava no princípio com Deus."
@@ -158,7 +159,8 @@
     ],
     [
       {
-        "text": "E, ao terceiro dia, fizeram-se umas bodas em Caná da Galiléia; e estava ali a mãe de Jesus."
+        "text": "E, ao terceiro dia, fizeram-se umas bodas em Caná da Galiléia; e estava ali a mãe de Jesus.",
+        "title": "As bodas de Caná; a purificação do templo"
       },
       {
         "text": "E foi também convidado Jesus e os seus discípulos para as bodas."
@@ -235,7 +237,8 @@
     ],
     [
       {
-        "text": "E havia entre os fariseus um homem, chamado Nicodemos, príncipe dos judeus."
+        "text": "E havia entre os fariseus um homem, chamado Nicodemos, príncipe dos judeus.",
+        "title": "Nicodemos; a conversa com Jesus"
       },
       {
         "text": "Este foi ter de noite com Jesus, e disse-lhe: Rabi, bem sabemos que és Mestre, vindo de Deus; porque ninguém pode fazer estes sinais que tu fazes, se Deus não for com ele."
@@ -345,7 +348,8 @@
     ],
     [
       {
-        "text": "E quando o Senhor entendeu que os fariseus tinham ouvido que Jesus fazia e batizava mais discípulos do que João"
+        "text": "E quando o Senhor entendeu que os fariseus tinham ouvido que Jesus fazia e batizava mais discípulos do que João",
+        "title": "A mulher samaritana no poço"
       },
       {
         "text": "(Ainda que Jesus mesmo não batizava, mas os seus discípulos),"
@@ -509,7 +513,8 @@
     ],
     [
       {
-        "text": "Depois disto havia uma festa entre os judeus, e Jesus subiu a Jerusalém."
+        "text": "Depois disto havia uma festa entre os judeus, e Jesus subiu a Jerusalém.",
+        "title": "A cura no tanque de Betesda; a divindade de Jesus"
       },
       {
         "text": "Ora, em Jerusalém há, próximo à porta das ovelhas, um tanque, chamado em hebreu Betesda, o qual tem cinco alpendres."
@@ -652,7 +657,8 @@
     ],
     [
       {
-        "text": "Depois disto partiu Jesus para o outro lado do mar da Galiléia, que é o de Tiberíades."
+        "text": "Depois disto partiu Jesus para o outro lado do mar da Galiléia, que é o de Tiberíades.",
+        "title": "A multiplicação dos pães; o pão da vida"
       },
       {
         "text": "E grande multidão o seguia, porque via os sinais que operava sobre os enfermos."
@@ -867,7 +873,8 @@
     ],
     [
       {
-        "text": "E depois disto Jesus andava pela Galiléia, e já não queria andar pela Judéia, pois os judeus procuravam matá-lo."
+        "text": "E depois disto Jesus andava pela Galiléia, e já não queria andar pela Judéia, pois os judeus procuravam matá-lo.",
+        "title": "A festa dos tabernáculos; as controvérsias"
       },
       {
         "text": "E estava próxima a festa dos judeus, a dos tabernáculos."
@@ -1028,7 +1035,8 @@
     ],
     [
       {
-        "text": "Jesus, porém, foi para o Monte das Oliveiras."
+        "text": "Jesus, porém, foi para o Monte das Oliveiras.",
+        "title": "A mulher adúltera; a luz do mundo"
       },
       {
         "text": "E pela manhã cedo tornou para o templo, e todo o povo vinha ter com ele, e, assentando-se, os ensinava."
@@ -1207,7 +1215,8 @@
     ],
     [
       {
-        "text": "E, passando Jesus, viu um homem cego de nascença."
+        "text": "E, passando Jesus, viu um homem cego de nascença.",
+        "title": "A cura do cego de nascença"
       },
       {
         "text": "E os seus discípulos lhe perguntaram, dizendo: Rabi, quem pecou, este ou seus pais, para que nascesse cego?"
@@ -1332,7 +1341,8 @@
     ],
     [
       {
-        "text": "Na verdade, na verdade vos digo que aquele que não entra pela porta no curral das ovelhas, mas sobe por outra parte, é ladrão e salteador."
+        "text": "Na verdade, na verdade vos digo que aquele que não entra pela porta no curral das ovelhas, mas sobe por outra parte, é ladrão e salteador.",
+        "title": "O bom pastor"
       },
       {
         "text": "Aquele, porém, que entra pela porta é o pastor das ovelhas."
@@ -1460,7 +1470,8 @@
     ],
     [
       {
-        "text": "Estava, porém, enfermo um certo Lázaro, de betânia, aldeia de Maria e de sua irmã Marta."
+        "text": "Estava, porém, enfermo um certo Lázaro, de betânia, aldeia de Maria e de sua irmã Marta.",
+        "title": "A ressurreição de Lázaro"
       },
       {
         "text": "E Maria era aquela que tinha ungido o Senhor com ungüento, e lhe tinha enxugado os pés com os seus cabelos, cujo irmão Lázaro estava enfermo."
@@ -1633,7 +1644,8 @@
     ],
     [
       {
-        "text": "Foi, pois, Jesus seis dias antes da páscoa a betânia, onde estava Lázaro, o que falecera, e a quem ressuscitara dentre os mortos."
+        "text": "Foi, pois, Jesus seis dias antes da páscoa a betânia, onde estava Lázaro, o que falecera, e a quem ressuscitara dentre os mortos.",
+        "title": "A unção em Betânia; a entrada triunfal"
       },
       {
         "text": "Fizeram-lhe, pois, ali uma ceia, e Marta servia, e Lázaro era um dos que estavam à mesa com ele."
@@ -1785,7 +1797,8 @@
     ],
     [
       {
-        "text": "Ora, antes da festa da páscoa, sabendo Jesus que já era chegada a sua hora de passar deste mundo para o Pai, como havia amado os seus, que estavam no mundo, amou-os até o fim."
+        "text": "Ora, antes da festa da páscoa, sabendo Jesus que já era chegada a sua hora de passar deste mundo para o Pai, como havia amado os seus, que estavam no mundo, amou-os até o fim.",
+        "title": "O lava-pés; o novo mandamento"
       },
       {
         "text": "E, acabada a ceia, tendo já o diabo posto no coração de Judas Iscariotes, filho de Simão, que o traísse,"
@@ -1901,7 +1914,8 @@
     ],
     [
       {
-        "text": "Não se turbe o vosso coração; credes em Deus, crede também em mim."
+        "text": "Não se turbe o vosso coração; credes em Deus, crede também em mim.",
+        "title": "Jesus, o caminho; a promessa do Espírito"
       },
       {
         "text": "Na casa de meu Pai há muitas moradas; se não fosse assim, eu vo-lo teria dito. Vou preparar-vos lugar."
@@ -1996,7 +2010,8 @@
     ],
     [
       {
-        "text": "Eu sou a videira verdadeira, e meu Pai é o lavrador."
+        "text": "Eu sou a videira verdadeira, e meu Pai é o lavrador.",
+        "title": "A videira verdadeira; o amor"
       },
       {
         "text": "Toda a vara em mim, que não dá fruto, a tira; e limpa toda aquela que dá fruto, para que dê mais fruto."
@@ -2079,7 +2094,8 @@
     ],
     [
       {
-        "text": "Tenho-vos dito estas coisas para que vos não escandalizeis."
+        "text": "Tenho-vos dito estas coisas para que vos não escandalizeis.",
+        "title": "A vinda do Espírito Santo; a vitória"
       },
       {
         "text": "Expulsar-vos-ão das sinagogas; vem mesmo a hora em que qualquer que vos matar cuidará fazer um serviço a Deus."
@@ -2180,7 +2196,8 @@
     ],
     [
       {
-        "text": "Jesus falou assim e, levantando seus olhos ao céu, e disse: Pai, é chegada a hora; glorifica a teu Filho, para que também o teu Filho te glorifique a ti;"
+        "text": "Jesus falou assim e, levantando seus olhos ao céu, e disse: Pai, é chegada a hora; glorifica a teu Filho, para que também o teu Filho te glorifique a ti;",
+        "title": "A oração sacerdotal de Jesus"
       },
       {
         "text": "Assim como lhe deste poder sobre toda a carne, para que dê a vida eterna a todos quantos lhe deste."
@@ -2260,7 +2277,8 @@
     ],
     [
       {
-        "text": "Tendo Jesus dito isto, saiu com os seus discípulos para além do ribeiro de Cedrom, onde havia um horto, no qual ele entrou e seus discípulos."
+        "text": "Tendo Jesus dito isto, saiu com os seus discípulos para além do ribeiro de Cedrom, onde havia um horto, no qual ele entrou e seus discípulos.",
+        "title": "A prisão; Pedro nega; o interrogatório"
       },
       {
         "text": "E Judas, que o traía, também conhecia aquele lugar, porque Jesus muitas vezes se ajuntava ali com os seus discípulos."
@@ -2382,7 +2400,8 @@
     ],
     [
       {
-        "text": "Pilatos, pois, tomou então a Jesus, e o açoitou."
+        "text": "Pilatos, pois, tomou então a Jesus, e o açoitou.",
+        "title": "A crucificação"
       },
       {
         "text": "E os soldados, tecendo uma coroa de espinhos, lha puseram sobre a cabeça, e lhe vestiram roupa de púrpura."
@@ -2510,7 +2529,8 @@
     ],
     [
       {
-        "text": "E no primeiro dia da semana, Maria Madalena foi ao sepulcro de madrugada, sendo ainda escuro, e viu a pedra tirada do sepulcro."
+        "text": "E no primeiro dia da semana, Maria Madalena foi ao sepulcro de madrugada, sendo ainda escuro, e viu a pedra tirada do sepulcro.",
+        "title": "A ressurreição; a aparição a Maria"
       },
       {
         "text": "Correu, pois, e foi a Simão Pedro, e ao outro discípulo, a quem Jesus amava, e disse-lhes: Levaram o Senhor do sepulcro, e não sabemos onde o puseram."
@@ -2605,7 +2625,8 @@
     ],
     [
       {
-        "text": "Depois disto manifestou-se Jesus outra vez aos discípulos junto do mar de Tiberíades; e manifestou-se assim:"
+        "text": "Depois disto manifestou-se Jesus outra vez aos discípulos junto do mar de Tiberíades; e manifestou-se assim:",
+        "title": "A aparição aos discípulos; a recomposição de Pedro"
       },
       {
         "text": "Estavam juntos Simão Pedro, e Tomé, chamado Dídimo, e Natanael, que era de Caná da Galiléia, os filhos de Zebedeu, e outros dois dos seus discípulos."

@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useApp } from '../context/AppContext';
 
@@ -21,6 +22,52 @@ const EMOTIONS = [
   { key: 'prayer', icon: 'hand-left', emoji: '🙏', dark: ['#FFD54F', '#4A3E10'], light: ['#D4A017', '#FEF3C7'] },
   { key: 'gratitude', icon: 'heart-circle', dark: ['#B39DDB', '#342A54'], light: ['#8B5CF6', '#EDE9FE'] },
 ];
+
+function EmotionCard({ item, theme, t, onPress }) {
+  const [color, bgColor] = theme.dark ? item.dark : item.light;
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withTiming(0.97, { duration: 100 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withTiming(1, { duration: 150 });
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => onPress(item)}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <View
+        style={[
+          styles.card,
+          { backgroundColor: bgColor, borderColor: color },
+          animatedStyle,
+        ]}
+      >
+        <View style={[styles.cardIcon, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+          {item.emoji ? (
+            <Text style={{ fontSize: 26 }}>{item.emoji}</Text>
+          ) : (
+            <Ionicons name={item.icon} size={26} color={'#FFFFFF'} />
+          )}
+        </View>
+        <Text style={styles.cardLabel}>
+          {t(`advice.${item.key}`)}
+        </Text>
+        <Ionicons name="chevron-forward" size={20} color={'rgba(255,255,255,0.6)'} />
+      </View>
+    </TouchableOpacity>
+  );
+}
 
 export default function AdviceScreen({ navigation }) {
   const { theme, t } = useApp();
@@ -59,39 +106,21 @@ export default function AdviceScreen({ navigation }) {
         <View style={styles.headerPlaceholder} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={[styles.headline, { color: theme.text }]}>{t('advice.ask')}</Text>
 
-        <View style={styles.grid}>
-          {EMOTIONS.map((item) => {
-            const [color, bgColor] = theme.dark ? item.dark : item.light;
-            return (
-              <TouchableOpacity
-                key={item.key}
-                style={[
-                  styles.card,
-                  {
-                    backgroundColor: theme.surface,
-                    borderColor: theme.border,
-                  },
-                ]}
-                activeOpacity={0.7}
-                onPress={() => openDetail(item)}
-              >
-                <View style={[styles.cardIcon, { backgroundColor: bgColor }]}>
-                  {item.emoji ? (
-                    <Text style={{ fontSize: 22 }}>{item.emoji}</Text>
-                  ) : (
-                    <Ionicons name={item.icon} size={22} color={color} />
-                  )}
-                </View>
-                <Text style={[styles.cardLabel, { color: theme.text }]} numberOfLines={2}>
-                  {t(`advice.${item.key}`)}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        {EMOTIONS.map((item) => (
+          <EmotionCard
+            key={item.key}
+            item={item}
+            theme={theme}
+            t={t}
+            onPress={openDetail}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
@@ -134,32 +163,28 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 20,
   },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
   card: {
-    width: '48%',
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 12,
+    borderWidth: 1.5,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 20,
     marginBottom: 12,
   },
   cardIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 50,
+    height: 50,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: 16,
   },
   cardLabel: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '600',
-    lineHeight: 18,
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    lineHeight: 22,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -19,6 +19,123 @@ import { useApp } from '../context/AppContext';
 const { width } = Dimensions.get('window');
 
 const OFFER_BUTTON_COLOR = '#E53935';
+
+const CATEGORIES = [
+  { key: 'livros', label: '📚 Livros' },
+  { key: 'infantil', label: '👶 Infantil' },
+  { key: 'camisas', label: '👕 Camisas' },
+];
+
+const PRODUCTS_DATA = [
+  {
+    id: '1',
+    category: 'livros',
+    title: 'Ferido pelo Processo Curado Pelo Propósito',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mggnr9f2t9mo0b@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/7AdQdtQpEO',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '2',
+    category: 'livros',
+    title: 'Eu, Minhas Lutas Internas e Deus',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-7rdym-mcf6qan1x2rbd2@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/8pled5dFQe',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '3',
+    category: 'livros',
+    title: 'Café com Deus Pai',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m283cuc4b629fd@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/9AOV3OUtpz',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '4',
+    category: 'livros',
+    title: 'Kit Casal Cristão 2 Biblias',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lygmkt5s0jxh5c@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/1gIU7jCIAE',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '5',
+    category: 'infantil',
+    title: 'Bíblia Infantil Ilustrada | Promessas de Amor',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-8227i-mhmajmnn55vmb1@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2gB1MLzzVd',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '6',
+    category: 'infantil',
+    title: 'Livro Devocional Café com Deus Pai Kids Infantil',
+    image:
+      'https://down-br.img.susercontent.com/file/sg-11134201-7rbki-lmywv17ps2mx0f@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/3g3YYJSYRI',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '7',
+    category: 'infantil',
+    title: 'Livro Infantil Devocional Tempo com Deus',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mpr5e9ojdiwyf5@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2BEkm8sv7e',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '8',
+    category: 'infantil',
+    title: '365 Histórias bíblicas narradas com carinho',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-mcv3pzkr854x94@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/7AdQjOlfxN',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '9',
+    category: 'camisas',
+    title: 'Blusa Tshirt Estampada Gospel Feminina',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m0eruiwivpmp50@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/2LYAyInOfl',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '10',
+    category: 'camisas',
+    title: 'T-shirt Linda Até Que Ele Venha',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m3wkwef65al7ee@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/6q0aLMlbOq',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '11',
+    category: 'camisas',
+    title: 'Camiseta T-shirt Feminina Deus Te Quer Sorrindo',
+    image:
+      'https://down-br.img.susercontent.com/file/0ad2c4ed5284872e7ae1e1fbb025832e@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/5AsMMPkidw',
+    buttonText: 'Ver Oferta',
+  },
+  {
+    id: '12',
+    category: 'camisas',
+    title: 'Camisa Camiseta T-Shirt Cristã "Ele nos amou primeiro"',
+    image:
+      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mqxnp9w35czob4@resize_w900_nl.webp',
+    url: 'https://s.shopee.com.br/3g3Ya2XjHy',
+    buttonText: 'Ver Oferta',
+  },
+];
 
 function PulseButton({ children, style, activeOpacity = 0.85, onPress }) {
   const scale = useRef(new Animated.Value(1)).current;
@@ -51,113 +168,35 @@ function PulseButton({ children, style, activeOpacity = 0.85, onPress }) {
   );
 }
 
-const PRODUCTS_DATA = [
-  {
-    id: '1',
-    title: 'Ferido pelo Processo Curado Pelo Propósito',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mggnr9f2t9mo0b@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/7AdQdtQpEO',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '2',
-    title: 'Eu, Minhas Lutas Internas e Deus',
-    image:
-      'https://down-br.img.susercontent.com/file/sg-11134201-7rdym-mcf6qan1x2rbd2@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/8pled5dFQe',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '3',
-    title: 'Café com Deus Pai',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m283cuc4b629fd@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/9AOV3OUtpz',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '4',
-    title: 'Kit Casal Cristão 2 Biblias',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lygmkt5s0jxh5c@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/1gIU7jCIAE',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '5',
-    title: 'Bíblia Infantil Ilustrada | Promessas de Amor',
-    image:
-      'https://down-br.img.susercontent.com/file/sg-11134201-8227i-mhmajmnn55vmb1@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/2gB1MLzzVd',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '6',
-    title: 'Livro Devocional Café com Deus Pai Kids Infantil',
-    image:
-      'https://down-br.img.susercontent.com/file/sg-11134201-7rbki-lmywv17ps2mx0f@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/3g3YYJSYRI',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '7',
-    title: 'Livro Infantil Devocional Tempo com Deus',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mpr5e9ojdiwyf5@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/2BEkm8sv7e',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '8',
-    title: '365 Histórias bíblicas narradas com carinho',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-mcv3pzkr854x94@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/7AdQjOlfxN',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '9',
-    title: 'Blusa Tshirt Estampada Gospel Feminina',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m0eruiwivpmp50@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/2LYAyInOfl',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '10',
-    title: 'T-shirt Linda Até Que Ele Venha',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m3wkwef65al7ee@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/6q0aLMlbOq',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '11',
-    title: 'Camiseta T-shirt Feminina Deus Te Quer Sorrindo',
-    image:
-      'https://down-br.img.susercontent.com/file/0ad2c4ed5284872e7ae1e1fbb025832e@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/5AsMMPkidw',
-    buttonText: 'Ver Oferta',
-  },
-  {
-    id: '12',
-    title: 'Camisa Camiseta T-Shirt Cristã "Ele nos amou primeiro"',
-    image:
-      'https://down-br.img.susercontent.com/file/br-11134207-820mh-mqxnp9w35czob4@resize_w900_nl.webp',
-    url: 'https://s.shopee.com.br/3g3Ya2XjHy',
-    buttonText: 'Ver Oferta',
-  },
-];
-
 export default function StoreScreen({ navigation }) {
   const { theme, t } = useApp();
   const isDark = theme.dark;
+  const [activeCategory, setActiveCategory] = useState('livros');
+  const gridOpacity = useRef(new Animated.Value(1)).current;
+
+  const filteredProducts = PRODUCTS_DATA.filter((item) => item.category === activeCategory);
 
   const handlePressProduct = (item) => {
     if (item.url) {
       Linking.openURL(item.url).catch(() => {});
     }
+  };
+
+  const switchCategory = (category) => {
+    if (category === activeCategory) return;
+    Animated.timing(gridOpacity, {
+      toValue: 0,
+      duration: 120,
+      useNativeDriver: Platform.OS !== 'web',
+    }).start(() => {
+      setActiveCategory(category);
+      gridOpacity.setValue(0);
+      Animated.timing(gridOpacity, {
+        toValue: 1,
+        duration: 220,
+        useNativeDriver: Platform.OS !== 'web',
+      }).start();
+    });
   };
 
   return (
@@ -198,8 +237,39 @@ export default function StoreScreen({ navigation }) {
           </Text>
         </View>
 
-        <View style={styles.gridContainer}>
-          {PRODUCTS_DATA.map((item) => (
+        <View style={styles.categoriesRow}>
+          {CATEGORIES.map((category) => {
+            const active = category.key === activeCategory;
+            return (
+              <TouchableOpacity
+                key={category.key}
+                style={[
+                  styles.categoryChip,
+                  {
+                    backgroundColor: active ? theme.primary : theme.surface,
+                    borderColor: active ? theme.primary : theme.border,
+                  },
+                ]}
+                onPress={() => switchCategory(category.key)}
+                activeOpacity={0.75}
+                accessibilityRole="button"
+                accessibilityState={{ selected: active }}
+              >
+                <Text
+                  style={[
+                    styles.categoryChipText,
+                    { color: active ? '#FFFFFF' : theme.text },
+                  ]}
+                >
+                  {category.label}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <Animated.View style={[styles.gridContainer, { opacity: gridOpacity }]}>
+          {filteredProducts.map((item) => (
             <View
               key={item.id}
               style={[
@@ -251,7 +321,7 @@ export default function StoreScreen({ navigation }) {
               </PulseButton>
             </View>
           ))}
-        </View>
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -303,6 +373,24 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     lineHeight: 22,
+  },
+  categoriesRow: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    gap: 8,
+  },
+  categoryChip: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  categoryChipText: {
+    fontSize: 13,
+    fontWeight: '700',
   },
   gridContainer: {
     flexDirection: 'row',

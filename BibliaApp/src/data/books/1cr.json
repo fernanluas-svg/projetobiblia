@@ -3,7 +3,8 @@
   "chapters": [
     [
       {
-        "text": "Adão, Sete, Enos,"
+        "text": "Adão, Sete, Enos,",
+        "title": "De Adão a Abraão"
       },
       {
         "text": "Cainã, Maalaleel, Jerede,"
@@ -167,7 +168,8 @@
     ],
     [
       {
-        "text": "Estes são os filhos de Israel: Rúben, Simeão, Levi, Judá, Issacar e Zebulom;"
+        "text": "Estes são os filhos de Israel: Rúben, Simeão, Levi, Judá, Issacar e Zebulom;",
+        "title": "Os descendentes de Israel"
       },
       {
         "text": "Dã, José e Benjamim, Naftali, Gade e Aser."
@@ -334,7 +336,8 @@
     ],
     [
       {
-        "text": "E estes foram os filhos de Davi, que lhe nasceram em Hebrom: o primogênito, Amnom, de Ainoã, a jizreelita; o segundo Daniel, de Abigail, a carmelita;"
+        "text": "E estes foram os filhos de Davi, que lhe nasceram em Hebrom: o primogênito, Amnom, de Ainoã, a jizreelita; o segundo Daniel, de Abigail, a carmelita;",
+        "title": "A família de Davi"
       },
       {
         "text": "O terceiro, Absalão, filho de Maaca, filha de Talmai, rei de Gesur; o quarto, Adonias, filho de Hagite;"
@@ -408,7 +411,8 @@
     ],
     [
       {
-        "text": "Os filhos de Judá foram: Perez, Hezrom, Carmi, Hur, e Sobal."
+        "text": "Os filhos de Judá foram: Perez, Hezrom, Carmi, Hur, e Sobal.",
+        "title": "Descendentes de Judá; a oração de Jabez"
       },
       {
         "text": "E Reaías, filho de Sobal gerou a Jaate, e Jaate gerou a Aumai e a Laade; estas são as famílias dos zoratitas."
@@ -539,7 +543,8 @@
     ],
     [
       {
-        "text": "Quanto aos filhos de Rúben, o primogênito de Israel (pois ele era o primogênito; mas porque profanara a cama de seu pai, deu-se a sua primogenitura aos filhos de José, filho de Israel; de modo que não foi contado, na genealogia da primogenitura,"
+        "text": "Quanto aos filhos de Rúben, o primogênito de Israel (pois ele era o primogênito; mas porque profanara a cama de seu pai, deu-se a sua primogenitura aos filhos de José, filho de Israel; de modo que não foi contado, na genealogia da primogenitura,",
+        "title": "Os descendentes de Rúben, Gade e Manassés"
       },
       {
         "text": "Porque Judá foi poderoso entre seus irmãos, e dele veio o soberano; porém a primogenitura foi de José)."
@@ -619,7 +624,8 @@
     ],
     [
       {
-        "text": "Os filhos de Levi foram: Gérson, Coate e Merari,"
+        "text": "Os filhos de Levi foram: Gérson, Coate e Merari,",
+        "title": "Os descendentes de Levi"
       },
       {
         "text": "E os filhos de Coate: Anrão, e Izar, e Hebrom, e Uziel."
@@ -864,7 +870,8 @@
     ],
     [
       {
-        "text": "E quanto aos filhos de Issacar, foram: Tola, Pua, Jasube e Sinrom, quatro."
+        "text": "E quanto aos filhos de Issacar, foram: Tola, Pua, Jasube e Sinrom, quatro.",
+        "title": "Descendentes de Issacar, Benjamim e outros"
       },
       {
         "text": "E os filhos de Tola foram: Uzi, Refaías, Jeriel, Jamai, Ibsão e Semuel, chefes das casas de seus pais, descendentes de Tola, homens valentes nas suas gerações; o seu número, nos dias de Davi, foi de vinte e dois mil e seiscentos."
@@ -986,7 +993,8 @@
     ],
     [
       {
-        "text": "E Benjamim gerou a Belá, seu primogênito, a Asbel o segundo, e a Aará o terceiro,"
+        "text": "E Benjamim gerou a Belá, seu primogênito, a Asbel o segundo, e a Aará o terceiro,",
+        "title": "A genealogia de Benjamim e de Saul"
       },
       {
         "text": "A Noá o quarto, e a Rafa o quinto."
@@ -1108,7 +1116,8 @@
     ],
     [
       {
-        "text": "E todo o Israel foi contado por genealogias, que estão escritas no livro dos reis de Israel; e os de Judá foram transportados a Babilônia, por causa da sua transgressão."
+        "text": "E todo o Israel foi contado por genealogias, que estão escritas no livro dos reis de Israel; e os de Judá foram transportados a Babilônia, por causa da sua transgressão.",
+        "title": "Os habitantes de Jerusalém; a linhagem de Saul"
       },
       {
         "text": "E os primeiros habitantes, que moravam na sua possessão e nas suas cidades, foram os israelitas, os sacerdotes, os levitas, e os netineus."
@@ -1242,7 +1251,8 @@
     ],
     [
       {
-        "text": "E os filisteus pelejaram com Israel; e os homens de Israel fugiram de diante dos filisteus, e caíram mortos nas montanhas de Gilboa."
+        "text": "E os filisteus pelejaram com Israel; e os homens de Israel fugiram de diante dos filisteus, e caíram mortos nas montanhas de Gilboa.",
+        "title": "A morte de Saul"
       },
       {
         "text": "E os filisteus perseguiram a Saul e aos seus filhos e mataram a Jônatas, a Abinadabe e a Malquisua, filhos de Saul."
@@ -1286,7 +1296,8 @@
     ],
     [
       {
-        "text": "Então todo o Israel se ajuntou a Davi em Hebrom, dizendo: Eis que somos teus ossos e tua carne."
+        "text": "Então todo o Israel se ajuntou a Davi em Hebrom, dizendo: Eis que somos teus ossos e tua carne.",
+        "title": "Davi é coroado rei; os seus valentes"
       },
       {
         "text": "E também outrora, sendo Saul ainda rei, eras tu o que fazias sair e entrar a Israel; também o Senhor teu Deus te disse: Tu apascentarás o meu povo Israel, e tu serás chefe sobre o meu povo Israel."
@@ -1429,7 +1440,8 @@
     ],
     [
       {
-        "text": "Estes, porém, são os que vieram a Davi, a Ziclague, estando ele ainda escondido, por causa de Saul, filho de Quis; e eram dos valentes que o ajudaram na guerra."
+        "text": "Estes, porém, são os que vieram a Davi, a Ziclague, estando ele ainda escondido, por causa de Saul, filho de Quis; e eram dos valentes que o ajudaram na guerra.",
+        "title": "Os guerreiros que se juntaram a Davi"
       },
       {
         "text": "Estavam armados de arco, e usavam tanto da mão direita como da esquerda em atirar pedras e em atirar flechas com o arco; eram dos irmãos de Saul, benjamitas."
@@ -1551,7 +1563,8 @@
     ],
     [
       {
-        "text": "E Davi tomou conselho com os capitães dos milhares, e das centenas, e com todos os líderes."
+        "text": "E Davi tomou conselho com os capitães dos milhares, e das centenas, e com todos os líderes.",
+        "title": "A arca é levada para Quiriate-Jearim"
       },
       {
         "text": "E disse Davi a toda a congregação de Israel: Se bem vos parece, e se isto vem do Senhor nosso Deus, enviemos depressa mensageiros a todos os nossos outros irmãos em todas as terras de Israel, e aos sacerdotes, e aos levitas nas suas cidades e nos seus arrabaldes, para que se reúnam conosco;"
@@ -1595,7 +1608,8 @@
     ],
     [
       {
-        "text": "Então Hirão, rei de Tiro, mandou mensageiros a Davi, e madeira de cedro, e pedreiros, e carpinteiros, para lhe edificarem uma casa."
+        "text": "Então Hirão, rei de Tiro, mandou mensageiros a Davi, e madeira de cedro, e pedreiros, e carpinteiros, para lhe edificarem uma casa.",
+        "title": "A casa de Davi em Jerusalém; as guerras contra os filisteus"
       },
       {
         "text": "E entendeu Davi que o Senhor o tinha confirmado rei sobre Israel; porque o seu reino tinha sido muito exaltado por amor do seu povo Israel."
@@ -1648,7 +1662,8 @@
     ],
     [
       {
-        "text": "Davi também fez casa para si na cidade de Davi; e preparou um lugar para a arca de Deus, e armou-lhe uma tenda."
+        "text": "Davi também fez casa para si na cidade de Davi; e preparou um lugar para a arca de Deus, e armou-lhe uma tenda.",
+        "title": "A arca é levada a Jerusalém"
       },
       {
         "text": "Então disse Davi: Ninguém pode levar a arca de Deus, senão os levitas; porque o Senhor os escolheu, para levar a arca de Deus, e para o servirem eternamente."
@@ -1737,7 +1752,8 @@
     ],
     [
       {
-        "text": "Trouxeram, pois, a arca de Deus, e a puseram no meio da tenda que Davi lhe tinha armado; e ofereceram holocaustos e sacrifícios pacíficos perante Deus."
+        "text": "Trouxeram, pois, a arca de Deus, e a puseram no meio da tenda que Davi lhe tinha armado; e ofereceram holocaustos e sacrifícios pacíficos perante Deus.",
+        "title": "O cântico de Davi; o ministério dos levitas"
       },
       {
         "text": "E, acabando Davi de oferecer os holocaustos e sacrifícios pacíficos, abençoou o povo em nome do Senhor."
@@ -1868,7 +1884,8 @@
     ],
     [
       {
-        "text": "Sucedeu, pois, que, morando Davi já em sua casa, disse ao profeta Natã: Eis que moro em casa de cedro, mas a arca da aliança do SENHOR está debaixo de cortinas."
+        "text": "Sucedeu, pois, que, morando Davi já em sua casa, disse ao profeta Natã: Eis que moro em casa de cedro, mas a arca da aliança do SENHOR está debaixo de cortinas.",
+        "title": "A promessa de Deus a Davi"
       },
       {
         "text": "Então Natã disse a Davi: Tudo quanto tens no teu coração faze, porque Deus é contigo."
@@ -1951,7 +1968,8 @@
     ],
     [
       {
-        "text": "E depois disto aconteceu que Davi derrotou os filisteus, e os sujeitou; e tomou a Gate, e os lugares da sua jurisdição, da mão dos filisteus."
+        "text": "E depois disto aconteceu que Davi derrotou os filisteus, e os sujeitou; e tomou a Gate, e os lugares da sua jurisdição, da mão dos filisteus.",
+        "title": "As vitórias de Davi e a organização do reino"
       },
       {
         "text": "Também derrotou os moabitas; e os moabitas ficaram por servos de Davi, pagando tributos."
@@ -2004,7 +2022,8 @@
     ],
     [
       {
-        "text": "E aconteceu, depois disto que Naás, rei dos filhos de Amom, morreu; e seu filho reinou em seu lugar."
+        "text": "E aconteceu, depois disto que Naás, rei dos filhos de Amom, morreu; e seu filho reinou em seu lugar.",
+        "title": "A guerra contra os amonitas"
       },
       {
         "text": "Então disse Davi: Usarei de benevolência com Hanum, filho de Naás, porque seu pai usou de benevolência comigo. Por isso Davi enviou mensageiros para o consolarem acerca de seu pai. E, chegando os servos de Davi à terra dos filhos de Amom, a Hanum, para o consolarem,"
@@ -2063,7 +2082,8 @@
     ],
     [
       {
-        "text": "Aconteceu que, no decurso de um ano, no tempo em que os reis costumam sair para a guerra, Joabe levou o exército, e destruiu a terra dos filhos de Amom, e veio, e cercou a Rabá; porém Davi ficou em Jerusalém; e Joabe feriu a Rabá, e a destruiu."
+        "text": "Aconteceu que, no decurso de um ano, no tempo em que os reis costumam sair para a guerra, Joabe levou o exército, e destruiu a terra dos filhos de Amom, e veio, e cercou a Rabá; porém Davi ficou em Jerusalém; e Joabe feriu a Rabá, e a destruiu.",
+        "title": "A conquista de Rabá; a guerra contra os filisteus"
       },
       {
         "text": "E Davi tirou a coroa da cabeça do rei deles, e achou nela o peso de um talento de ouro, e havia nela pedras preciosas; e foi posta sobre a cabeça de Davi; e levou da cidade mui grande despojo."
@@ -2089,7 +2109,8 @@
     ],
     [
       {
-        "text": "Então Satanás se levantou contra Israel, e incitou Davi a numerar a Israel."
+        "text": "Então Satanás se levantou contra Israel, e incitou Davi a numerar a Israel.",
+        "title": "O censo de Davi"
       },
       {
         "text": "E disse Davi a Joabe e aos maiorais do povo: Ide, numerai a Israel, desde Berseba até Dã; e trazei-me a conta para que saiba o número deles."
@@ -2181,7 +2202,8 @@
     ],
     [
       {
-        "text": "E disse Davi: Esta será a casa do SENHOR Deus, e este será o altar do holocausto para Israel."
+        "text": "E disse Davi: Esta será a casa do SENHOR Deus, e este será o altar do holocausto para Israel.",
+        "title": "Os preparativos de Davi para o templo"
       },
       {
         "text": "E deu ordem Davi que se ajuntassem os estrangeiros que estavam na terra de Israel; e ordenou cortadores de pedras, para que lavrassem pedras de cantaria, para edificar a casa de Deus."
@@ -2240,7 +2262,8 @@
     ],
     [
       {
-        "text": "Sendo, pois, Davi já velho, e cheio de dias, fez a Salomão, seu filho, rei sobre Israel."
+        "text": "Sendo, pois, Davi já velho, e cheio de dias, fez a Salomão, seu filho, rei sobre Israel.",
+        "title": "A divisão dos levitas para o serviço"
       },
       {
         "text": "E reuniu a todos os príncipes de Israel, como também aos sacerdotes e levitas."
@@ -2338,7 +2361,8 @@
     ],
     [
       {
-        "text": "E quanto aos filhos de Arão, estas foram as suas divisões: os filhos de Arão: Nadabe, Abiú, Eleazar e Itamar."
+        "text": "E quanto aos filhos de Arão, estas foram as suas divisões: os filhos de Arão: Nadabe, Abiú, Eleazar e Itamar.",
+        "title": "As divisões dos sacerdotes"
       },
       {
         "text": "E morreram Nadabe e Abiú antes de seu pai, e não tiveram filhos; e Eleazar e Itamar administravam o sacerdócio."
@@ -2433,7 +2457,8 @@
     ],
     [
       {
-        "text": "E Davi, juntamente com os capitães do exército, separou para o ministério os filhos de Asafe, e de Hemã, e de Jedutum, para profetizarem com harpas, com címbalos, e com saltérios; e este foi o número dos homens aptos para a obra do seu ministério:"
+        "text": "E Davi, juntamente com os capitães do exército, separou para o ministério os filhos de Asafe, e de Hemã, e de Jedutum, para profetizarem com harpas, com címbalos, e com saltérios; e este foi o número dos homens aptos para a obra do seu ministério:",
+        "title": "Os levitas encarregados da música"
       },
       {
         "text": "Dos filhos de Asafe: Zacur, José, Netanias, e Asarela, filhos de Asafe; a cargo de Asafe, que profetizava debaixo das ordens do rei Davi."
@@ -2528,7 +2553,8 @@
     ],
     [
       {
-        "text": "Quanto às divisões dos porteiros: dos coraítas: Meselemias, filho de Coré, dos filhos de Asafe."
+        "text": "Quanto às divisões dos porteiros: dos coraítas: Meselemias, filho de Coré, dos filhos de Asafe.",
+        "title": "Os porteiros e tesoureiros"
       },
       {
         "text": "E foram os filhos de Meselemias: Zacarias o primogênito, Jediael o segundo, Zebadias o terceiro, Jatniel o quarto,"
@@ -2626,7 +2652,8 @@
     ],
     [
       {
-        "text": "Estes são os filhos de Israel segundo o seu número, os chefes dos pais, e os capitães dos milhares e das centenas, com os seus oficiais, que serviam ao rei em todos os negócios das turmas que entravam e saíam de mês em mês, em todos os meses do ano; cada turma de vinte e quatro mil."
+        "text": "Estes são os filhos de Israel segundo o seu número, os chefes dos pais, e os capitães dos milhares e das centenas, com os seus oficiais, que serviam ao rei em todos os negócios das turmas que entravam e saíam de mês em mês, em todos os meses do ano; cada turma de vinte e quatro mil.",
+        "title": "Os chefes do exército"
       },
       {
         "text": "Sobre a primeira turma do primeiro mês estava Jasobeão, filho de Zabdiel; e em sua turma havia vinte e quatro mil."
@@ -2730,7 +2757,8 @@
     ],
     [
       {
-        "text": "Então Davi reuniu em Jerusalém todos os príncipes de Israel, os príncipes das tribos, e os capitães das turmas, que serviam o rei, e os capitães dos milhares, e os capitães das centenas, e os administradores de toda a fazenda e possessão do rei, e de seus filhos, como também os oficiais, os poderosos, e todo o homem valente."
+        "text": "Então Davi reuniu em Jerusalém todos os príncipes de Israel, os príncipes das tribos, e os capitães das turmas, que serviam o rei, e os capitães dos milhares, e os capitães das centenas, e os administradores de toda a fazenda e possessão do rei, e de seus filhos, como também os oficiais, os poderosos, e todo o homem valente.",
+        "title": "As instruções de Davi a Salomão"
       },
       {
         "text": "E pôs-se o rei Davi em pé, e disse: Ouvi-me, irmãos meus, e povo meu; em meu coração propus eu edificar uma casa de repouso para a arca da aliança do Senhor e para o estrado dos pés do nosso Deus, e eu tinha feito o preparo para a edificar."
@@ -2795,7 +2823,8 @@
     ],
     [
       {
-        "text": "Disse mais o rei Davi a toda a congregação: Salomão, meu filho, a quem só Deus escolheu, é ainda moço e tenro, e esta obra é grande; porque não é o palácio para homem, mas para o SENHOR Deus."
+        "text": "Disse mais o rei Davi a toda a congregação: Salomão, meu filho, a quem só Deus escolheu, é ainda moço e tenro, e esta obra é grande; porque não é o palácio para homem, mas para o SENHOR Deus.",
+        "title": "As ofertas para o templo; a morte de Davi"
       },
       {
         "text": "Eu, pois, com todas as minhas forças já tenho preparado para a casa de meu Deus ouro para as obras de ouro, e prata para as de prata, e cobre para as de cobre, ferro para as de ferro e madeira para as de madeira, pedras de ônix, e as de engaste, e pedras ornamentais, e pedras de diversas cores, e toda a sorte de pedras preciosas, e pedras de mármore em abundância."

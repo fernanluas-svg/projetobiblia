@@ -1,8 +1,8 @@
 export const quizData = {
   "quiz": {
-    "titulo": "Quiz Bíblico - 295 Perguntas",
-    "descricao": "Teste seus conhecimentos bíblicos com 295 perguntas de múltipla escolha",
-    "total_perguntas": 295,
+    "titulo": "Quiz Bíblico - 375 Perguntas",
+    "descricao": "Teste seus conhecimentos bíblicos com 375 perguntas de múltipla escolha",
+    "total_perguntas": 375,
     "versoes": [
       "ARC",
       "NVI"
@@ -4432,6 +4432,1206 @@ export const quizData = {
         "resposta_correta": "a",
         "referencia": "Neemias 2:5-8",
         "explicacao": "Neemias pediu ao rei Artaxerxes e foi autorizado a reconstruir os muros de Jerusalém."
+      },
+      {
+        "id": 296,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual rei de Judá reinou por mais tempo, totalizando 55 anos de reinado?",
+        "alternativas": {
+          "a": "Manassés",
+          "b": "Ezequias",
+          "c": "Josias",
+          "d": "Uzias"
+        },
+        "resposta_correta": "a",
+        "referencia": "2 Reis 21:1",
+        "explicacao": "Manassés, filho de Ezequias, teve o reinado mais longo de Judá: 55 anos, marcados pela idolatria."
+      },
+      {
+        "id": 297,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome do filho primogênito de Jacó?",
+        "alternativas": {
+          "a": "Judá",
+          "b": "Rúben",
+          "c": "Simeão",
+          "d": "Levi"
+        },
+        "resposta_correta": "b",
+        "referencia": "Gênesis 49:3",
+        "explicacao": "Rúben, o primogênito de Jacó, perdeu a primazia por profanar a cama de seu pai."
+      },
+      {
+        "id": 298,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual mulher de Jericó escondeu os espias enviados por Josué?",
+        "alternativas": {
+          "a": "Rute",
+          "b": "Débora",
+          "c": "Raabe",
+          "d": "Dalila"
+        },
+        "resposta_correta": "c",
+        "referencia": "Josué 2:1",
+        "explicacao": "Raabe, de Jericó, escondeu os espias israelitas e foi poupada na conquista da cidade."
+      },
+      {
+        "id": 299,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome da mãe do profeta Moisés?",
+        "alternativas": {
+          "a": "Miriã",
+          "b": "Ana",
+          "c": "Raquel",
+          "d": "Joquebede"
+        },
+        "resposta_correta": "d",
+        "referencia": "Êxodo 6:20",
+        "explicacao": "Joquebede escondeu Moisés por três meses e depois o colocou num cesto à beira do Nilo."
+      },
+      {
+        "id": 300,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Em qual cidade Paulo teve a visão do homem macedônio que lhe pediu socorro?",
+        "alternativas": {
+          "a": "Trôade",
+          "b": "Antioquia",
+          "c": "Éfeso",
+          "d": "Atenas"
+        },
+        "resposta_correta": "a",
+        "referencia": "Atos 16:8-9",
+        "explicacao": "Em Trôade, Paulo viu o macedônio em visão, o que o levou à Macedônia."
+      },
+      {
+        "id": 301,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era a cidade natal do apóstolo Paulo?",
+        "alternativas": {
+          "a": "Jerusalém",
+          "b": "Tarso",
+          "c": "Damasco",
+          "d": "Antioquia"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 9:11",
+        "explicacao": "Paulo nasceu em Tarso, na Cilícia, mas estudou em Jerusalém aos pés de Gamaliel."
+      },
+      {
+        "id": 302,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Qual profeta anunciou a 'voz do que clama no deserto', que prepararia o caminho do Senhor?",
+        "alternativas": {
+          "a": "Ezequiel",
+          "b": "Amós",
+          "c": "Isaías",
+          "d": "Ageu"
+        },
+        "resposta_correta": "c",
+        "referencia": "Isaías 40:3",
+        "explicacao": "Isaías predisse a voz que clamaria no deserto, cumprida em João Batista."
+      },
+      {
+        "id": 303,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual líder religioso procurou Jesus à noite para entender o novo nascimento?",
+        "alternativas": {
+          "a": "Caifás",
+          "b": "Gamaliel",
+          "c": "Herodes",
+          "d": "Nicodemos"
+        },
+        "resposta_correta": "d",
+        "referencia": "João 3:1-2",
+        "explicacao": "Nicodemos, fariseu e membro do Sinédrio, visitou Jesus à noite."
+      },
+      {
+        "id": 304,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "O que Deus criou no primeiro dia da criação?",
+        "alternativas": {
+          "a": "A luz",
+          "b": "O firmamento",
+          "c": "As estrelas",
+          "d": "Os animais"
+        },
+        "resposta_correta": "a",
+        "referencia": "Gênesis 1:3-5",
+        "explicacao": "No primeiro dia, Deus disse 'Haja luz', separando a luz das trevas."
+      },
+      {
+        "id": 305,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome da sogra de Rute?",
+        "alternativas": {
+          "a": "Orfa",
+          "b": "Noemi",
+          "c": "Abigail",
+          "d": "Ana"
+        },
+        "resposta_correta": "b",
+        "referencia": "Rute 1:2-4",
+        "explicacao": "Noemi, sogra de Rute, voltou para Belém acompanhada da nora após perder o marido e os filhos."
+      },
+      {
+        "id": 306,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual profeta foi sustentado por corvos junto ao ribeiro de Querite?",
+        "alternativas": {
+          "a": "Elias",
+          "b": "Eliseu",
+          "c": "Samuel",
+          "d": "Oseias"
+        },
+        "resposta_correta": "a",
+        "referencia": "1 Reis 17:4-6",
+        "explicacao": "Durante a seca, corvos levaram pão e carne a Elias junto ao ribeiro de Querite."
+      },
+      {
+        "id": 307,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome do pai de Moisés, Arão e Miriã?",
+        "alternativas": {
+          "a": "Coate",
+          "b": "Anrão",
+          "c": "Levi",
+          "d": "Jeter"
+        },
+        "resposta_correta": "b",
+        "referencia": "Êxodo 6:20",
+        "explicacao": "Anrão, da casa de Levi, casou-se com Joquebede e gerou Moisés, Arão e Miriã."
+      },
+      {
+        "id": 308,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Onde está escrito: 'Crescei na graça e no conhecimento de nosso Senhor e Salvador Jesus Cristo'?",
+        "alternativas": {
+          "a": "1 João 1:9",
+          "b": "Judas 1:20",
+          "c": "2 Pedro 3:18",
+          "d": "Hebreus 6:1"
+        },
+        "resposta_correta": "c",
+        "referencia": "2 Pedro 3:18",
+        "explicacao": "Pedro encerra sua segunda carta exortando ao crescimento na graça e no conhecimento de Cristo."
+      },
+      {
+        "id": 309,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome da mãe de João Batista?",
+        "alternativas": {
+          "a": "Maria",
+          "b": "Marta",
+          "c": "Isabel",
+          "d": "Salomé"
+        },
+        "resposta_correta": "c",
+        "referencia": "Lucas 1:13",
+        "explicacao": "Isabel, parente de Maria, concebeu João Batista em idade avançada."
+      },
+      {
+        "id": 310,
+        "tema": "números",
+        "dificuldade": "medio",
+        "pergunta": "Quantos livros compõem o Pentateuco, os cinco primeiros livros da Bíblia?",
+        "alternativas": {
+          "a": "3",
+          "b": "4",
+          "c": "5",
+          "d": "7"
+        },
+        "resposta_correta": "c",
+        "referencia": "Pentateuco",
+        "explicacao": "O Pentateuco reúne Gênesis, Êxodo, Levítico, Números e Deuteronômio."
+      },
+      {
+        "id": 311,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Quem disse: 'Vós sois a luz do mundo'?",
+        "alternativas": {
+          "a": "Moisés",
+          "b": "João Batista",
+          "c": "Paulo",
+          "d": "Jesus"
+        },
+        "resposta_correta": "d",
+        "referencia": "Mateus 5:14",
+        "explicacao": "No Sermão do Monte, Jesus declarou que seus discípulos são a luz do mundo."
+      },
+      {
+        "id": 312,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Em que rio Jesus foi batizado por João Batista?",
+        "alternativas": {
+          "a": "Rio Jordão",
+          "b": "Rio Nilo",
+          "c": "Rio Eufrates",
+          "d": "Rio Tigre"
+        },
+        "resposta_correta": "a",
+        "referencia": "Mateus 3:13-16",
+        "explicacao": "Jesus foi batizado no rio Jordão, e o Espírito Santo desceu sobre Ele."
+      },
+      {
+        "id": 313,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Como o apóstolo Paulo escapou de Damasco quando era perseguido?",
+        "alternativas": {
+          "a": "Montou num cavalo",
+          "b": "Escondeu-se num barco",
+          "c": "Saiu pela porta principal",
+          "d": "Desceu num cesto pela muralha"
+        },
+        "resposta_correta": "d",
+        "referencia": "Atos 9:25",
+        "explicacao": "Os discípulos desceram Paulo num cesto pela muralha de Damasco."
+      },
+      {
+        "id": 314,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Quem foi o servo que recebeu o manto de Elias e o sucedeu como profeta?",
+        "alternativas": {
+          "a": "Eliseu",
+          "b": "Obadias",
+          "c": "Micaías",
+          "d": "Gade"
+        },
+        "resposta_correta": "a",
+        "referencia": "2 Reis 2:9-13",
+        "explicacao": "Eliseu pediu porção dobrada do espírito de Elias e sucedeu-lhe após seu arrebatamento."
+      },
+      {
+        "id": 315,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual dos doze apóstolos era conhecido como 'Simão, o Zelote'?",
+        "alternativas": {
+          "a": "Simão Pedro",
+          "b": "Simão, o Zelote",
+          "c": "Bartolomeu",
+          "d": "Filipe"
+        },
+        "resposta_correta": "b",
+        "referencia": "Lucas 6:15",
+        "explicacao": "Simão, o Zelote, foi um dos doze apóstolos escolhidos por Jesus."
+      },
+      {
+        "id": 316,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Onde está escrito: 'O temor do Senhor é o princípio da sabedoria'?",
+        "alternativas": {
+          "a": "Salmo 1:1",
+          "b": "Salmo 111:10",
+          "c": "Salmo 91:1",
+          "d": "Salmo 23:1"
+        },
+        "resposta_correta": "b",
+        "referencia": "Salmo 111:10",
+        "explicacao": "O salmista ensina que o temor do Senhor é o princípio da sabedoria."
+      },
+      {
+        "id": 317,
+        "tema": "números",
+        "dificuldade": "medio",
+        "pergunta": "Com quantos anos Josias começou a reinar em Judá?",
+        "alternativas": {
+          "a": "12",
+          "b": "10",
+          "c": "8",
+          "d": "16"
+        },
+        "resposta_correta": "c",
+        "referencia": "2 Crônicas 34:1",
+        "explicacao": "Josias tornou-se rei aos 8 anos e foi um dos reis mais fiéis de Judá."
+      },
+      {
+        "id": 318,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome do filho primogênito do rei Davi?",
+        "alternativas": {
+          "a": "Absalão",
+          "b": "Adonias",
+          "c": "Salomão",
+          "d": "Amnom"
+        },
+        "resposta_correta": "d",
+        "referencia": "2 Samuel 3:2",
+        "explicacao": "Amnom, o primogênito, foi morto por Absalão por causa de Tamar."
+      },
+      {
+        "id": 319,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "O profeta Jeremias pertencia a qual tribo sacerdotal?",
+        "alternativas": {
+          "a": "Levi",
+          "b": "Judá",
+          "c": "Benjamim",
+          "d": "Efraim"
+        },
+        "resposta_correta": "a",
+        "referencia": "Jeremias 1:1",
+        "explicacao": "Jeremias era sacerdote de Anatote e, portanto, da tribo de Levi."
+      },
+      {
+        "id": 320,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Para onde José e Maria fugiram com o menino Jesus para escapar de Herodes?",
+        "alternativas": {
+          "a": "Egito",
+          "b": "Roma",
+          "c": "Babilônia",
+          "d": "Antioquia"
+        },
+        "resposta_correta": "a",
+        "referencia": "Mateus 2:13-15",
+        "explicacao": "José levou Maria e o menino ao Egito para fugir da matança ordenada por Herodes."
+      },
+      {
+        "id": 321,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual oficial romano resgatou Paulo da multidão em Jerusalém antes de seu julgamento?",
+        "alternativas": {
+          "a": "Félix",
+          "b": "Cláudio Lísias",
+          "c": "Festo",
+          "d": "Agripa"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 23:26",
+        "explicacao": "Cláudio Lísias, tribuno romano, salvou Paulo da multidão e o enviou a Cesareia."
+      },
+      {
+        "id": 322,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Após a morte de qual rei o reino de Israel se dividiu em dois?",
+        "alternativas": {
+          "a": "Saul",
+          "b": "Davi",
+          "c": "Salomão",
+          "d": "Roboão"
+        },
+        "resposta_correta": "c",
+        "referencia": "1 Reis 12:1-20",
+        "explicacao": "Após a morte de Salomão, Roboão endureceu o jugo e dez tribos se separaram."
+      },
+      {
+        "id": 323,
+        "tema": "números",
+        "dificuldade": "medio",
+        "pergunta": "Com quantos anos José foi vendido pelos irmãos e levado ao Egito?",
+        "alternativas": {
+          "a": "12",
+          "b": "15",
+          "c": "17",
+          "d": "20"
+        },
+        "resposta_correta": "c",
+        "referencia": "Gênesis 37:2",
+        "explicacao": "José tinha 17 anos quando foi vendido e levado ao Egito."
+      },
+      {
+        "id": 324,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual cidade, junto com Sodoma, foi destruída com fogo e enxofre?",
+        "alternativas": {
+          "a": "Hebrom",
+          "b": "Zoar",
+          "c": "Bete-Sã",
+          "d": "Gomorra"
+        },
+        "resposta_correta": "d",
+        "referencia": "Gênesis 19:24",
+        "explicacao": "Deus fez chover fogo e enxofre sobre Sodoma e Gomorra."
+      },
+      {
+        "id": 325,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual rei de Israel morreu na batalha do monte Gilboa junto com seus filhos?",
+        "alternativas": {
+          "a": "Saul",
+          "b": "Davi",
+          "c": "Salomão",
+          "d": "Jeroboão"
+        },
+        "resposta_correta": "a",
+        "referencia": "1 Samuel 31:1-6",
+        "explicacao": "Saul e seus filhos, incluindo Jônatas, morreram em Gilboa contra os filisteus."
+      },
+      {
+        "id": 326,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome do filho que Abraão teve com a serva Agar?",
+        "alternativas": {
+          "a": "Isaque",
+          "b": "Ismael",
+          "c": "Ló",
+          "d": "Midiã"
+        },
+        "resposta_correta": "b",
+        "referencia": "Gênesis 16:15",
+        "explicacao": "Ismael, filho de Abraão e de Agar, tornou-se pai de muitas nações."
+      },
+      {
+        "id": 327,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Quem escreveu a carta aos Romanos?",
+        "alternativas": {
+          "a": "Pedro",
+          "b": "Paulo",
+          "c": "Tiago",
+          "d": "João"
+        },
+        "resposta_correta": "d",
+        "referencia": "Romanos 1:1",
+        "explicacao": "Paulo escreveu aos cristãos de Roma apresentando o evangelho da graça."
+      },
+      {
+        "id": 328,
+        "tema": "personagens",
+        "dificuldade": "medio",
+        "pergunta": "Qual era o nome da esposa de Jacó que ele mais amava?",
+        "alternativas": {
+          "a": "Raquel",
+          "b": "Lia",
+          "c": "Zilpa",
+          "d": "Bila"
+        },
+        "resposta_correta": "a",
+        "referencia": "Gênesis 29:18",
+        "explicacao": "Jacó serviu por sete anos por Raquel, a esposa que amava."
+      },
+      {
+        "id": 329,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Quem escreveu o livro de Atos dos Apóstolos?",
+        "alternativas": {
+          "a": "Marcos",
+          "b": "Lucas",
+          "c": "Mateus",
+          "d": "João"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 1:1",
+        "explicacao": "Lucas escreveu Atos como continuação de seu evangelho."
+      },
+      {
+        "id": 330,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual cidade de Efrata foi a terra natal do rei Davi?",
+        "alternativas": {
+          "a": "Hebrom",
+          "b": "Sião",
+          "c": "Belém",
+          "d": "Samaria"
+        },
+        "resposta_correta": "c",
+        "referencia": "1 Samuel 17:12",
+        "explicacao": "Davi era de Belém de Efrata, onde pastoreava as ovelhas de seu pai."
+      },
+      {
+        "id": 331,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Qual versículo diz: 'Não vos embriagueis com vinho... mas enchei-vos do Espírito'?",
+        "alternativas": {
+          "a": "Colossenses 3:2",
+          "b": "Romanos 12:2",
+          "c": "Gálatas 5:22",
+          "d": "Efésios 5:18"
+        },
+        "resposta_correta": "d",
+        "referencia": "Efésios 5:18",
+        "explicacao": "Paulo exorta a sermos cheios do Espírito em vez de nos embriagarmos com vinho."
+      },
+      {
+        "id": 332,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual rei de Judá teve sua vida prolongada por 15 anos após orar durante uma doença?",
+        "alternativas": {
+          "a": "Josias",
+          "b": "Acaz",
+          "c": "Manassés",
+          "d": "Ezequias"
+        },
+        "resposta_correta": "d",
+        "referencia": "Isaías 38:5",
+        "explicacao": "O Senhor acrescentou 15 anos à vida de Ezequias após sua oração."
+      },
+      {
+        "id": 333,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Quem foi o primeiro juiz de Israel?",
+        "alternativas": {
+          "a": "Gideão",
+          "b": "Otniel",
+          "c": "Sansão",
+          "d": "Jefté"
+        },
+        "resposta_correta": "b",
+        "referencia": "Juízes 3:9-10",
+        "explicacao": "Otniel, sobrinho de Calebe, foi o primeiro juiz de Israel."
+      },
+      {
+        "id": 334,
+        "tema": "versículos",
+        "dificuldade": "medio",
+        "pergunta": "Qual versículo registra a Grande Comissão de pregar a todas as nações?",
+        "alternativas": {
+          "a": "João 1:1",
+          "b": "Salmo 119:105",
+          "c": "Mateus 28:19",
+          "d": "Gênesis 1:1"
+        },
+        "resposta_correta": "c",
+        "referencia": "Mateus 28:19",
+        "explicacao": "Na Grande Comissão, Jesus ordena fazer discípulos de todas as nações."
+      },
+      {
+        "id": 335,
+        "tema": "histórias",
+        "dificuldade": "medio",
+        "pergunta": "Qual profeta viu o Senhor num alto e sublime trono no ano da morte do rei Uzias?",
+        "alternativas": {
+          "a": "Jeremias",
+          "b": "Ezequiel",
+          "c": "Amós",
+          "d": "Isaías"
+        },
+        "resposta_correta": "d",
+        "referencia": "Isaías 6:1",
+        "explicacao": "No ano da morte de Uzias, Isaías contemplou o Senhor assentado num alto trono."
+      },
+      {
+        "id": 336,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da esposa de Moisés?",
+        "alternativas": {
+          "a": "Zípora",
+          "b": "Ester",
+          "c": "Rute",
+          "d": "Débora"
+        },
+        "resposta_correta": "a",
+        "referencia": "Êxodo 2:21",
+        "explicacao": "Zípora, filha de Jetro, casou-se com Moisés no deserto de Midiã."
+      },
+      {
+        "id": 337,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Qual casal foi morto por mentir ao Espírito Santo sobre o valor da venda de uma propriedade?",
+        "alternativas": {
+          "a": "Priscila e Áquila",
+          "b": "Ananias e Safira",
+          "c": "Timóteo e Febe",
+          "d": "José e Maria"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 5:1-10",
+        "explicacao": "Ananias e Safira morreram por mentir ao Espírito Santo."
+      },
+      {
+        "id": 338,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual discípulo foi enviado por Deus para devolver a visão a Paulo em Damasco?",
+        "alternativas": {
+          "a": "Barnabé",
+          "b": "Filipe",
+          "c": "Ananias de Damasco",
+          "d": "Silas"
+        },
+        "resposta_correta": "c",
+        "referencia": "Atos 9:10-18",
+        "explicacao": "Ananias, discípulo de Damasco, orou por Paulo e devolveu-lhe a visão."
+      },
+      {
+        "id": 339,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'E sede cumpridores da palavra e não somente ouvintes'?",
+        "alternativas": {
+          "a": "Romanos 12:1",
+          "b": "Efésios 2:10",
+          "c": "1 João 3:18",
+          "d": "Tiago 1:22"
+        },
+        "resposta_correta": "d",
+        "referencia": "Tiago 1:22",
+        "explicacao": "Tiago exorta os cristãos a serem praticantes da palavra e não apenas ouvintes."
+      },
+      {
+        "id": 340,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Por quantas moedas de prata José foi vendido pelos irmãos aos mercadores?",
+        "alternativas": {
+          "a": "20",
+          "b": "30",
+          "c": "10",
+          "d": "15"
+        },
+        "resposta_correta": "a",
+        "referencia": "Gênesis 37:28",
+        "explicacao": "José foi vendido aos ismaelitas por vinte moedas de prata."
+      },
+      {
+        "id": 341,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome do rei de Basã derrotado por Moisés e pelo povo de Israel?",
+        "alternativas": {
+          "a": "Eglom",
+          "b": "Og",
+          "c": "Beor",
+          "d": "Silom"
+        },
+        "resposta_correta": "b",
+        "referencia": "Deuteronômio 3:1-3",
+        "explicacao": "Og, rei de Basã, foi derrotado por Israel junto com o rei de Hesbom, Siom."
+      },
+      {
+        "id": 342,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Quantas cidades de refúgio foram estabelecidas para quem matasse alguém sem intenção?",
+        "alternativas": {
+          "a": "4",
+          "b": "5",
+          "c": "6",
+          "d": "8"
+        },
+        "resposta_correta": "c",
+        "referencia": "Números 35:6",
+        "explicacao": "Foram seis cidades de refúgio onde o homicida involuntário podia se abrigar."
+      },
+      {
+        "id": 343,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da esposa de José que lhe foi dada pelo faraó?",
+        "alternativas": {
+          "a": "Quetura",
+          "b": "Diná",
+          "c": "Ester",
+          "d": "Asenate"
+        },
+        "resposta_correta": "d",
+        "referencia": "Gênesis 41:45",
+        "explicacao": "O faraó deu a José a egípcia Asenate por esposa."
+      },
+      {
+        "id": 344,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Qual centurião romano foi o primeiro gentio a se converter com toda a sua casa no livro de Atos?",
+        "alternativas": {
+          "a": "Cornélio",
+          "b": "Sérgio Paulo",
+          "c": "Cláudio Lísias",
+          "d": "Jairo"
+        },
+        "resposta_correta": "a",
+        "referencia": "Atos 10:1-2, 44-48",
+        "explicacao": "Cornélio, centurião de Cesareia, recebeu o Espírito Santo com toda a sua casa."
+      },
+      {
+        "id": 345,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual filha de Saul se casou com Davi?",
+        "alternativas": {
+          "a": "Abigaíl",
+          "b": "Mical",
+          "c": "Bate-Seba",
+          "d": "Tamar"
+        },
+        "resposta_correta": "b",
+        "referencia": "1 Samuel 18:27",
+        "explicacao": "Saul deu sua filha Mical em casamento a Davi após a vitória sobre os filisteus."
+      },
+      {
+        "id": 346,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da única filha de Jacó mencionada na Bíblia?",
+        "alternativas": {
+          "a": "Tamar",
+          "b": "Miriã",
+          "c": "Diná",
+          "d": "Débora"
+        },
+        "resposta_correta": "c",
+        "referencia": "Gênesis 34:1",
+        "explicacao": "Diná, filha de Jacó e Lia, é a única filha de Jacó mencionada nas Escrituras."
+      },
+      {
+        "id": 347,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual rei da Pérsia escolheu Ester para ser sua rainha?",
+        "alternativas": {
+          "a": "Ciro",
+          "b": "Dario",
+          "c": "Artaxerxes",
+          "d": "Assuero"
+        },
+        "resposta_correta": "d",
+        "referencia": "Ester 1:19-2:17",
+        "explicacao": "O rei Assuero (Xerxes) escolheu a judia Ester como rainha da Pérsia."
+      },
+      {
+        "id": 348,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Qual profeta previu que o Messias nasceria em Belém?",
+        "alternativas": {
+          "a": "Miqueias",
+          "b": "Oseias",
+          "c": "Amós",
+          "d": "Zacarias"
+        },
+        "resposta_correta": "a",
+        "referencia": "Miqueias 5:2",
+        "explicacao": "Miqueias profetizou que de Belém sairia o governante de Israel."
+      },
+      {
+        "id": 349,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual governador romano ouviu Paulo em Cesareia e o manteve preso por dois anos?",
+        "alternativas": {
+          "a": "Festo",
+          "b": "Félix",
+          "c": "Agripa",
+          "d": "Pilatos"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 24:22-27",
+        "explicacao": "Félix, governador da Judeia, reteve Paulo na prisão por cerca de dois anos."
+      },
+      {
+        "id": 350,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Em cuja casa os discípulos se reuniram para orar pela libertação de Pedro da prisão?",
+        "alternativas": {
+          "a": "Marta",
+          "b": "Maria Madalena",
+          "c": "Maria, mãe de João Marcos",
+          "d": "Ana"
+        },
+        "resposta_correta": "c",
+        "referencia": "Atos 12:12",
+        "explicacao": "A igreja orava na casa de Maria, mãe de João Marcos, quando Pedro foi libertado."
+      },
+      {
+        "id": 351,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Qual Herodes mandou executar Tiago e prender Pedro na prisão?",
+        "alternativas": {
+          "a": "Herodes, o Grande",
+          "b": "Herodes Antipas",
+          "c": "Herodes Filipe",
+          "d": "Herodes Agripa"
+        },
+        "resposta_correta": "d",
+        "referencia": "Atos 12:1-3",
+        "explicacao": "Herodes Agripa mandou matar Tiago, irmão de João, e prender Pedro."
+      },
+      {
+        "id": 352,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Quantos capítulos tem o livro de Apocalipse?",
+        "alternativas": {
+          "a": "22",
+          "b": "25",
+          "c": "20",
+          "d": "24"
+        },
+        "resposta_correta": "a",
+        "referencia": "Apocalipse",
+        "explicacao": "O livro de Apocalipse possui 22 capítulos e encerra o Novo Testamento."
+      },
+      {
+        "id": 353,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'Nem todo o que me diz: Senhor, Senhor, entrará no reino dos céus'?",
+        "alternativas": {
+          "a": "Mateus 6:33",
+          "b": "Mateus 7:21",
+          "c": "Mateus 5:8",
+          "d": "Mateus 9:13"
+        },
+        "resposta_correta": "b",
+        "referencia": "Mateus 7:21",
+        "explicacao": "Jesus alertou que nem todo aquele que professa o nome do Senhor entrará no reino dos céus."
+      },
+      {
+        "id": 354,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual sacerdote ungiu Salomão como rei de Israel?",
+        "alternativas": {
+          "a": "Abiatar",
+          "b": "Eli",
+          "c": "Zadoque",
+          "d": "Eleazar"
+        },
+        "resposta_correta": "c",
+        "referencia": "1 Reis 1:39",
+        "explicacao": "Zadoque, o sacerdote, ungiu Salomão com óleo do tabernáculo em Giom."
+      },
+      {
+        "id": 355,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'Buscai o Senhor enquanto se pode achar'?",
+        "alternativas": {
+          "a": "Isaías 1:18",
+          "b": "Salmo 27:8",
+          "c": "Amós 5:4",
+          "d": "Isaías 55:6"
+        },
+        "resposta_correta": "d",
+        "referencia": "Isaías 55:6",
+        "explicacao": "Deus convida a que o busquemos enquanto Ele pode ser achado de perto."
+      },
+      {
+        "id": 356,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da serva de Sara que deu à luz Ismael?",
+        "alternativas": {
+          "a": "Agar",
+          "b": "Quetura",
+          "c": "Ester",
+          "d": "Ana"
+        },
+        "resposta_correta": "a",
+        "referencia": "Gênesis 16:15",
+        "explicacao": "Agar, serva egípcia de Sara, concebeu Ismael de Abraão."
+      },
+      {
+        "id": 357,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Em qual cidade Paulo foi apedrejado e dado como morto pelos habitantes?",
+        "alternativas": {
+          "a": "Icônio",
+          "b": "Listra",
+          "c": "Derbe",
+          "d": "Atenas"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 14:19",
+        "explicacao": "Em Listra, Paulo foi apedrejado e arrastado para fora da cidade como morto."
+      },
+      {
+        "id": 358,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual líder da igreja de Jerusalém proferiu a decisão no concílio sobre os gentios convertidos?",
+        "alternativas": {
+          "a": "Tiago, filho de Zebedeu",
+          "b": "Tiago, filho de Alfeu",
+          "c": "Tiago, irmão do Senhor",
+          "d": "Judas Barsabás"
+        },
+        "resposta_correta": "c",
+        "referencia": "Atos 15:13",
+        "explicacao": "Tiago, irmão do Senhor e líder em Jerusalém, apresentou a proposta final do concílio."
+      },
+      {
+        "id": 359,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Com quantos anos José se apresentou diante do faraó no Egito?",
+        "alternativas": {
+          "a": "27",
+          "b": "33",
+          "c": "40",
+          "d": "30"
+        },
+        "resposta_correta": "d",
+        "referencia": "Gênesis 41:46",
+        "explicacao": "José tinha 30 anos quando se apresentou diante do faraó do Egito."
+      },
+      {
+        "id": 360,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual homem idoso tomou o menino Jesus nos braços no templo e bendisse a Deus?",
+        "alternativas": {
+          "a": "Simeão",
+          "b": "Bartimeu",
+          "c": "Zacarias",
+          "d": "Barnabé"
+        },
+        "resposta_correta": "a",
+        "referencia": "Lucas 2:25-29",
+        "explicacao": "Simeão, que esperava a consolação de Israel, reconheceu o menino Jesus no templo."
+      },
+      {
+        "id": 361,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Em qual versículo Jesus orou: 'Santifica-os na tua verdade; a tua palavra é a verdade'?",
+        "alternativas": {
+          "a": "João 14:6",
+          "b": "João 17:17",
+          "c": "João 15:7",
+          "d": "João 8:31"
+        },
+        "resposta_correta": "b",
+        "referencia": "João 17:17",
+        "explicacao": "Na oração sacerdotal, Jesus pediu ao Pai que santificasse seus discípulos na verdade."
+      },
+      {
+        "id": 362,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da mãe de Timóteo, que tinha fé não fingida?",
+        "alternativas": {
+          "a": "Lóide",
+          "b": "Priscila",
+          "c": "Eunice",
+          "d": "Febe"
+        },
+        "resposta_correta": "c",
+        "referencia": "2 Timóteo 1:5",
+        "explicacao": "Eunice, mãe de Timóteo, foi lembrada por sua fé sincera."
+      },
+      {
+        "id": 363,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Em qual ilha o apóstolo Paulo foi mordido por uma víbora sem sofrer dano?",
+        "alternativas": {
+          "a": "Chipre",
+          "b": "Creta",
+          "c": "Sicília",
+          "d": "Malta"
+        },
+        "resposta_correta": "d",
+        "referencia": "Atos 28:1-5",
+        "explicacao": "Em Malta, uma víbora mordeu Paulo, mas ele não sofreu nenhum mal."
+      },
+      {
+        "id": 364,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'Seja, porém, a vossa palavra: Sim, sim; não, não'?",
+        "alternativas": {
+          "a": "Mateus 5:37",
+          "b": "Mateus 12:36",
+          "c": "Tiago 5:12",
+          "d": "Efésios 4:29"
+        },
+        "resposta_correta": "a",
+        "referencia": "Mateus 5:37",
+        "explicacao": "Jesus ensinou que a fala do discípulo deve ser simples: sim, sim; não, não."
+      },
+      {
+        "id": 365,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome da mulher que era mãe de Tiago e João, filhos de Zebedeu?",
+        "alternativas": {
+          "a": "Maria Madalena",
+          "b": "Salomé",
+          "c": "Maria",
+          "d": "Joana"
+        },
+        "resposta_correta": "b",
+        "referencia": "Mateus 27:56",
+        "explicacao": "Salomé, mãe dos filhos de Zebedeu, esteve presente na crucificação."
+      },
+      {
+        "id": 366,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Como Davi passou a ser chamada a fortaleza de Sião após conquistar Jerusalém dos jebuseus?",
+        "alternativas": {
+          "a": "Torre de Davi",
+          "b": "Cidade Santa",
+          "c": "Cidade de Davi",
+          "d": "Rocha Eterna"
+        },
+        "resposta_correta": "c",
+        "referencia": "2 Samuel 5:7",
+        "explicacao": "Davi tomou a fortaleza de Sião, e ela passou a ser chamada Cidade de Davi."
+      },
+      {
+        "id": 367,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'Porque nele foram criadas todas as coisas'?",
+        "alternativas": {
+          "a": "Gênesis 1:1",
+          "b": "Hebreus 11:3",
+          "c": "Salmo 33:6",
+          "d": "Colossenses 1:16"
+        },
+        "resposta_correta": "d",
+        "referencia": "Colossenses 1:16",
+        "explicacao": "Paulo ensina que todas as coisas foram criadas por Cristo e para ele."
+      },
+      {
+        "id": 368,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Quantos anos reinou Jeroboão II, filho de Joás, sobre Israel?",
+        "alternativas": {
+          "a": "41",
+          "b": "52",
+          "c": "22",
+          "d": "33"
+        },
+        "resposta_correta": "a",
+        "referencia": "2 Reis 14:23",
+        "explicacao": "Jeroboão II reinou sobre Israel por 41 anos em Samaria."
+      },
+      {
+        "id": 369,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Qual versículo declara: 'Porque eu sei que o meu Redentor vive'?",
+        "alternativas": {
+          "a": "Salmo 23:1",
+          "b": "Jó 19:25",
+          "c": "Isaías 44:6",
+          "d": "Apocalipse 22:12"
+        },
+        "resposta_correta": "b",
+        "referencia": "Jó 19:25",
+        "explicacao": "Jó confessa sua certeza de que seu Redentor vive e se erguerá sobre a terra."
+      },
+      {
+        "id": 370,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual era o nome do pai do profeta Ezequiel?",
+        "alternativas": {
+          "a": "Berá",
+          "b": "Queli",
+          "c": "Buzi",
+          "d": "Baruque"
+        },
+        "resposta_correta": "c",
+        "referencia": "Ezequiel 1:3",
+        "explicacao": "Ezequiel é apresentado como 'filho de Buzi', sacerdote profeta do exílio."
+      },
+      {
+        "id": 371,
+        "tema": "versículos",
+        "dificuldade": "dificil",
+        "pergunta": "Onde está escrito: 'E conhecereis a verdade, e a verdade vos libertará'?",
+        "alternativas": {
+          "a": "João 8:42",
+          "b": "João 14:6",
+          "c": "João 15:4",
+          "d": "João 8:32"
+        },
+        "resposta_correta": "d",
+        "referencia": "João 8:32",
+        "explicacao": "Jesus afirmou que a verdade conhecida de seus discípulos os libertaria."
+      },
+      {
+        "id": 372,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "De qual cidade portuária Jonas embarcou para fugir da presença do Senhor?",
+        "alternativas": {
+          "a": "Jope",
+          "b": "Tiro",
+          "c": "Cesareia",
+          "d": "Gaza"
+        },
+        "resposta_correta": "a",
+        "referencia": "Jonas 1:3",
+        "explicacao": "Jonas desceu a Jope e embarcou num navio rumo a Társis."
+      },
+      {
+        "id": 373,
+        "tema": "personagens",
+        "dificuldade": "dificil",
+        "pergunta": "Qual apóstolo foi libertado da prisão por um anjo e saiu pelo portão de ferro que se abriu sozinho?",
+        "alternativas": {
+          "a": "Tiago",
+          "b": "Pedro",
+          "c": "João",
+          "d": "Paulo"
+        },
+        "resposta_correta": "b",
+        "referencia": "Atos 12:6-10",
+        "explicacao": "Um anjo libertou Pedro, e o portão de ferro abriu-se por si mesmo."
+      },
+      {
+        "id": 374,
+        "tema": "números",
+        "dificuldade": "dificil",
+        "pergunta": "Antes da visita de Cornélio, quantas vezes a visão do grande lençol foi apresentada a Pedro?",
+        "alternativas": {
+          "a": "1",
+          "b": "2",
+          "c": "3",
+          "d": "4"
+        },
+        "resposta_correta": "c",
+        "referencia": "Atos 10:16",
+        "explicacao": "A visão do lençol com animais se repetiu por três vezes diante de Pedro."
+      },
+      {
+        "id": 375,
+        "tema": "histórias",
+        "dificuldade": "dificil",
+        "pergunta": "Em qual cidade Paulo e Silas foram libertados da prisão por um terremoto à meia-noite?",
+        "alternativas": {
+          "a": "Tessalônica",
+          "b": "Corinto",
+          "c": "Éfeso",
+          "d": "Filipos"
+        },
+        "resposta_correta": "d",
+        "referencia": "Atos 16:26",
+        "explicacao": "Em Filipos, um grande terremoto abriu as portas da prisão onde estavam Paulo e Silas."
       }
     ]
   }

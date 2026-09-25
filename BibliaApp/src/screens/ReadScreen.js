@@ -16,6 +16,9 @@ import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, getFontFamily } from '../con
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
 import { makeChapterKey } from '../utils/chapterKey';
+import { AUDIO_VERSIONS } from '../services/audioService';
+import FloatingAudioPlayer from '../components/FloatingAudioPlayer';
+import VersionList from '../components/VersionList';
 
 const PALETA_CONFETI = ['#FFD700', '#FF4081', '#00E676', '#29B6F6', '#AB47BC', '#FF9100', '#00BFFF', '#9B59B6', '#2ECC71', '#FF4757'];
 const TOTAL_PARTICULAS = 24;
@@ -254,8 +257,19 @@ export default function ReadScreen({ navigation, route }) {
     toggleChapterRead,
     getHighlight,
     setHighlight,
+    setBulkHighlight,
     setLastRead,
+    activeVersion,
+    loaded,
   } = useApp();
+
+  if (!loaded) {
+    return (
+      <View style={[styles.container, { backgroundColor: theme.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={theme.primary} />
+      </View>
+    );
+  }
 
   const isReaderDark = theme.dark;
   const readerFont = getFontFamily(fontFamily);
@@ -267,6 +281,7 @@ export default function ReadScreen({ navigation, route }) {
     chapterIndexRef.current = chapterIndex;
   }, [chapterIndex]);
   const [chapterModalVisible, setChapterModalVisible] = useState(false);
+  const [versionModalVisible, setVersionModalVisible] = useState(false);
   const [modalStep, setModalStep] = useState('chapters');
   const [modalBookIndex, setModalBookIndex] = useState(0);
   const [modalChapterIndex, setModalChapterIndex] = useState(0);
@@ -276,8 +291,11 @@ export default function ReadScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [scrollToVerse, setScrollToVerse] = useState(route?.params?.verse ?? null);
   const [scrollNonce, setScrollNonce] = useState(0);
+  const [audioVisible, setAudioVisible] = useState(false);
+  const [fabsVisible, setFabsVisible] = useState(true);
   const scrollViewRef = useRef(null);
   const verseRefs = useRef([]);
+  const pendingScrollRef = useRef(null);
   const lastOffsetY = useRef(0);
   const fabOpacity = useSharedValue(1);
 
@@ -289,15 +307,13 @@ export default function ReadScreen({ navigation, route }) {
     const y = e.nativeEvent.contentOffset.y;
     const dy = y - lastOffsetY.current;
     lastOffsetY.current = y;
-    if (dy > 4) {
+    if (dy > 4 && fabsVisible) {
+      setFabsVisible(false);
       fabOpacity.value = withTiming(0, { duration: 250 });
-    } else if (dy < -2) {
+    } else if (dy < -2 && !fabsVisible) {
+      setFabsVisible(true);
       fabOpacity.value = withTiming(1, { duration: 250 });
     }
-  };
-
-  const showFabs = () => {
-    fabOpacity.value = withTiming(1, { duration: 250 });
   };
 
   // Gesto de swipe horizontal para trocar de capítulo
@@ -320,8 +336,11 @@ export default function ReadScreen({ navigation, route }) {
   const totalChapters = meta?.chapters ?? fullBook?.chapters?.length ?? 0;
   const chapter = getChapter(fullBook, chapterIndex);
   const chapterKey = meta ? makeChapterKey(meta.abbrev, chapterIndex) : null;
+  const audioVersion = AUDIO_VERSIONS.includes(activeVersion) ? activeVersion : 'ACF';
+  const audioChapterNumber = chapterIndex + 1;
   const chapterRead = isChapterRead(chapterKey);
   const books = getBooks();
+  const currentBookIndex = books.findIndex((b) => b.abbrev === meta?.abbrev);
   const selectedMeta = books[modalBookIndex];
   const selectedBookMeta = selectedMeta ? getBookMeta(selectedMeta.abbrev) : null;
   const modalChapterCount = selectedBookMeta?.chaptersCount ?? 0;
@@ -336,6 +355,11 @@ export default function ReadScreen({ navigation, route }) {
     { key: 'antigo', title: t('readOT'), items: oldTestament },
     { key: 'novo', title: t('readNT'), items: newTestament },
   ].filter((s) => s.items.length > 0);
+
+  const activeSigla = activeVersion ?? 'NVI';
+
+  const openVersionModal = () => setVersionModalVisible(true);
+  const closeVersionModal = () => setVersionModalVisible(false);
 
   const goToPrevModalBook = () => {
     if (modalBookIndex > 0) {
@@ -404,6 +428,7 @@ export default function ReadScreen({ navigation, route }) {
   useEffect(() => {
     const chapter = route?.params?.chapter ?? 0;
     const verse = route?.params?.verse ?? null;
+    verseRefs.current = [];
     setChapterIndex(chapter);
     setScrollToVerse(verse);
     setScrollNonce((n) => n + 1);
@@ -423,7 +448,7 @@ export default function ReadScreen({ navigation, route }) {
     return () => {
       active = false;
     };
-  }, [meta]);
+  }, [meta, activeVersion]);
 
   useLayoutEffect(() => {
     if (navigation) {
@@ -458,7 +483,20 @@ export default function ReadScreen({ navigation, route }) {
   };
 
   const changeChapter = (nextIndex) => {
-    if (nextIndex < 0 || nextIndex >= totalChapters) return;
+    if (nextIndex < 0 || nextIndex >= totalChapters) {
+      const currentBookIdx = books.findIndex((b) => b.abbrev === meta?.abbrev);
+      if (nextIndex >= totalChapters && currentBookIdx >= 0 && currentBookIdx < books.length - 1) {
+        const nextBook = books[currentBookIdx + 1];
+        navigation.navigate('Read', { book: nextBook, chapter: 0 });
+      } else if (nextIndex < 0 && currentBookIdx > 0) {
+        const prevBook = books[currentBookIdx - 1];
+        const prevBookMeta = getBookMeta(prevBook.abbrev);
+        const lastChapter = (prevBookMeta?.chaptersCount ?? prevBook.chapters) - 1;
+        navigation.navigate('Read', { book: prevBook, chapter: lastChapter });
+      }
+      return;
+    }
+    verseRefs.current = [];
     setChapterIndex(nextIndex);
     setSelectedIndexes([]);
     setCopied(false);
@@ -472,13 +510,30 @@ export default function ReadScreen({ navigation, route }) {
 
   useEffect(() => {
     const verseToScroll = scrollToVerse ?? null;
-    if (verseToScroll == null || verseToScroll < 0) return;
+    if (verseToScroll == null || verseToScroll < 0) {
+      pendingScrollRef.current = null;
+      return;
+    }
+    pendingScrollRef.current = verseToScroll;
     const targetY = verseRefs.current[verseToScroll];
-    if (targetY == null || !scrollViewRef.current) return;
     const timer = setTimeout(() => {
-      scrollViewRef.current?.scrollTo({ y: targetY, animated: true });
+      const y = verseRefs.current[verseToScroll];
+      if (y != null && scrollViewRef.current) {
+        scrollViewRef.current?.scrollTo({ y, animated: true });
+        pendingScrollRef.current = null;
+      }
     }, 120);
-    return () => clearTimeout(timer);
+    const retry = setTimeout(() => {
+      const y = verseRefs.current[verseToScroll];
+      if (y != null && scrollViewRef.current) {
+        scrollViewRef.current?.scrollTo({ y, animated: true });
+        pendingScrollRef.current = null;
+      }
+    }, 600);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(retry);
+    };
   }, [scrollToVerse, scrollNonce, fullBook, chapterIndex]);
 
   const exitSelection = () => {
@@ -526,12 +581,24 @@ export default function ReadScreen({ navigation, route }) {
     }
   };
 
+  const handleImageShare = () => {
+    if (selectedIndexes.length === 0) return;
+    const verses = buildSelectedVerses();
+    navigation.navigate('ImageShare', { verses, title: meta?.name ? `${meta.name} ${chapterIndex + 1}` : '' });
+  };
+
   const handleMultiHighlight = (colorName) => {
     if (selectedIndexes.length === 0) return;
     const remove = selectedHighlightColor === colorName;
-    selectedIndexes.forEach((idx) => {
-      setHighlight(`${chapterKey}:${idx}`, remove ? null : colorName);
-    });
+    const targetColor = remove ? null : colorName;
+    const keys = selectedIndexes.map((idx) => `${chapterKey}:${idx}`);
+    if (typeof setBulkHighlight === 'function') {
+      setBulkHighlight(keys, targetColor);
+    } else {
+      keys.forEach((k) => setHighlight(k, targetColor));
+    }
+    setSelectedIndexes([]);
+    setCopied(false);
   };
 
   const sectionTitle = meta ? t('readChapterLabel', { n: chapterIndex + 1 }) : '';
@@ -564,7 +631,7 @@ export default function ReadScreen({ navigation, route }) {
         ]}
       >
         <View style={styles.headerRow}>
-          {/* Slot esquerdo: voltar à tela de origem */}
+          {/* Voltar */}
           <TouchableOpacity
             style={styles.headerIcon}
             onPress={() => navigation.goBack()}
@@ -573,7 +640,7 @@ export default function ReadScreen({ navigation, route }) {
             <Ionicons name="chevron-back" size={24} color={theme.text} />
           </TouchableOpacity>
 
-          {/* Seletor principal: nome do livro + capítulo atual */}
+          {/* Livro + capítulo atual */}
           <TouchableOpacity
             style={[
               styles.headerTitleButton,
@@ -582,13 +649,40 @@ export default function ReadScreen({ navigation, route }) {
             onPress={openChapterModal}
             activeOpacity={0.7}
           >
+            <Ionicons name="book-outline" size={15} color={theme.primary} style={styles.headerTitleIcon} />
             <Text style={[styles.headerTitleText, { color: theme.text }]} numberOfLines={1}>
-              {meta ? `${meta.name}` : ''}
+              {meta ? `${meta.name} ${chapterIndex + 1}` : ''}
             </Text>
+            <Ionicons name="chevron-down" size={14} color={theme.textMuted} style={styles.headerTitleChevron} />
           </TouchableOpacity>
 
-          {/* Slot direito: reserva de espaço para futuros ícones (versão, busca, etc.) */}
-          <View style={styles.headerIcon} />
+          {/* Áudio: mostra/oculta o player flutuante */}
+          <TouchableOpacity
+            style={[
+              styles.headerAudioButton,
+              { backgroundColor: theme.surface, borderColor: audioVisible ? theme.primary : theme.border },
+            ]}
+            onPress={() => setAudioVisible((v) => !v)}
+            activeOpacity={0.7}
+            accessibilityLabel={audioVisible ? t('audio.hide') : t('audio.show')}
+          >
+            <Ionicons name="headset-outline" size={18} color={audioVisible ? theme.primary : theme.text} />
+          </TouchableOpacity>
+
+          {/* Versão ativa: troca rápida */}
+          <TouchableOpacity
+            style={[
+              styles.headerVersionButton,
+              { backgroundColor: theme.surface, borderColor: theme.border },
+            ]}
+            onPress={openVersionModal}
+            activeOpacity={0.7}
+          >
+            <Text style={[styles.headerVersionText, { color: theme.text }]} numberOfLines={1}>
+              {activeSigla}
+            </Text>
+            <Ionicons name="chevron-down" size={14} color={theme.textMuted} />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -603,13 +697,11 @@ export default function ReadScreen({ navigation, route }) {
         <ScrollView
           ref={scrollViewRef}
           style={styles.scroll}
-          contentContainerStyle={[styles.content, selectedCount > 0 && styles.selectionBottomPadding]}
+          contentContainerStyle={[styles.content, selectedCount > 0 && styles.selectionBottomPadding, audioVisible && styles.audioPlayerPadding]}
           contentInsetAdjustmentBehavior="never"
           automaticallyAdjustContentInsets={false}
           removeClippedSubviews
           onScroll={handleScroll}
-          onScrollEndDrag={showFabs}
-          onMomentumScrollEnd={showFabs}
           scrollEventThrottle={16}
         >
           {chapter.map((verseItem, index) => {
@@ -628,6 +720,17 @@ export default function ReadScreen({ navigation, route }) {
                 key={index}
                 onLayout={(e) => {
                   verseRefs.current[index] = e.nativeEvent.layout.y;
+                  if (
+                    pendingScrollRef.current != null &&
+                    pendingScrollRef.current === index &&
+                    scrollViewRef.current
+                  ) {
+                    const y = e.nativeEvent.layout.y;
+                    pendingScrollRef.current = null;
+                    setTimeout(() => {
+                      scrollViewRef.current?.scrollTo({ y, animated: true });
+                    }, 50);
+                  }
                 }}
               >
                 {displayTitle ? (
@@ -667,29 +770,43 @@ export default function ReadScreen({ navigation, route }) {
               t={t}
             />
           </View>
+
+          <View style={styles.emptyScrollSpace} />
         </ScrollView>
       )}
 
       {/* Botões flutuantes circulares de navegação de capítulo */}
-      <Animated.View pointerEvents="box-none" style={[styles.fabRow, fabAnimatedStyle]}>
+      <Animated.View pointerEvents={fabsVisible ? 'box-none' : 'none'} style={[styles.fabRow, fabAnimatedStyle]}>
         <TouchableOpacity
-          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === 0 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === 0 && currentBookIndex === 0 && styles.fabDisabled]}
           onPress={goToPreviousChapter}
-          disabled={chapterIndex === 0}
+          disabled={chapterIndex === 0 && currentBookIndex === 0}
           activeOpacity={0.7}
         >
           <Ionicons name="chevron-back" size={26} color={theme.primary} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === totalChapters - 1 && styles.fabDisabled]}
+          style={[styles.fab, { backgroundColor: isReaderDark ? 'rgba(40,40,40,0.9)' : 'rgba(255,255,255,0.9)' }, chapterIndex === totalChapters - 1 && currentBookIndex === books.length - 1 && styles.fabDisabled]}
           onPress={goToNextChapter}
-          disabled={chapterIndex === totalChapters - 1}
+          disabled={chapterIndex === totalChapters - 1 && currentBookIndex === books.length - 1}
           activeOpacity={0.7}
         >
           <Ionicons name="chevron-forward" size={26} color={theme.primary} />
         </TouchableOpacity>
       </Animated.View>
+
+      {/* Player de áudio flutuante */}
+      {selectedCount === 0 && meta ? (
+        <FloatingAudioPlayer
+          key={`${meta.abbrev}:${chapterIndex}`}
+          versionSigla={audioVersion}
+          abbrev={meta.abbrev}
+          chapterNumber={audioChapterNumber}
+          visible={audioVisible}
+          onCollapse={() => setAudioVisible(false)}
+        />
+      ) : null}
 
       <Modal
         visible={chapterModalVisible}
@@ -791,7 +908,7 @@ export default function ReadScreen({ navigation, route }) {
                           <Text
                             style={[
                               styles.bookCellText,
-                              { color: theme.text },
+                              { color: '#000000' },
                               isActive && styles.bookCellTextActive,
                             ]}
                             numberOfLines={1}
@@ -869,6 +986,46 @@ export default function ReadScreen({ navigation, route }) {
         </View>
       </Modal>
 
+      {/* Seletor rápido de tradução */}
+      <Modal
+        visible={versionModalVisible}
+        animationType="slide"
+        onRequestClose={closeVersionModal}
+      >
+        <View style={[styles.fullModal, { backgroundColor: theme.background }]}>
+          <View
+            style={[
+              styles.fullModalHeader,
+              {
+                backgroundColor: theme.surface,
+                borderBottomColor: theme.border,
+                paddingTop: insets.top,
+              },
+            ]}
+          >
+            <View style={styles.versionModalHeaderRow}>
+              <Text style={[styles.versionModalTitle, { color: theme.text }]}>
+                {t('read.pickVersion')}
+              </Text>
+              <TouchableOpacity
+                onPress={closeVersionModal}
+                hitSlop={8}
+                style={styles.versionModalClose}
+              >
+                <Ionicons name="close" size={26} color={theme.text} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <VersionList
+            contentContainerStyle={[
+              styles.versionModalContent,
+              { paddingBottom: Math.max(insets.bottom, 16) + 40 },
+            ]}
+          />
+        </View>
+      </Modal>
+
       {selectedCount > 0 ? (
         <View
           style={[
@@ -915,6 +1072,11 @@ export default function ReadScreen({ navigation, route }) {
             <TouchableOpacity style={styles.selectionAction} onPress={handleMultiShare}>
               <Ionicons name="share-social-outline" size={24} color={theme.text} />
               <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>Compartilhar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.selectionAction} onPress={handleImageShare}>
+              <Ionicons name="image-outline" size={24} color={theme.primary} />
+              <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>Imagem</Text>
             </TouchableOpacity>
           </View>
 
@@ -971,10 +1133,51 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginHorizontal: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  headerTitleIcon: {
+    marginRight: 6,
+  },
+  headerTitleChevron: {
+    marginLeft: 6,
+  },
+  headerTitleText: {
+    fontSize: 15,
+    fontWeight: '700',
+    flexShrink: 1,
+  },
+  headerAudioButton: {
+    width: 34,
+    height: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 17,
+    borderWidth: 1,
+    marginRight: 6,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  headerVersionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 58,
+    maxWidth: 96,
+    paddingVertical: 7,
+    paddingHorizontal: 10,
+    borderRadius: 16,
     borderWidth: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -982,16 +1185,80 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  headerTitleText: {
-    fontSize: 17,
+  headerVersionText: {
+    fontSize: 14,
     fontWeight: '700',
+    marginRight: 4,
     flexShrink: 1,
+  },
+  versionModalHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  versionModalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
+  },
+  versionModalClose: {
+    padding: 4,
+  },
+  versionModalContent: {
+    padding: 16,
+  },
+  versionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 12,
+    marginBottom: 10,
+  },
+  versionRowBadge: {
+    width: 52,
+    height: 40,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  versionRowSigla: {
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  versionRowInfo: {
+    flex: 1,
+    marginLeft: 12,
+    marginRight: 8,
+  },
+  versionRowName: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  versionRowSub: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  versionManageRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    paddingVertical: 16,
+    marginTop: 6,
+  },
+  versionManageText: {
+    fontSize: 15,
+    fontWeight: '700',
+    marginLeft: 8,
   },
   fabRow: {
     position: 'absolute',
     left: 14,
     right: 14,
-    bottom: '35%',
+    bottom: '27%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -1026,7 +1293,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
-    paddingBottom: 220,
+    paddingBottom: 80,
+  },
+  audioPlayerPadding: {
+    paddingBottom: 320,
   },
   sectionTitle: {
     color: '#000000',
@@ -1070,6 +1340,9 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#ccc',
+  },
+  emptyScrollSpace: {
+    height: 600,
   },
   completionButton: {
     paddingVertical: 14,
@@ -1258,7 +1531,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 4,
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

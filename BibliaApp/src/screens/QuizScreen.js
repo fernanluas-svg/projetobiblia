@@ -89,11 +89,20 @@ function availableCountFor(modeKey) {
   return perguntasArray.filter((q) => mode.dificuldades.includes(q.dificuldade)).length;
 }
 
-function prepareQuestions(modeKey, count) {
+function prepareQuestions(modeKey, count, sessionUsedIds) {
   const mode = MODES.find((m) => m.key === modeKey);
-  const pool = perguntasArray.filter((q) => mode.dificuldades.includes(q.dificuldade));
+  let pool = perguntasArray.filter((q) => mode.dificuldades.includes(q.dificuldade));
+  const fresh = pool.filter((q) => !sessionUsedIds.has(q.id));
+  if (fresh.length < count) {
+    sessionUsedIds.clear();
+    pool = perguntasArray.filter((q) => mode.dificuldades.includes(q.dificuldade));
+  } else {
+    pool = fresh;
+  }
   const take = Math.min(count, pool.length);
-  return shuffleArray(pool).slice(0, take).map(toQuestion);
+  const picked = shuffleArray(pool).slice(0, take);
+  picked.forEach((q) => sessionUsedIds.add(q.id));
+  return picked.map(toQuestion);
 }
 
 function resultMessage(score, total) {
@@ -135,6 +144,7 @@ export default function QuizScreen() {
   });
   const scale = useRef(new Animated.Value(1)).current;
   const recordedRef = useRef(false);
+  const usedIdsRef = useRef(new Set());
 
   const correctPlayer = useAudioPlayer(require('../../assets/sounds/somcorreto.wav'));
   const wrongPlayer = useAudioPlayer(require('../../assets/sounds/wrong.wav'));
@@ -217,7 +227,7 @@ export default function QuizScreen() {
   }, [phase, count]);
 
   const startQuiz = () => {
-    setQuestions(prepareQuestions(modeKey, questionCount));
+    setQuestions(prepareQuestions(modeKey, questionCount, usedIdsRef.current));
     setCurrent(0);
     setSelected(null);
     setScore(0);
@@ -259,6 +269,7 @@ export default function QuizScreen() {
   };
 
   const goBackToSetup = () => {
+    usedIdsRef.current.clear();
     setPhase('home');
   };
 
