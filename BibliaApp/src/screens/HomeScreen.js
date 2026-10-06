@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { Animated, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, AppState, BackHandler, Image, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDrawerStatus } from '@react-navigation/drawer';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -115,6 +117,51 @@ function getGreeting(t) {
 export default function HomeScreen({ navigation }) {
   const { lastRead, readChapters, loaded, theme, t } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
+  const [showExit, setShowExit] = useState(false);
+  const showExitRef = useRef(false);
+  const lastBackRef = useRef(0);
+  const drawerStatus = useDrawerStatus();
+
+  useEffect(() => {
+    showExitRef.current = showExit;
+  }, [showExit]);
+
+  // App em background com o modal aberto: dispensa a pergunta para
+  // não reaparecer "grudada" ao voltar para o app.
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') setShowExit(false);
+    });
+    return () => sub.remove();
+  }, []);
+
+  // Intercepta o botão voltar físico na tela inicial: mostra
+  // confirmação em vez de encerrar o app de imediato (Android).
+  useFocusEffect(
+    useCallback(() => {
+      if (Platform.OS !== 'android') return undefined;
+      const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+        // Drawer aberto: deixa o comportamento padrão (fechar o drawer).
+        if (drawerStatus === 'open') return false;
+        // Alguns aparelhos disparam o evento 2x no mesmo toque: ignora
+        // o duplicado (<600ms) para o modal não abrir-e-fechar sozinho.
+        const now = Date.now();
+        if (now - lastBackRef.current < 600) return true;
+        lastBackRef.current = now;
+        // Modal já aberto: voltar fecha o modal em vez de reabri-lo.
+        if (showExitRef.current) {
+          setShowExit(false);
+          return true;
+        }
+        setShowExit(true);
+        return true;
+      });
+      return () => {
+        sub.remove();
+        setShowExit(false);
+      };
+    }, [drawerStatus])
+  );
 
   const horaAtual = new Date().getHours();
   const isNight = horaAtual >= 19 || horaAtual < 5;
@@ -298,6 +345,46 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      <Modal
+        visible={showExit}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowExit(false)}
+      >
+        <Pressable style={styles.exitOverlay} onPress={() => setShowExit(false)}>
+          <Pressable
+            style={[styles.exitCard, { backgroundColor: theme.surface, borderColor: theme.border }]}
+            onPress={() => {}}
+          >
+            <Text style={[styles.exitTitle, { color: theme.text }]}>{t('exit.title')}</Text>
+            <Text style={[styles.exitMessage, { color: theme.textMuted }]}>{t('exit.message')}</Text>
+            <View style={styles.exitActions}>
+              <TouchableOpacity
+                style={[styles.exitButton, styles.exitNoButton, { borderColor: theme.border }]}
+                onPress={() => setShowExit(false)}
+                activeOpacity={0.8}
+              >
+                <Text style={[styles.exitNoText, { color: theme.text }]}>{t('exit.no')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.exitButton, { backgroundColor: theme.primary }]}
+                onPress={() => {
+                  // Limpa o estado primeiro e só encerra após o modal
+                  // fechar visualmente (evita resquício ao reabrir).
+                  setShowExit(false);
+                  setTimeout(() => {
+                    BackHandler.exitApp();
+                  }, 150);
+                }}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.exitYesText}>{t('exit.yes')}</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -502,5 +589,59 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     color: '#222222',
+  },
+  exitOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  exitCard: {
+    width: '100%',
+    maxWidth: 340,
+    borderRadius: 16,
+    borderWidth: 1,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  exitTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  exitMessage: {
+    fontSize: 13,
+    lineHeight: 19,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  exitActions: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 18,
+  },
+  exitButton: {
+    flex: 1,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  exitNoButton: {
+    borderWidth: 1,
+  },
+  exitNoText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  exitYesText: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: '700',
   },
 });

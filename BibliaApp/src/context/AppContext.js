@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 
 import { translate, SUPPORTED_LANGUAGES } from '../i18n';
 import { setActiveTranslationSource } from '../data/books';
-import { loadTranslatedBook } from '../services/translationsService';
+import { hasTranslationData, loadTranslatedBook } from '../services/translationsService';
 
 const AppContext = createContext(null);
 
@@ -396,6 +396,29 @@ export function AppProvider({ children }) {
     persist(ACTIVE_VERSION_KEY, sigla || null);
   };
 
+  // Troca validada: só ativa a versão se o arquivo estiver legível no
+  // dispositivo. Sem isso, o leitor caía silenciosamente para a NVI
+  // embutida exibindo a sigla errada no cabeçalho.
+  const trySelectVersion = async (sigla) => {
+    if (!sigla) {
+      selectVersion(null);
+      return true;
+    }
+    try {
+      const ok = await hasTranslationData(sigla);
+      if (!ok) {
+        setInstalledVersion(sigla, false);
+        selectVersion(null);
+        return false;
+      }
+      selectVersion(sigla);
+      return true;
+    } catch (e) {
+      selectVersion(null);
+      return false;
+    }
+  };
+
   const setInstalledVersion = (sigla, installed) => {
     setInstalledVersionsState((prev) => {
       const list = Array.isArray(prev) ? prev : [];
@@ -609,6 +632,7 @@ export function AppProvider({ children }) {
       installedVersions,
       t,
       selectVersion,
+      trySelectVersion,
       setInstalledVersion,
       isVersionInstalled,
       toggleFavorite,

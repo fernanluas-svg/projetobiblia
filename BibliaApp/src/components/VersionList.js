@@ -19,7 +19,7 @@ import {
 import { AUDIO_VERSIONS } from '../services/audioService';
 
 export default function VersionList({ style, contentContainerStyle, listHeader }) {
-  const { theme, t, activeVersion, selectVersion, installedVersions, setInstalledVersion } = useApp();
+  const { theme, t, activeVersion, selectVersion, trySelectVersion, installedVersions, setInstalledVersion } = useApp();
   const [downloading, setDownloading] = useState({});
   const [busy, setBusy] = useState(false);
 
@@ -68,6 +68,25 @@ export default function VersionList({ style, contentContainerStyle, listHeader }
     }
   };
 
+  // Troca validada: confere o arquivo em disco antes de ativar.
+  // Sem isso, um arquivo perdido (ex.: limpeza de cache) fazia o
+  // leitor exibir a NVI embutida com a sigla errada no cabeçalho.
+  const handleUse = async (sigla) => {
+    if (busy) return;
+    setBusy(true);
+    setDownloading((prev) => ({ ...prev, [sigla]: true }));
+    try {
+      const select = typeof trySelectVersion === 'function' ? trySelectVersion : async (s) => { selectVersion(s); return true; };
+      const ok = await select(sigla);
+      if (!ok) {
+        Alert.alert(t('versions.missingTitle'), t('versions.missingMsg'));
+      }
+    } finally {
+      setDownloading((prev) => ({ ...prev, [sigla]: false }));
+      setBusy(false);
+    }
+  };
+
   const renderItem = ({ item }) => {
     const { sigla, name, year, publisher, embedded, domainPublic } = item;
     const installed = isInstalled(sigla);
@@ -113,7 +132,7 @@ export default function VersionList({ style, contentContainerStyle, listHeader }
           ) : (
             <TouchableOpacity
               style={[styles.button, styles.buttonPrimary]}
-              onPress={() => selectVersion(sigla)}
+              onPress={() => handleUse(sigla)}
               activeOpacity={0.8}
             >
               <Ionicons name="swap-horizontal" size={16} color="#FFFFFF" />

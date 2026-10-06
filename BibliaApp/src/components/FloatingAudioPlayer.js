@@ -37,7 +37,7 @@ function formatTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumber, visible = false, onCollapse }) {
+export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumber, visible = false, onCollapse, onChapterEnded, autoPlay = false, onAutoPlayConsumed }) {
   const { theme, t } = useApp();
   const insets = useSafeAreaInsets();
   const [uri, setUri] = useState(null);
@@ -49,6 +49,25 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
 
   const player = useAudioPlayer(null, { updateInterval: 500 });
   const status = useAudioPlayerStatus(player);
+
+  // Reprodução sequencial permanente: refs de controle (o player remonta a cada capítulo).
+  const chapterKeyAudio = `${abbrev}:${chapterNumber}`;
+  const autoPlayPendingRef = useRef(false);
+  const endedGuardRef = useRef(null);
+  useEffect(() => {
+    endedGuardRef.current = null;
+  }, [chapterKeyAudio]);
+
+  // Autoplay SOMENTE quando o capítulo chegou via avanço automático.
+  // O player remonta a cada capítulo (key no ReadScreen), então este
+  // efeito de montagem roda 1x por capítulo e consome o sinal.
+  useEffect(() => {
+    if (autoPlay) {
+      autoPlayPendingRef.current = true;
+      onAutoPlayConsumed?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const translateY = useRef(new NativeAnimated.Value(1000)).current;
   const opacityAnim = useRef(new NativeAnimated.Value(0)).current;
@@ -149,6 +168,24 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri]);
+
+  // Dispara o autoplay assim que o áudio novo termina de carregar.
+  useEffect(() => {
+    if (autoPlayPendingRef.current && status.isLoaded && uri) {
+      autoPlayPendingRef.current = false;
+      player.play();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.isLoaded, uri]);
+
+  // Fim do capítulo: avança automaticamente 1x por capítulo (sempre ativo).
+  useEffect(() => {
+    if (status.didJustFinish && endedGuardRef.current !== chapterKeyAudio) {
+      endedGuardRef.current = chapterKeyAudio;
+      onChapterEnded?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.didJustFinish, chapterKeyAudio]);
 
   if (Platform.OS === 'web') {
     return null;

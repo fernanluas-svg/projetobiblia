@@ -124,9 +124,37 @@ export async function removeTranslation(sigla) {
   console.log(`[Translation] Tradução ${sigla} removida do dispositivo.`);
 }
 
-// As versões do damarals seguem a mesma ordem canônica dos 66 livros do app.
+// As versões do damarals seguem a mesma ordem canônica dos 66 livros do app,
+// mas usam abreviações próprias (ex.: "Gn", "Êx", "At"). A comparação
+// ignora caixa e acentos para não depender do rótulo exato.
+function normalizeAbbrev(s) {
+  return (s ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
 function bookIndexForAbbrev(abbrev) {
   return bookList.findIndex((b) => b.abbrev === abbrev);
+}
+
+// Rótulos divergentes conhecidos (app -> arquivo): Atos é "At" no repositório.
+const ABBREV_ALIASES = {
+  atos: ['atos', 'at'],
+};
+
+function findDownloadedBook(data, abbrev) {
+  if (!Array.isArray(data)) return null;
+  // 1) Arquivo canônico completo (66 livros): a ordem é confiável.
+  if (data.length === 66) {
+    const index = bookIndexForAbbrev(abbrev);
+    const positional = index >= 0 ? data[index] : null;
+    if (positional && Array.isArray(positional.chapters)) return positional;
+  }
+  // 2) Fallback por rótulo normalizado + aliases (ex.: "Êx" -> "ex").
+  const wanted = normalizeAbbrev(abbrev);
+  const aliases = ABBREV_ALIASES[wanted] ?? [wanted];
+  return data.find((b) => aliases.includes(normalizeAbbrev(b?.abbrev))) ?? null;
 }
 
 async function getEmbeddedBookChapters(abbrev) {
@@ -175,19 +203,22 @@ export async function loadTranslatedBook(sigla, abbrev) {
   const data = await getTranslationData(sigla);
   if (!data) return null;
 
-  const index = bookIndexForAbbrev(abbrev);
-  let book = index >= 0 ? data[index] : null;
+  const book = findDownloadedBook(data, abbrev);
   if (!book) {
-    book = data.find((b) => (b?.abbrev ?? '').toLowerCase() === abbrev.toLowerCase());
+    console.warn(`[Translation] Livro ${abbrev} não encontrado em ${sigla}; caindo para embutida.`);
+    return null;
   }
-  if (!book) return null;
 
   const chapters = Array.isArray(book.chapters) ? book.chapters : [];
+  if (!chapters.length) {
+    console.warn(`[Translation] Livro ${abbrev} sem capítulos em ${sigla}; caindo para embutida.`);
+    return null;
+  }
   const mergedChapters = await mergeEmbeddedTitles(abbrev, chapters);
 
   return {
     abbrev,
-    name: meta.name,
+    name: book.name ?? bookList[bookIndexForAbbrev(abbrev)]?.name ?? abbrev,
     chapters: mergedChapters,
   };
 }
@@ -195,4 +226,14 @@ export async function loadTranslatedBook(sigla, abbrev) {
 export function isTranslationAvailable(sigla) {
   const meta = getTranslation(sigla);
   return !!meta && !meta.embedded;
+}
+
+// Confere se a tradução está realmente legível no dispositivo
+// (arquivo em disco íntegro com ao menos 1 livro com capítulos).
+export async function hasTranslationData(sigla) {
+  const meta = getTranslation(sigla);
+  if (!meta || meta.embedded) return true;
+  const data = await getTranslationData(sigla);
+  if (!Array.isArray(data) || !data.length) return false;
+  return data.some((b) => Array.isArray(b?.chapters) && b.chapters.length > 0);
 }

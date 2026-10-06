@@ -65,14 +65,19 @@ export default function ImageShareScreen({ navigation, route }) {
       const batch = forceQuery
         ? await fetchPixabayImages({ query: forceQuery, perPage: 12 })
         : await fetchInspiringBatch(12);
-      setImages(batch);
-      if (batch.length && !selectedImage) {
-        setSelectedImage(batch[0].largeURL);
+      if (!batch.length) {
+        setImages([]);
+        return;
       }
+      setImages(batch);
+      // seleciona a primeira do lote se a atual saiu do lote (ex.: refresh)
+      setSelectedImage((prev) =>
+        prev && batch.some((b) => b.largeURL === prev) ? prev : batch[0].largeURL
+      );
     } finally {
       setLoadingImages(false);
     }
-  }, [selectedImage]);
+  }, []);
 
   useEffect(() => {
     loadImages();
@@ -198,6 +203,8 @@ export default function ImageShareScreen({ navigation, route }) {
                     “{displayText}”
                   </Text>
                   <Text style={styles.cardRef}>{displayRef}</Text>
+                </View>
+                <View style={styles.cardFooter}>
                   <View style={styles.signatureRow}>
                     <Ionicons name="book" size={12} color="rgba(255,255,255,0.9)" />
                     <Text style={styles.signatureText}>{APP_SIGNATURE} • {APP_LINK}</Text>
@@ -228,6 +235,8 @@ export default function ImageShareScreen({ navigation, route }) {
                     “{displayText}”
                   </Text>
                   <Text style={styles.cardRef}>{displayRef}</Text>
+                </View>
+                <View style={styles.cardFooter}>
                   <View style={styles.signatureRow}>
                     <Ionicons name="book" size={12} color="rgba(255,255,255,0.9)" />
                     <Text style={styles.signatureText}>{APP_SIGNATURE} • {APP_LINK}</Text>
@@ -306,7 +315,7 @@ const styles = StyleSheet.create({
   headerTitle: { fontSize: 16, fontWeight: '700', flex: 1, textAlign: 'center' },
   previewContainer: { padding: 16, alignItems: 'center' },
   shotWrapper: { width: '100%', maxWidth: 360, alignSelf: 'center' },
-  shot: { width: '100%', borderRadius: 18, overflow: 'hidden' },
+  shot: { width: '100%', borderRadius: 0, overflow: 'hidden' },
   fab: {
     position: 'absolute',
     bottom: 12,
@@ -326,13 +335,27 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     aspectRatio: 0.78,
-    borderRadius: 18,
+    borderRadius: 0,
     overflow: 'hidden',
     justifyContent: 'center',
     backgroundColor: '#2f6f4f',
   },
-  cardImage: { borderRadius: 18 },
-  cardContent: { padding: 22, alignItems: 'center', justifyContent: 'center', flex: 1 },
+  cardImage: { borderRadius: 0 },
+  cardContent: {
+    padding: 22,
+    paddingBottom: 72,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  cardFooter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cardText: {
     color: '#FFFFFF',
     fontSize: 17,
@@ -354,8 +377,8 @@ const styles = StyleSheet.create({
   signatureRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     gap: 6,
-    marginTop: 10,
     backgroundColor: 'rgba(255,255,255,0.16)',
     paddingHorizontal: 10,
     paddingVertical: 5,

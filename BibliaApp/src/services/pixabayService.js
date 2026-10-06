@@ -12,6 +12,10 @@ const INSPIRING_QUERIES = [
 
 // Imagens verticais/horizontais alta qualidade, seguras e neutras
 export async function fetchPixabayImages({ query, page = 1, perPage = 20 } = {}) {
+  if (!PIXABAY_KEY) {
+    console.warn('[Pixabay] EXPO_PUBLIC_PIXABAY_API_KEY ausente no bundle — verifique env EAS/local .env');
+    return [];
+  }
   const q = query || INSPIRING_QUERIES[Math.floor(Math.random() * INSPIRING_QUERIES.length)];
   const params = new URLSearchParams({
     key: PIXABAY_KEY,
@@ -23,7 +27,6 @@ export async function fetchPixabayImages({ query, page = 1, perPage = 20 } = {})
     order: 'popular',
     per_page: String(perPage),
     page: String(page),
-    editors_choice: 'true',
   });
   const url = `${BASE_URL}?${params.toString()}`;
   try {
@@ -46,10 +49,15 @@ export async function fetchPixabayImages({ query, page = 1, perPage = 20 } = {})
 }
 
 export async function fetchInspiringBatch(perPage = 12) {
-  // tenta vertical, se vazio tenta horizontal
-  let images = await fetchPixabayImages({ perPage });
+  if (!PIXABAY_KEY) {
+    console.warn('[Pixabay] EXPO_PUBLIC_PIXABAY_API_KEY ausente no bundle — verifique env EAS/local .env');
+    return [];
+  }
+  // pagina aleatoria traz variedade a cada "Novas imagens"
+  const page = 1 + Math.floor(Math.random() * 5);
+  let images = await fetchPixabayImages({ perPage, page });
   if (!images.length) {
-    const url = `${BASE_URL}?key=${PIXABAY_KEY}&q=nature+landscape&image_type=photo&orientation=horizontal&category=nature&safesearch=true&order=popular&per_page=${perPage}&editors_choice=true`;
+    const url = `${BASE_URL}?key=${PIXABAY_KEY}&q=nature+landscape&image_type=photo&orientation=horizontal&category=nature&safesearch=true&order=popular&per_page=${perPage}`;
     try {
       const res = await fetch(url);
       const json = await res.json();

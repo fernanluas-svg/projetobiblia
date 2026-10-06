@@ -292,6 +292,8 @@ export default function ReadScreen({ navigation, route }) {
   const [scrollToVerse, setScrollToVerse] = useState(route?.params?.verse ?? null);
   const [scrollNonce, setScrollNonce] = useState(0);
   const [audioVisible, setAudioVisible] = useState(false);
+  // Sinal de autoplay: ligado apenas quando o capítulo chegou via avanço automático.
+  const [autoPlayAudio, setAutoPlayAudio] = useState(false);
   const [fabsVisible, setFabsVisible] = useState(true);
   const scrollViewRef = useRef(null);
   const verseRefs = useRef([]);
@@ -507,6 +509,11 @@ export default function ReadScreen({ navigation, route }) {
 
   const goToPreviousChapter = () => changeChapter(chapterIndex - 1);
   const goToNextChapter = () => changeChapter(chapterIndex + 1);
+  // Sequencial permanente: fim do áudio arma o autoplay e avança sozinho.
+  const handleChapterEnded = () => {
+    setAutoPlayAudio(true);
+    goToNextChapter();
+  };
 
   useEffect(() => {
     const verseToScroll = scrollToVerse ?? null;
@@ -805,6 +812,9 @@ export default function ReadScreen({ navigation, route }) {
           chapterNumber={audioChapterNumber}
           visible={audioVisible}
           onCollapse={() => setAudioVisible(false)}
+          onChapterEnded={handleChapterEnded}
+          autoPlay={autoPlayAudio}
+          onAutoPlayConsumed={() => setAutoPlayAudio(false)}
         />
       ) : null}
 
