@@ -67,3 +67,64 @@ export async function deleteAudio(sigla, abbrev, chapterNumber) {
     file.delete();
   }
 }
+
+// ---------------------------------------------------------------------------
+// Sincronização versículo ↔ áudio (estimativa ponderada + calibração).
+// O repositório entrega 1 MP3 corrido por capítulo, sem marcações de tempo.
+// Cada versículo recebe um peso proporcional ao seu tamanho real:
+//   peso = max(caracteres, MIN) + BASE (pausa/respiro por versículo)
+//        + palavras * WORD_WEIGHT
+// A BASE evita que versículos curtos ganhem fatias curtas demais (era o que
+// fazia o destaque correr mais rápido que a voz: o narrador faz pausa entre
+// versículos e a vinheta inicial desloca tudo).
+// LEAD_IN/TRAILING descontam vinheta e respiro final da duração total.
+// LAG atrasa globalmente a troca do destaque para casar com a voz.
+// Retorna [{ start, end }] em segundos, na ordem dos versículos.
+// Ajuste fino: mexa apenas em AUDIO_SYNC abaixo.
+// ---------------------------------------------------------------------------
+export const AUDIO_SYNC = {
+  LEAD_IN_SECONDS: 1.5,
+  TRAILING_SECONDS: 1.0,
+  BASE_WEIGHT_CHARS: 60,
+  MIN_WEIGHT_CHARS: 24,
+  WORD_WEIGHT: 6,
+  LAG_SECONDS: 1.1,
+};
+
+function verseWeight(text) {
+  const str = typeof text === 'string' ? text.trim() : '';
+  const chars = Math.max(str.length, AUDIO_SYNC.MIN_WEIGHT_CHARS);
+  const words = str ? str.split(/\s+/).length : 1;
+  return chars + AUDIO_SYNC.BASE_WEIGHT_CHARS + words * AUDIO_SYNC.WORD_WEIGHT;
+}
+
+export function estimateVerseTimings(verseTexts, durationSeconds) {
+  const total = Number(durationSeconds) || 0;
+  const n = Array.isArray(verseTexts) ? verseTexts.length : 0;
+  if (!n || total <= 0) return [];
+  const leadIn = Math.min(Math.max(AUDIO_SYNC.LEAD_IN_SECONDS, 0), total * 0.2);
+  const trailing = Math.min(Math.max(AUDIO_SYNC.TRAILING_SECONDS, 0), total * 0.15);
+  const usable = Math.max(total - leadIn - trailing, total * 0.5);
+  const weights = verseTexts.map(verseWeight);
+  const sum = weights.reduce((a, b) => a + b, 0) || 1;
+  let cursor = 0;
+  return weights.map((w) => {
+    const start = leadIn + (cursor / sum) * usable;
+    cursor += w;
+    const end = leadIn + (cursor / sum) * usable;
+    return { start, end };
+  });
+}
+
+export function findActiveVerseIndex(timings, currentTimeSeconds, lagSeconds = AUDIO_SYNC.LAG_SECONDS) {
+  if (!Array.isArray(timings) || timings.length === 0) return -1;
+  const lag = Number.isFinite(lagSeconds) ? lagSeconds : 0;
+  const t = (Number(currentTimeSeconds) || 0) - lag;
+  if (t < timings[0].start) return 0;
+  const last = timings.length - 1;
+  if (t >= timings[last].end) return last;
+  for (let i = 0; i < timings.length; i += 1) {
+    if (t >= timings[i].start && t < timings[i].end) return i;
+  }
+  return -1;
+}

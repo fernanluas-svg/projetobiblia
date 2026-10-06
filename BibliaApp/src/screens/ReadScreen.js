@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Animated as NativeAnimated, Easing, FlatList, Modal, PanResponder, ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -16,7 +16,7 @@ import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, getFontFamily } from '../con
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
 import { makeChapterKey } from '../utils/chapterKey';
-import { AUDIO_VERSIONS } from '../services/audioService';
+import { AUDIO_VERSIONS, estimateVerseTimings, findActiveVerseIndex } from '../services/audioService';
 import FloatingAudioPlayer from '../components/FloatingAudioPlayer';
 import VersionList from '../components/VersionList';
 
@@ -292,6 +292,12 @@ export default function ReadScreen({ navigation, route }) {
   const [scrollToVerse, setScrollToVerse] = useState(route?.params?.verse ?? null);
   const [scrollNonce, setScrollNonce] = useState(0);
   const [audioVisible, setAudioVisible] = useState(false);
+  // Sincronização versículo ↔ áudio (estimativa proporcional por tamanho).
+  const [audioDuration, setAudioDuration] = useState(0);
+  const [audioIsPlaying, setAudioIsPlaying] = useState(false);
+  const [activeAudioVerse, setActiveAudioVerse] = useState(-1);
+  const [followAudio, setFollowAudio] = useState(true);
+  const activeAudioVerseRef = useRef(-1);
   // Sinal de autoplay: ligado apenas quando o capítulo chegou via avanço automático.
   const [autoPlayAudio, setAutoPlayAudio] = useState(false);
   const [fabsVisible, setFabsVisible] = useState(true);
@@ -359,6 +365,56 @@ export default function ReadScreen({ navigation, route }) {
   ].filter((s) => s.items.length > 0);
 
   const activeSigla = activeVersion ?? 'NVI';
+
+  // Textos do capítulo atual (para ponderar o tempo de cada versículo).
+  const chapterVerseTexts = useMemo(() => {
+    if (!Array.isArray(chapter)) return [];
+    return chapter.map((v) =>
+      typeof v === 'object' && v !== null ? (v.text ?? v.verse ?? '') : (v ?? '')
+    );
+  }, [chapter]);
+
+  const verseTimings = useMemo(
+    () => estimateVerseTimings(chapterVerseTexts, audioDuration),
+    [chapterVerseTexts, audioDuration]
+  );
+
+  const handleAudioProgress = useCallback(
+    ({ currentTime, duration, isPlaying }) => {
+      if (Number.isFinite(duration) && duration > 0 && duration !== audioDuration) {
+        setAudioDuration(duration);
+      }
+      setAudioIsPlaying((prev) => (prev === !!isPlaying ? prev : !!isPlaying));
+      if (!isPlaying) return;
+      const timings =
+        Number.isFinite(duration) && duration > 0
+          ? estimateVerseTimings(chapterVerseTexts, duration)
+          : verseTimings;
+      const idx = findActiveVerseIndex(timings, currentTime);
+      if (idx !== activeAudioVerseRef.current) {
+        activeAudioVerseRef.current = idx;
+        setActiveAudioVerse(idx);
+      }
+    },
+    [audioDuration, chapterVerseTexts, verseTimings]
+  );
+
+  // Troca de capítulo: reseta sincronização.
+  useEffect(() => {
+    activeAudioVerseRef.current = -1;
+    setActiveAudioVerse(-1);
+    setAudioDuration(0);
+  }, [meta?.abbrev, chapterIndex]);
+
+  // Auto-scroll suave até o versículo narrado (só com follow ativo).
+  useEffect(() => {
+    if (!followAudio || !audioIsPlaying || activeAudioVerse < 0) return;
+    if (selectedIndexes.length > 0) return;
+    const y = verseRefs.current[activeAudioVerse];
+    if (y != null && scrollViewRef.current) {
+      scrollViewRef.current?.scrollTo({ y: Math.max(y - 120, 0), animated: true });
+    }
+  }, [activeAudioVerse, followAudio, audioIsPlaying, selectedIndexes.length]);
 
   const openVersionModal = () => setVersionModalVisible(true);
   const closeVersionModal = () => setVersionModalVisible(false);
@@ -711,6 +767,24 @@ export default function ReadScreen({ navigation, route }) {
           onScroll={handleScroll}
           scrollEventThrottle={16}
         >
+          {audioVisible && audioIsPlaying ? (
+            <TouchableOpacity
+              style={[styles.followRow, { backgroundColor: theme.surface, borderColor: theme.border }]}
+              onPress={() => setFollowAudio((v) => !v)}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name={followAudio ? 'locate' : 'locate-outline'}
+                size={14}
+                color={followAudio ? theme.primary : theme.textMuted}
+              />
+              <Text style={[styles.followText, { color: followAudio ? theme.primary : theme.textMuted }]}>
+                {followAudio
+                  ? `Narrando versículo ${activeAudioVerse >= 0 ? activeAudioVerse + 1 : '…'} · toque para não seguir`
+                  : 'Acompanhar narração'}
+              </Text>
+            </TouchableOpacity>
+          ) : null}
           {chapter.map((verseItem, index) => {
             const verseKey = `${chapterKey}:${index}`;
             const highlightName = getHighlight(verseKey);
@@ -718,6 +792,7 @@ export default function ReadScreen({ navigation, route }) {
             const selected = selectedIndexes.includes(index);
             const verseText = typeof verseItem === 'object' ? verseItem.text : verseItem;
             const verseTitle = typeof verseItem === 'object' ? verseItem.title : null;
+            const isAudioActive = audioIsPlaying && activeAudioVerse === index && !selected;
 
             // Se for o primeiro versículo ou houver título de perícope, exibe o título editorial
             const displayTitle = index === 0 ? (verseTitle || t('readChapterLabel', { n: chapterIndex + 1 })) : verseTitle;
@@ -750,12 +825,24 @@ export default function ReadScreen({ navigation, route }) {
                     styles.verseContainer,
                     highlight && { backgroundColor: highlight.bg },
                     selected && { backgroundColor: theme.selection },
+                    isAudioActive && {
+                      backgroundColor: theme.selection,
+                      borderLeftWidth: 3,
+                      borderLeftColor: theme.primary,
+                    },
                   ]}
                   onPress={() => toggleSelection(index)}
                   activeOpacity={0.6}
                 >
                   <View style={styles.verseNumberWrap}>
-                    <Text style={[styles.verseNumber, { color: verseNumColor }]}>{index + 1}</Text>
+                    <Text
+                      style={[
+                        styles.verseNumber,
+                        { color: isAudioActive ? theme.primary : verseNumColor },
+                      ]}
+                    >
+                      {index + 1}
+                    </Text>
                     {isFavorite(verseKey) ? (
                       <Ionicons name="star" size={12} color="#EAB308" style={styles.favoriteStar} />
                     ) : null}
@@ -810,11 +897,13 @@ export default function ReadScreen({ navigation, route }) {
           versionSigla={audioVersion}
           abbrev={meta.abbrev}
           chapterNumber={audioChapterNumber}
+          bookName={meta.name}
           visible={audioVisible}
           onCollapse={() => setAudioVisible(false)}
           onChapterEnded={handleChapterEnded}
           autoPlay={autoPlayAudio}
           onAutoPlayConsumed={() => setAutoPlayAudio(false)}
+          onPlaybackProgress={handleAudioProgress}
         />
       ) : null}
 
@@ -1326,6 +1415,21 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 4,
     borderRadius: 6,
+  },
+  followRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 16,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    gap: 6,
+  },
+  followText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   verseNumberWrap: {
     alignItems: 'center',

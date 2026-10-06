@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
+import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio';
 
 import { useApp } from '../context/AppContext';
 import { getTranslation } from '../data/translations';
@@ -28,6 +28,20 @@ export default function ChapterAudio({ versionSigla, abbrev, chapterNumber, comp
 
   const player = useAudioPlayer(null, { updateInterval: 500 });
   const status = useAudioPlayerStatus(player);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionMode: 'doNotMix',
+        });
+      } catch (e) {
+        // ignora
+      }
+    })();
+  }, []);
 
   const resolveUri = () => {
     if (hasLocalAudio(versionSigla, abbrev, chapterNumber)) {

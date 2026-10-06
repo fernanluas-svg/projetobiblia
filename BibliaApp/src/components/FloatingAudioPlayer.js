@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Slider from '@react-native-community/slider';
-import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
+import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
@@ -37,7 +37,7 @@ function formatTime(seconds) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumber, visible = false, onCollapse, onChapterEnded, autoPlay = false, onAutoPlayConsumed }) {
+export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumber, visible = false, onCollapse, onChapterEnded, autoPlay = false, onAutoPlayConsumed, onPlaybackProgress, bookName }) {
   const { theme, t } = useApp();
   const insets = useSafeAreaInsets();
   const [uri, setUri] = useState(null);
@@ -47,8 +47,35 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
   const [seekValue, setSeekValue] = useState(null);
   const [cardHeight, setCardHeight] = useState(0);
 
-  const player = useAudioPlayer(null, { updateInterval: 500 });
+  const player = useAudioPlayer(null, { updateInterval: 250 });
   const status = useAudioPlayerStatus(player);
+
+  // Sessão de áudio: permite continuar com tela bloqueada / app minimizado
+  // (background playback) e tocar mesmo no modo silencioso do iOS.
+  // Requer o plugin expo-audio com enableBackgroundPlayback:true (nativo).
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        await setAudioModeAsync({
+          playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionMode: 'doNotMix',
+        });
+      } catch (e) {
+        // versão antiga do binário sem suporte: segue sem background
+      }
+    })();
+    return () => {
+      active = false;
+      try {
+        player.clearLockScreenControls?.();
+      } catch (e) {
+        // ignora
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Reprodução sequencial permanente: refs de controle (o player remonta a cada capítulo).
   const chapterKeyAudio = `${abbrev}:${chapterNumber}`;
@@ -173,6 +200,15 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
   useEffect(() => {
     if (autoPlayPendingRef.current && status.isLoaded && uri) {
       autoPlayPendingRef.current = false;
+      try {
+        player.setActiveForLockScreen?.(true, {
+          title: bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`,
+          artist: versionSigla,
+          albumTitle: 'Bíblia Sagrada',
+        });
+      } catch (e) {
+        // ignora
+      }
       player.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -187,6 +223,37 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status.didJustFinish, chapterKeyAudio]);
 
+  // Ativa controles de lockscreen/notificação (obrigatório no Android para
+  // sustentar o background além de ~3 min). Mantém ativo enquanto toca.
+  const lockScreenTitle = bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`;
+  useEffect(() => {
+    if (!uri || !status.isLoaded) return;
+    if (status.playing) {
+      try {
+        player.setActiveForLockScreen?.(true, {
+          title: lockScreenTitle,
+          artist: versionSigla,
+          albumTitle: 'Bíblia Sagrada',
+        });
+      } catch (e) {
+        // ignora: plataforma sem suporte
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.playing, status.isLoaded, uri, lockScreenTitle, versionSigla]);
+
+  // Reporta progresso para o Reader (destaque sincronizado por versículo).
+  useEffect(() => {
+    onPlaybackProgress?.({
+      currentTime: status.currentTime ?? 0,
+      duration: status.duration ?? 0,
+      isPlaying: !!status.playing,
+      isLoaded: !!status.isLoaded,
+      rate,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.currentTime, status.duration, status.playing, status.isLoaded, rate]);
+
   if (Platform.OS === 'web') {
     return null;
   }
@@ -200,6 +267,15 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     if (isPlaying) {
       player.pause();
     } else {
+      try {
+        player.setActiveForLockScreen?.(true, {
+          title: bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`,
+          artist: versionSigla,
+          albumTitle: 'Bíblia Sagrada',
+        });
+      } catch (e) {
+        // ignora
+      }
       player.play();
     }
   };
