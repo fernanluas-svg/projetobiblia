@@ -11,8 +11,7 @@ import LottieView from 'lottie-react-native';
 import { useApp } from '../context/AppContext';
 import versiculosData from '../data/versiculosPopulares.json';
 import votdI18n from '../data/versiculosPopulares.i18n.json';
-import { getBooks, getBook } from '../data/books';
-import { translationLanguage } from '../data/translations';
+import { getBooks } from '../data/books';
 
 const SPECIAL_DATES = {
   '01-01': 12,   // Ano Novo → João 3:16
@@ -117,66 +116,15 @@ function getGreeting(t) {
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, readChapters, loaded, theme, t, activeVersion, language } = useApp();
+  const { lastRead, readChapters, loaded, theme, t, language } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
-  // Texto-base do card no idioma do app (pt padrão; en/es embutidos).
-  // Com versão ativa, o texto ao vivo da versão prevalece (efeito abaixo).
+  // Versículo do dia SEMPRE no idioma do app (pt/en/es), resolvido de
+  // forma síncrona: sem dependência da versão de leitura, sem busca
+  // assíncrona e sem delay — o card renderiza de imediato.
   const votdBase = useMemo(() => {
     const tr = votdI18n?.[verseOfTheDay.id]?.[language];
     return tr ?? { texto: verseOfTheDay.texto, referencia: verseOfTheDay.referencia };
   }, [verseOfTheDay, language]);
-  const [votdText, setVotdText] = useState(votdBase.texto);
-  const [votdRef, setVotdRef] = useState(votdBase.referencia);
-  // Versículo do dia segue o IDIOMA DO APP para não misturar línguas:
-  // - O texto ao vivo da versão só é usado quando o idioma dela coincide
-  //   com o do app (ex.: app ES + RV1960, app EN + KJV, app PT + ACF).
-  // - Nos demais casos, usa o texto embutido no idioma do app (pt/en/es).
-  // O selo da sigla aparece só quando o texto exibido é da versão ativa.
-  useEffect(() => {
-    let active = true;
-    const appLang = language === 'pt-BR' ? 'pt' : language;
-    const versionLang = activeVersion ? translationLanguage(activeVersion) : null;
-    if (!activeVersion || versionLang !== appLang) {
-      setVotdText(votdBase.texto);
-      setVotdRef(votdBase.referencia);
-      return undefined;
-    }
-    (async () => {
-      try {
-        const m = String(verseOfTheDay.referencia ?? '').match(/(\d+):(\d+)(?:-(\d+))?\s*$/);
-        const startV = verseOfTheDay.versiculo;
-        const endV = m?.[3] ? Number(m[3]) : startV;
-        const book = await getBook(verseOfTheDay.abbrev);
-        const chapter = book?.chapters?.[verseOfTheDay.capitulo - 1] ?? [];
-        const parts = [];
-        for (let v = startV; v <= endV; v += 1) {
-          const raw = chapter[v - 1];
-          const text = typeof raw === 'object' && raw !== null ? (raw.text ?? '') : (raw ?? '');
-          if (String(text).trim()) parts.push(String(text).trim());
-        }
-        if (!active) return;
-        // Sem texto na versão (fora do ar ou arquivo ausente): mantém o
-        // texto no idioma do app mas exibe o selo da versão para o estado ficar visível.
-        if (!parts.length) {
-          setVotdText(votdBase.texto);
-          setVotdRef(`${votdBase.referencia} · ${activeVersion}`);
-          return;
-        }
-        const range = endV > startV ? `${verseOfTheDay.capitulo}:${startV}-${endV}` : `${verseOfTheDay.capitulo}:${startV}`;
-        const bookName = book?.name ?? verseOfTheDay.referencia.replace(/\s*\d+:\d+(-\d+)?\s*$/, '');
-        setVotdText(parts.join(' '));
-        setVotdRef(`${bookName} ${range} · ${activeVersion}`);
-      } catch (e) {
-        if (active) {
-          setVotdText(votdBase.texto);
-          setVotdRef(`${votdBase.referencia} · ${activeVersion}`);
-        }
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, [activeVersion, verseOfTheDay, votdBase]);
   const [showExit, setShowExit] = useState(false);
   const showExitRef = useRef(false);
   const lastBackRef = useRef(0);
@@ -319,9 +267,9 @@ export default function HomeScreen({ navigation }) {
             <Ionicons name="chevron-forward" size={16} color="#cde8da" style={styles.verseChevron} />
           </View>
           <Text style={styles.verseQuote}>
-            "{votdText}"
+            "{votdBase.texto}"
           </Text>
-          <Text style={styles.verseRef}>{votdRef}</Text>
+          <Text style={styles.verseRef}>{votdBase.referencia}</Text>
         </TouchableOpacity>
 
         <View style={styles.sectionHeaderRow}>
