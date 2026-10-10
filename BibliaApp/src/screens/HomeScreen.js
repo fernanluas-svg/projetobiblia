@@ -12,6 +12,7 @@ import { useApp } from '../context/AppContext';
 import versiculosData from '../data/versiculosPopulares.json';
 import votdI18n from '../data/versiculosPopulares.i18n.json';
 import { getBooks, getBook } from '../data/books';
+import { translationLanguage } from '../data/translations';
 
 const SPECIAL_DATES = {
   '01-01': 12,   // Ano Novo → João 3:16
@@ -126,13 +127,16 @@ export default function HomeScreen({ navigation }) {
   }, [verseOfTheDay, language]);
   const [votdText, setVotdText] = useState(votdBase.texto);
   const [votdRef, setVotdRef] = useState(votdBase.referencia);
-  // Versículo do dia: sem versão ativa, usa o texto no idioma do app;
-  // com versão ativa (KJV/RV1960/ACF...), usa o texto ao vivo da versão.
-  // Sem versão baixada ou fora do ar: mantém o texto no idioma do app.
-  // A referência usa o nome do livro na língua da versão + selo da sigla.
+  // Versículo do dia segue o IDIOMA DO APP para não misturar línguas:
+  // - O texto ao vivo da versão só é usado quando o idioma dela coincide
+  //   com o do app (ex.: app ES + RV1960, app EN + KJV, app PT + ACF).
+  // - Nos demais casos, usa o texto embutido no idioma do app (pt/en/es).
+  // O selo da sigla aparece só quando o texto exibido é da versão ativa.
   useEffect(() => {
     let active = true;
-    if (!activeVersion) {
+    const appLang = language === 'pt-BR' ? 'pt' : language;
+    const versionLang = activeVersion ? translationLanguage(activeVersion) : null;
+    if (!activeVersion || versionLang !== appLang) {
       setVotdText(votdBase.texto);
       setVotdRef(votdBase.referencia);
       return undefined;
