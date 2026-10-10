@@ -392,8 +392,19 @@ export function AppProvider({ children }) {
   }, [activeVersion]);
 
   const selectVersion = (sigla) => {
-    setActiveVersionState(sigla || null);
-    persist(ACTIVE_VERSION_KEY, sigla || null);
+    const next = sigla || null;
+    setActiveVersionState(next);
+    // Atualiza a fonte de leitura na hora (síncrono, no evento): os
+    // useEffects das telas filhas (Reader, Search) rodam antes dos
+    // efeitos do provider no mesmo commit — se a fonte só fosse trocada
+    // no useEffect abaixo, o Reader recarregava com a versão antiga e o
+    // texto novo só aparecia ao sair e entrar da tela.
+    if (!next) {
+      setActiveTranslationSource(null);
+    } else {
+      setActiveTranslationSource((abbrev) => loadTranslatedBook(next, abbrev));
+    }
+    persist(ACTIVE_VERSION_KEY, next);
   };
 
   // Troca validada: só ativa a versão se o arquivo estiver legível no
