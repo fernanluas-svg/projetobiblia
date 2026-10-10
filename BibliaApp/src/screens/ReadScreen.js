@@ -345,6 +345,10 @@ export default function ReadScreen({ navigation, route }) {
   const chapter = getChapter(fullBook, chapterIndex);
   const chapterKey = meta ? makeChapterKey(meta.abbrev, chapterIndex) : null;
   const audioVersion = AUDIO_VERSIONS.includes(activeVersion) ? activeVersion : 'ACF';
+  // A narração disponível é em português (ACF): com NVI embutida ou ACF ela
+  // acompanha a leitura; com KJV/RV1960 o áudio é ocultado para não narrar
+  // outro idioma sobre o texto.
+  const audioAvailable = activeVersion === null || AUDIO_VERSIONS.includes(activeVersion);
   const audioChapterNumber = chapterIndex + 1;
   const chapterRead = isChapterRead(chapterKey);
   const books = getBooks();
@@ -405,6 +409,15 @@ export default function ReadScreen({ navigation, route }) {
     setActiveAudioVerse(-1);
     setAudioDuration(0);
   }, [meta?.abbrev, chapterIndex]);
+
+  // Versão sem narração (KJV/RV1960): limpa o estado do destaque de áudio.
+  useEffect(() => {
+    if (!audioAvailable) {
+      activeAudioVerseRef.current = -1;
+      setActiveAudioVerse(-1);
+      setAudioIsPlaying(false);
+    }
+  }, [audioAvailable]);
 
   // Auto-scroll suave até o versículo narrado (só com follow ativo).
   useEffect(() => {
@@ -719,7 +732,8 @@ export default function ReadScreen({ navigation, route }) {
             <Ionicons name="chevron-down" size={14} color={theme.textMuted} style={styles.headerTitleChevron} />
           </TouchableOpacity>
 
-          {/* Áudio: mostra/oculta o player flutuante */}
+          {/* Áudio: mostra/oculta o player flutuante (só com narração no idioma) */}
+          {audioAvailable ? (
           <TouchableOpacity
             style={[
               styles.headerAudioButton,
@@ -731,6 +745,7 @@ export default function ReadScreen({ navigation, route }) {
           >
             <Ionicons name="headset-outline" size={18} color={audioVisible ? theme.primary : theme.text} />
           </TouchableOpacity>
+          ) : null}
 
           {/* Versão ativa: troca rápida */}
           <TouchableOpacity
@@ -760,7 +775,7 @@ export default function ReadScreen({ navigation, route }) {
         <ScrollView
           ref={scrollViewRef}
           style={styles.scroll}
-          contentContainerStyle={[styles.content, selectedCount > 0 && styles.selectionBottomPadding, audioVisible && styles.audioPlayerPadding]}
+          contentContainerStyle={[styles.content, selectedCount > 0 && styles.selectionBottomPadding, audioVisible && audioAvailable && styles.audioPlayerPadding]}
           contentInsetAdjustmentBehavior="never"
           automaticallyAdjustContentInsets={false}
           removeClippedSubviews
@@ -890,10 +905,10 @@ export default function ReadScreen({ navigation, route }) {
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Player de áudio flutuante */}
-      {selectedCount === 0 && meta ? (
+      {/* Player de áudio flutuante (instância persistente: sem key por
+          capítulo para manter foreground service + lockscreen na fila) */}
+      {selectedCount === 0 && meta && audioAvailable ? (
         <FloatingAudioPlayer
-          key={`${meta.abbrev}:${chapterIndex}`}
           versionSigla={audioVersion}
           abbrev={meta.abbrev}
           chapterNumber={audioChapterNumber}

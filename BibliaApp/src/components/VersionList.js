@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  FlatList,
+  SectionList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,7 +11,7 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { useApp } from '../context/AppContext';
-import { TRANSLATIONS, getTranslation } from '../data/translations';
+import { TRANSLATIONS, getTranslation, translationLanguage } from '../data/translations';
 import {
   downloadTranslation,
   removeTranslation,
@@ -87,8 +87,7 @@ export default function VersionList({ style, contentContainerStyle, listHeader }
     }
   };
 
-  const renderItem = ({ item }) => {
-    const { sigla, name, year, publisher, embedded, domainPublic } = item;
+  const renderItem = ({ item }) => {    const { sigla, name, year, publisher, embedded, domainPublic } = item;
     const installed = isInstalled(sigla);
     const active = isActive(sigla);
     const isDown = !!downloading[sigla];
@@ -190,13 +189,33 @@ export default function VersionList({ style, contentContainerStyle, listHeader }
     );
   };
 
+  // Seletor agrupado por idioma do texto (Português / English / Español).
+  const sections = useMemo(() => {
+    const groups = [
+      { key: 'pt', title: 'Português', data: [] },
+      { key: 'en', title: 'English', data: [] },
+      { key: 'es', title: 'Español', data: [] },
+    ];
+    const byKey = new Map(groups.map((g) => [g.key, g]));
+    TRANSLATIONS.forEach((item) => {
+      const lang = translationLanguage(item.sigla);
+      (byKey.get(lang) ?? byKey.get('pt')).data.push(item);
+    });
+    return groups.filter((g) => g.data.length > 0);
+  }, []);
+
   return (
-    <FlatList
+    <SectionList
       style={[styles.container, { backgroundColor: theme.background }, style]}
       contentContainerStyle={contentContainerStyle}
-      data={TRANSLATIONS}
+      sections={sections}
       keyExtractor={(item) => item.sigla}
       renderItem={renderItem}
+      renderSectionHeader={({ section }) => (
+        <Text style={[styles.sectionTitle, { color: theme.textMuted }]}>
+          {section.title}
+        </Text>
+      )}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={listHeader ?? null}
     />
@@ -206,6 +225,14 @@ export default function VersionList({ style, contentContainerStyle, listHeader }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  sectionTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginTop: 8,
+    marginBottom: 10,
   },
   card: {
     borderRadius: 12,

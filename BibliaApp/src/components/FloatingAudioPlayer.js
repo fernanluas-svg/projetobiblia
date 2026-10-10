@@ -13,11 +13,13 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Slider from '@react-native-community/slider';
-import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync } from 'expo-audio';
+import { useAudioPlayer, useAudioPlayerStatus, setAudioModeAsync, preload as preloadAudioSource, requestNotificationPermissionsAsync } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useApp } from '../context/AppContext';
 import { getTranslation } from '../data/translations';
+import { getBooks } from '../data/books';
+import { getBookMeta } from '../data/bookMeta';
 import {
   buildAudioUrl,
   downloadAudio,
@@ -77,24 +79,57 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Reprodução sequencial permanente: refs de controle (o player remonta a cada capítulo).
+  // Player PERSISTENTE: a instância sobrevive à troca de capítulos (o
+  // ReadScreen não remonta mais este componente por capítulo). Isso mantém
+  // o foreground service + lockscreen ativos durante toda a fila e permite
+  // encadear o próximo áudio diretamente no fim da faixa, sem depender de
+  // round-trip de estados da UI (que não atualizam em background).
   const chapterKeyAudio = `${abbrev}:${chapterNumber}`;
   const autoPlayPendingRef = useRef(false);
-  const endedGuardRef = useRef(null);
-  useEffect(() => {
-    endedGuardRef.current = null;
-  }, [chapterKeyAudio]);
+  const loadedUriRef = useRef(null);
+  const chainedPlayRef = useRef(false);
+  const pendingMetaRef = useRef(null);
+  const prevFinishRef = useRef(false);
 
-  // Autoplay SOMENTE quando o capítulo chegou via avanço automático.
-  // O player remonta a cada capítulo (key no ReadScreen), então este
-  // efeito de montagem roda 1x por capítulo e consome o sinal.
+  // Calcula o próximo capítulo (mesmo livro ou primeiro cap. do próximo)
+  // a partir de dados estáticos — síncrono, sem depender de estado da UI.
+  const computeNextRef = useRef(null);
+  computeNextRef.current = () => {
+    try {
+      const list = getBooks();
+      const idx = list.findIndex((b) => b.abbrev === abbrev);
+      if (idx < 0) return null;
+      const metaBook = getBookMeta(abbrev);
+      const total = metaBook?.chaptersCount ?? list[idx]?.chapters ?? 0;
+      const nextOf = (ab, ch) => {
+        if (hasLocalAudio(versionSigla, ab, ch)) {
+          return localAudioFile(versionSigla, ab, ch).uri;
+        }
+        return buildAudioUrl(versionSigla, ab, ch);
+      };
+      if (chapterNumber < total) {
+        const n = chapterNumber + 1;
+        return { abbrev, chapterNumber: n, bookName: list[idx]?.name ?? abbrev, uri: nextOf(abbrev, n) };
+      }
+      if (idx < list.length - 1) {
+        const nb = list[idx + 1];
+        return { abbrev: nb.abbrev, chapterNumber: 1, bookName: nb.name, uri: nextOf(nb.abbrev, 1) };
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  // Autoplay quando o capítulo chegou via avanço automático do Reader
+  // (caminho de fallback caso o encadeamento interno não tenha ocorrido).
   useEffect(() => {
     if (autoPlay) {
       autoPlayPendingRef.current = true;
       onAutoPlayConsumed?.();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [autoPlay, chapterKeyAudio]);
 
   const translateY = useRef(new NativeAnimated.Value(1000)).current;
   const opacityAnim = useRef(new NativeAnimated.Value(0)).current;
@@ -188,40 +223,107 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [versionSigla, abbrev, chapterNumber]);
 
+  // Troca de fonte vinda das props (troca manual de capítulo no Reader).
+  // Se a uri já é a que o player carregou via encadeamento interno, ignora
+  // (evita reiniciar a faixa que já está tocando em background).
   useEffect(() => {
-    if (uri) {
-      player.pause();
-      player.replace(uri);
-    }
+    if (!uri) return;
+    if (loadedUriRef.current && loadedUriRef.current === uri) return;
+    chainedPlayRef.current = false;
+    pendingMetaRef.current = null;
+    loadedUriRef.current = uri;
+    player.pause();
+    player.replace(uri);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri]);
+
+  const activateLockScreen = (title) => {
+    try {
+      player.setActiveForLockScreen?.(true, {
+        title,
+        artist: versionSigla,
+        albumTitle: 'Bíblia Sagrada',
+      });
+    } catch (e) {
+      // ignora: plataforma sem suporte
+    }
+  };
 
   // Dispara o autoplay assim que o áudio novo termina de carregar.
   useEffect(() => {
     if (autoPlayPendingRef.current && status.isLoaded && uri) {
       autoPlayPendingRef.current = false;
-      try {
-        player.setActiveForLockScreen?.(true, {
-          title: bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`,
-          artist: versionSigla,
-          albumTitle: 'Bíblia Sagrada',
-        });
-      } catch (e) {
-        // ignora
-      }
+      activateLockScreen(bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`);
       player.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status.isLoaded, uri]);
 
-  // Fim do capítulo: avança automaticamente 1x por capítulo (sempre ativo).
+  // Fim da faixa: ENCADEIA o próximo capítulo diretamente na mesma
+  // instância do player (síncrono, sem esperar a UI). Detecta a transição
+  // false→true de didJustFinish para nunca avançar 2x. A UI é avisada via
+  // onChapterEnded e se sincroniza quando conseguir (foreground).
   useEffect(() => {
-    if (status.didJustFinish && endedGuardRef.current !== chapterKeyAudio) {
-      endedGuardRef.current = chapterKeyAudio;
-      onChapterEnded?.();
+    const justFinished = !!status.didJustFinish;
+    const transitioned = justFinished && !prevFinishRef.current;
+    prevFinishRef.current = justFinished;
+    if (!transitioned) return;
+    const next = computeNextRef.current?.();
+    if (next) {
+      try {
+        loadedUriRef.current = next.uri;
+        pendingMetaRef.current = next;
+        player.replace(next.uri);
+        chainedPlayRef.current = true;
+      } catch (e) {
+        // falha no encadeamento: cai no fallback via onChapterEnded
+      }
+    }
+    onChapterEnded?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.didJustFinish]);
+
+  // Toca a faixa encadeada assim que ela termina de carregar — mesma
+  // instância, lockscreen nunca é solto no meio da fila.
+  useEffect(() => {
+    if (chainedPlayRef.current && status.isLoaded) {
+      chainedPlayRef.current = false;
+      const m = pendingMetaRef.current;
+      pendingMetaRef.current = null;
+      activateLockScreen(m ? `${m.bookName} ${m.chapterNumber}` : (bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`));
+      player.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status.didJustFinish, chapterKeyAudio]);
+  }, [status.isLoaded]);
+
+  // Pré-carrega o próximo capítulo para transição rápida e confiável.
+  useEffect(() => {
+    if (!status.isLoaded || !uri) return;
+    try {
+      const next = computeNextRef.current?.();
+      if (next && typeof preloadAudioSource === 'function') {
+        preloadAudioSource(next.uri);
+      }
+    } catch (e) {
+      // ignora
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status.isLoaded, chapterKeyAudio]);
+
+  // Permissão de notificação (Android): necessária para os controles de
+  // mídia / foreground service sustentarem o background.
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    (async () => {
+      try {
+        if (typeof requestNotificationPermissionsAsync === 'function') {
+          await requestNotificationPermissionsAsync();
+        }
+      } catch (e) {
+        // ignora
+      }
+    })();
+  }, []);
 
   // Ativa controles de lockscreen/notificação (obrigatório no Android para
   // sustentar o background além de ~3 min). Mantém ativo enquanto toca.

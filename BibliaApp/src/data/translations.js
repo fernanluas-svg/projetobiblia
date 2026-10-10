@@ -1,5 +1,11 @@
-// Catálogo de traduções disponíveis no repositório damarals/biblias
-// Fonte: https://github.com/damarals/biblias
+// Catálogo de traduções.
+// - Português: repositório damarals/biblias (download via releases).
+// - Inglês (KJV): scrollmapper/bible_databases, convertido para o formato
+//   canônico do app em scripts/build_kjv_rv1960.cjs.
+// - Espanhol (RV1960): d32-ux/RV1960-JSON, convertido pelo mesmo script.
+// KJV/RV1960 são servidos do próprio repositório do projeto (raw).
+const DATA_BASE_URL =
+  'https://raw.githubusercontent.com/fernanluas-svg/projetobiblia/main/BibliaApp/assets/translations';
 export const TRANSLATIONS = [
   {
     sigla: 'NVI',
@@ -37,6 +43,23 @@ export const TRANSLATIONS = [
     year: '2017',
     publisher: 'Bible League International',
   },
+  {
+    sigla: 'KJV',
+    name: 'King James Version',
+    year: '1769',
+    publisher: '',
+    language: 'en',
+    domainPublic: true,
+    url: `${DATA_BASE_URL}/KJV.json`,
+  },
+  {
+    sigla: 'RV1960',
+    name: 'Reina Valera 1960',
+    year: '1960',
+    publisher: '',
+    language: 'es',
+    url: `${DATA_BASE_URL}/RV1960.json`,
+  },
 ];
 
 export function getTranslation(sigla) {
@@ -44,5 +67,12 @@ export function getTranslation(sigla) {
 }
 
 export function translationDownloadUrl(sigla) {
+  const meta = getTranslation(sigla);
+  if (meta?.url) return meta.url;
   return `https://github.com/damarals/biblias/releases/latest/download/${sigla}.json`;
+}
+
+// Idioma do catálogo para agrupar o seletor (pt é o padrão).
+export function translationLanguage(sigla) {
+  return getTranslation(sigla)?.language ?? 'pt';
 }
