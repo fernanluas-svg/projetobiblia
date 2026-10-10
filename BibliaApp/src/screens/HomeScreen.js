@@ -142,7 +142,14 @@ export default function HomeScreen({ navigation }) {
           const text = typeof raw === 'object' && raw !== null ? (raw.text ?? '') : (raw ?? '');
           if (String(text).trim()) parts.push(String(text).trim());
         }
-        if (!active || !parts.length) return;
+        if (!active) return;
+        // Sem texto na versão (fora do ar ou arquivo ausente): mantém o
+        // português mas exibe o selo da versão para o estado ficar visível.
+        if (!parts.length) {
+          setVotdText(verseOfTheDay.texto);
+          setVotdRef(`${verseOfTheDay.referencia} · ${activeVersion}`);
+          return;
+        }
         const range = endV > startV ? `${verseOfTheDay.capitulo}:${startV}-${endV}` : `${verseOfTheDay.capitulo}:${startV}`;
         const bookName = book?.name ?? verseOfTheDay.referencia.replace(/\s*\d+:\d+(-\d+)?\s*$/, '');
         setVotdText(parts.join(' '));
