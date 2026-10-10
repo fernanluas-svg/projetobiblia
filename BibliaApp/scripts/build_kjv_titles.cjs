@@ -10,6 +10,10 @@ const HF_URL =
   'https://huggingface.co/datasets/JWBickel/KJV_Pericopes/resolve/main/PericopeGroupedKJVVerses.json';
 const OUT_PATH = path.join(__dirname, '..', 'src', 'data', 'kjvTitles.js');
 const KJV_PATH = path.join(__dirname, '..', 'assets', 'translations', 'KJV.json');
+// Títulos dos 150 salmos traduzidos da NVI ([capítulo 1-based, título]).
+// O dataset não traz subtítulos por salmo (só as 5 divisões de Livros),
+// então estes prevalecem na mesma posição.
+const PSALM_PATH = path.join(__dirname, 'kjv_psalm_titles.json');
 
 const BOOK_MAP = {
   genesis: 'gn',
@@ -138,7 +142,22 @@ async function main() {
     list.sort((a, b) => a[0] - b[0] || a[1] - b[1])
   );
 
-  console.log(`[KJV-Titles] Perícopes no dataset: ${data.length} | mapeadas: ${total}`);
+  // Mescla os títulos dos salmos (sobrescrevem "Book 1..5" onde coincidem).
+  const psalms = JSON.parse(fs.readFileSync(PSALM_PATH, 'utf8'));
+  if (!Array.isArray(psalms) || psalms.length !== 150) {
+    throw new Error(`kjv_psalm_titles.json inesperado: ${psalms?.length} itens (esperado 150)`);
+  }
+  const slList = (out.sl = out.sl || []);
+  psalms.forEach(([ch1, title]) => {
+    const chIdx = ch1 - 1;
+    const at = slList.findIndex(([c, v]) => c === chIdx && v === 0);
+    if (at >= 0) slList[at][2] = title;
+    else slList.push([chIdx, 0, title]);
+  });
+  slList.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  total = Object.values(out).reduce((s, l) => s + l.length, 0);
+
+  console.log(`[KJV-Titles] Perícopes no dataset: ${data.length} | mapeadas (+salmos): ${total}`);
   if (unknownBooks.size) console.log('[KJV-Titles] Livros desconhecidos:', [...unknownBooks]);
   console.log(`[KJV-Titles] Fora do alcance KJV: ${outOfRange.length}`, outOfRange.slice(0, 10));
 
