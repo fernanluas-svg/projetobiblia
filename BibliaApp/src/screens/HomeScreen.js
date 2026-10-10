@@ -12,6 +12,7 @@ import { useApp } from '../context/AppContext';
 import versiculosData from '../data/versiculosPopulares.json';
 import votdI18n from '../data/versiculosPopulares.i18n.json';
 import { getBooks } from '../data/books';
+import { getBookName } from '../data/bookNames';
 
 const SPECIAL_DATES = {
   '01-01': 12,   // Ano Novo → João 3:16
@@ -202,7 +203,9 @@ export default function HomeScreen({ navigation }) {
 
   const hasProgress = loaded && lastRead?.book;
 
-  const continueTitle = hasProgress ? lastRead.book.name : t('home.startReading');
+  const continueTitle = hasProgress
+    ? getBookName(lastRead.book.abbrev, language)
+    : t('home.startReading');
   const continueChapter = hasProgress
     ? t('home.chapterLabel', { n: lastRead.chapter + 1 })
     : t('home.startGenesis');

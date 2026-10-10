@@ -21,9 +21,10 @@ import * as Updates from 'expo-updates';
 
 import { useApp } from '../context/AppContext';
 import { getBooks } from '../data/books';
+import { getBookName } from '../data/bookNames';
 
 export default function ProgressScreen({ navigation }) {
-  const { readChapters, theme, t } = useApp();
+  const { readChapters, theme, t, language } = useApp();
   const insets = useSafeAreaInsets();
   const books = getBooks();
 
@@ -90,7 +91,7 @@ export default function ProgressScreen({ navigation }) {
         Alert.alert(
           t('progressUpToDateTitle'),
           t('progressUpToDateMsg', {
-            id: Updates.updateId ? `id ${String(Updates.updateId).slice(0, 8)}` : 'sem id',
+            id: Updates.updateId ? `id ${String(Updates.updateId).slice(0, 8)}` : t('progress.noId'),
           })
         );
         return;
@@ -111,10 +112,10 @@ export default function ProgressScreen({ navigation }) {
     >
       <View style={styles.cardHeader}>
         <Text style={[styles.bookName, { color: theme.text }]}>
-          {item.name}
+          {getBookName(item.abbrev, language)}
         </Text>
         <Text style={[styles.readInfo, { color: theme.textMuted }]}>
-          {item.read} de {item.chapters} · {item.percent}%
+          {t('progress.bookCount', { read: item.read, chapters: item.chapters })} · {item.percent}%
         </Text>
       </View>
       <View style={[styles.track, { backgroundColor: theme.bar }]}>
@@ -195,7 +196,7 @@ export default function ProgressScreen({ navigation }) {
               ]}
             >
               <Text style={[styles.modalTitle, { color: theme.text }]}>
-                {selectedBook?.name}
+                {selectedBook ? getBookName(selectedBook.abbrev, language) : ''}
               </Text>
               <TouchableOpacity
                 style={styles.closeButton}

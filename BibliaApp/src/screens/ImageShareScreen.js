@@ -37,11 +37,11 @@ import { useApp } from '../context/AppContext';
 import { fetchInspiringBatch, fetchPixabayImages } from '../services/pixabayService';
 
 const FALLBACK_IMAGE = null; // fundo neutro se sem rede
-const APP_SIGNATURE = 'Bíblia Sagrada';
 const APP_LINK = 'bibliaapp.com'; // espaço para link
 
 export default function ImageShareScreen({ navigation, route }) {
-  const { theme } = useApp();
+  const { theme, t } = useApp();
+  const APP_SIGNATURE = t('appTitle');
   const insets = useSafeAreaInsets();
   const shotRef = useRef(null);
 
@@ -94,8 +94,8 @@ export default function ImageShareScreen({ navigation, route }) {
     // fallback se ViewShot nativo não estiver no binary (OTA sem rebuild)
     if (!ViewShot || !shotRef.current || typeof shotRef.current.capture !== 'function') {
       Alert.alert(
-        'Atualização necessária',
-        'O recurso de imagem precisa de uma nova build nativa. Por enquanto, o versículo foi copiado como texto para compartilhar.'
+        t('is.updateTitle'),
+        t('is.updateMsg')
       );
       try {
         const text = verses.map((v) => `${v.reference}\n${v.text}`).join('\n\n') + `\n\n— ${APP_SIGNATURE}`;
@@ -105,7 +105,7 @@ export default function ImageShareScreen({ navigation, route }) {
       return;
     }
     if (!Sharing || !FileSystem) {
-      Alert.alert('Compartilhamento indisponível', 'Módulo de compartilhamento não disponível nesta build.');
+      Alert.alert(t('is.unavTitle'), t('is.unavMsgBuild'));
       return;
     }
     setSharing(true);
@@ -115,7 +115,7 @@ export default function ImageShareScreen({ navigation, route }) {
       if (Platform.OS !== 'web') {
         const isAvailable = await Sharing.isAvailableAsync();
         if (!isAvailable) {
-          Alert.alert('Compartilhamento indisponível', 'Não é possível compartilhar neste dispositivo.');
+          Alert.alert(t('is.unavTitle'), t('is.cantShare'));
           return;
         }
         if (!uri.endsWith('.jpg') && !uri.endsWith('.png')) {
@@ -125,13 +125,13 @@ export default function ImageShareScreen({ navigation, route }) {
         }
         await Sharing.shareAsync(shareUri, {
           mimeType: 'image/jpeg',
-          dialogTitle: displayRef || 'Compartilhar versículo',
+          dialogTitle: displayRef || t('is.dialogTitle'),
         });
       } else {
         if (uri) window.open(uri, '_blank');
       }
     } catch (e) {
-      Alert.alert('Erro ao compartilhar', String(e?.message || e));
+      Alert.alert(t('is.errorTitle'), String(e?.message || e));
     } finally {
       setSharing(false);
     }
@@ -166,7 +166,7 @@ export default function ImageShareScreen({ navigation, route }) {
           <Ionicons name="chevron-back" size={24} color={theme.text} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.text }]} numberOfLines={1}>
-          Imagem do Versículo
+          {t('is.title')}
         </Text>
         <TouchableOpacity onPress={handleRefresh} hitSlop={8} style={styles.headerIcon}>
           <Ionicons name="refresh" size={20} color={theme.textMuted} />
@@ -260,16 +260,16 @@ export default function ImageShareScreen({ navigation, route }) {
           </TouchableOpacity>
         </View>
         <Text style={[styles.hint, { color: theme.textMuted }]}>
-          Toque nas miniaturas abaixo para trocar o fundo
+          {t('is.hint')}
         </Text>
       </View>
 
       {/* Seletor de Imagens - expandido */}
       <View style={[styles.selectorHeader, { borderTopColor: theme.border }]}>
-        <Text style={[styles.selectorTitle, { color: theme.text }]}>Paisagens inspiradoras</Text>
+        <Text style={[styles.selectorTitle, { color: theme.text }]}>{t('is.selector')}</Text>
         <TouchableOpacity onPress={handleRefresh} style={[styles.refreshBtn, { borderColor: theme.border, backgroundColor: theme.surface }]}>
           <Ionicons name="sync" size={14} color={theme.primary} />
-          <Text style={[styles.refreshText, { color: theme.primary }]}>Novas imagens</Text>
+          <Text style={[styles.refreshText, { color: theme.primary }]}>{t('is.refresh')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -277,7 +277,7 @@ export default function ImageShareScreen({ navigation, route }) {
         {loadingImages ? (
           <View style={styles.loadingRow}>
             <ActivityIndicator color={theme.primary} />
-            <Text style={[styles.loadingText, { color: theme.textMuted }]}>Buscando imagens no Pixabay...</Text>
+            <Text style={[styles.loadingText, { color: theme.textMuted }]}>{t('is.loading')}</Text>
           </View>
         ) : (
           <FlatList
@@ -291,7 +291,7 @@ export default function ImageShareScreen({ navigation, route }) {
             ListEmptyComponent={
               <View style={styles.emptyThumb}>
                 <Ionicons name="image-outline" size={22} color={theme.textMuted} />
-                <Text style={[styles.emptyText, { color: theme.textMuted }]}>Sem conexão — usando fundo neutro</Text>
+                <Text style={[styles.emptyText, { color: theme.textMuted }]}>{t('is.noconn')}</Text>
               </View>
             }
           />

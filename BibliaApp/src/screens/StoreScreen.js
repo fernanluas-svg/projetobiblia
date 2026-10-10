@@ -21,9 +21,9 @@ const { width } = Dimensions.get('window');
 const OFFER_BUTTON_COLOR = '#E53935';
 
 const CATEGORIES = [
-  { key: 'livros', label: '📚 Livros' },
-  { key: 'infantil', label: '👶 Infantil' },
-  { key: 'camisas', label: '👕 Camisas' },
+  { key: 'livros', labelKey: 'store.cat.books' },
+  { key: 'infantil', labelKey: 'store.cat.infantil' },
+  { key: 'camisas', labelKey: 'store.cat.shirts' },
 ];
 
 const PRODUCTS_DATA = [
@@ -34,7 +34,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-81z1k-mggnr9f2t9mo0b@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/7AdQdtQpEO',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '2',
@@ -43,7 +43,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/sg-11134201-7rdym-mcf6qan1x2rbd2@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/8pled5dFQe',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '3',
@@ -52,7 +52,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m283cuc4b629fd@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/9AOV3OUtpz',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '4',
@@ -61,7 +61,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-7r98o-lygmkt5s0jxh5c@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/1gIU7jCIAE',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '5',
@@ -70,7 +70,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/sg-11134201-8227i-mhmajmnn55vmb1@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/2gB1MLzzVd',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '6',
@@ -79,7 +79,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/sg-11134201-7rbki-lmywv17ps2mx0f@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/3g3YYJSYRI',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '7',
@@ -88,7 +88,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-820mh-mpr5e9ojdiwyf5@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/2BEkm8sv7e',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '8',
@@ -97,7 +97,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-7r98o-mcv3pzkr854x94@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/7AdQjOlfxN',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '9',
@@ -106,7 +106,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m0eruiwivpmp50@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/2LYAyInOfl',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '10',
@@ -115,7 +115,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-7r98o-m3wkwef65al7ee@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/6q0aLMlbOq',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '11',
@@ -124,7 +124,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/0ad2c4ed5284872e7ae1e1fbb025832e@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/5AsMMPkidw',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
   {
     id: '12',
@@ -133,7 +133,7 @@ const PRODUCTS_DATA = [
     image:
       'https://down-br.img.susercontent.com/file/br-11134207-820mh-mqxnp9w35czob4@resize_w900_nl.webp',
     url: 'https://s.shopee.com.br/3g3Ya2XjHy',
-    buttonText: 'Ver Oferta',
+    buttonText: 'store.offer',
   },
 ];
 
@@ -233,7 +233,7 @@ export default function StoreScreen({ navigation }) {
         >
           <Ionicons name="storefront-outline" size={24} color={theme.primary} style={styles.bannerIcon} />
           <Text style={[styles.bannerText, { color: theme.text }]}>
-            Melhores produtos do nicho evangélico pra você.
+            {t('store.banner')}
           </Text>
         </View>
 
@@ -261,7 +261,7 @@ export default function StoreScreen({ navigation }) {
                     { color: active ? '#FFFFFF' : theme.text },
                   ]}
                 >
-                  {category.label}
+                  {t(category.labelKey)}
                 </Text>
               </TouchableOpacity>
             );
@@ -298,7 +298,7 @@ export default function StoreScreen({ navigation }) {
                   <>
                     <Ionicons name="book-outline" size={32} color={theme.textMuted} />
                     <Text style={[styles.imagePlaceholderText, { color: theme.textMuted }]}>
-                      Capa do Produto
+                      {t('store.coverFallback')}
                     </Text>
                   </>
                 )}
@@ -317,7 +317,7 @@ export default function StoreScreen({ navigation }) {
                 style={[styles.actionButton, { backgroundColor: OFFER_BUTTON_COLOR }]}
                 onPress={() => handlePressProduct(item)}
               >
-                <Text style={styles.actionButtonText}>{item.buttonText}</Text>
+                <Text style={styles.actionButtonText}>{t(item.buttonText)}</Text>
               </PulseButton>
             </View>
           ))}

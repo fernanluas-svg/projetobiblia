@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useApp } from '../context/AppContext';
 import { getBooks, getBook } from '../data/books';
+import { getBookName } from '../data/bookNames';
 import {
   toSafeString,
   normalizeText,
@@ -40,7 +41,7 @@ function splitHighlight(verseText, normalizedTerm) {
 }
 
 export default function SearchScreen({ navigation }) {
-  const { theme, t, activeVersion } = useApp();
+  const { theme, t, activeVersion, language } = useApp();
   const [query, setQuery] = useState('');
   const [allResults, setAllResults] = useState([]);
   const [visibleResults, setVisibleResults] = useState([]);
@@ -219,6 +220,9 @@ export default function SearchScreen({ navigation }) {
   const renderItem = useCallback(
     ({ item }) => {
       const parts = splitHighlight(item.text, item.normalizedTerm);
+      const displayRef = item.bookMeta?.abbrev
+        ? `${getBookName(item.bookMeta.abbrev, language)} ${item.chapterIndex + 1}:${item.verseIndex + 1}`
+        : item.reference;
 
       return (
         <TouchableOpacity
@@ -227,7 +231,7 @@ export default function SearchScreen({ navigation }) {
           activeOpacity={0.7}
         >
           <Text style={[styles.verseReference, { color: theme.dark ? '#6EE7B7' : '#2E7D32' }]}>
-            {item.reference}
+            {displayRef}
           </Text>
           <Text style={[styles.verseText, { color: theme.text }]} numberOfLines={3}>
             {parts.map((part, index) =>
@@ -252,7 +256,7 @@ export default function SearchScreen({ navigation }) {
         </TouchableOpacity>
       );
     },
-    [theme]
+    [theme, language]
   );
 
   const keyExtractor = useCallback((item) => item.key, []);

@@ -35,28 +35,28 @@ const COUNT_OPTIONS = [15, 25, 30, 40];
 const MODES = [
   {
     key: 'tranquilo',
-    label: 'Tranquilo',
+    labelKey: 'quiz.mode.calm',
     icon: 'leaf',
     dificuldades: ['facil', 'medio'],
-    descricao: 'Mistura de perguntas fáceis e médias para aquecer.',
+    descKey: 'quiz.mode.calmDesc',
     cor: '#169B4E',
     corTint: 'rgba(22, 163, 74, 0.13)',
   },
   {
     key: 'intermediario',
-    label: 'Intermediário',
+    labelKey: 'quiz.mode.mid',
     icon: 'analytics',
     dificuldades: ['medio'],
-    descricao: 'Somente perguntas de nível médio.',
+    descKey: 'quiz.mode.midDesc',
     cor: '#D97706',
     corTint: 'rgba(217, 119, 6, 0.15)',
   },
   {
     key: 'hard',
-    label: 'Hard',
+    labelKey: 'quiz.mode.hard',
     icon: 'flame',
     dificuldades: ['dificil'],
-    descricao: 'Somente as perguntas mais difíceis da Bíblia.',
+    descKey: 'quiz.mode.hardDesc',
     cor: '#DC2626',
     corTint: 'rgba(220, 38, 38, 0.13)',
   },
@@ -105,21 +105,45 @@ function prepareQuestions(modeKey, count, sessionUsedIds) {
   return picked.map(toQuestion);
 }
 
-function resultMessage(score, total) {
+function resultMessageKey(score, total) {
   const pct = total > 0 ? score / (total * POINTS_PER_HIT) : 0;
-  if (pct >= 0.9) return 'Incrível! Você é um verdadeiro craque do conhecimento bíblico!';
+  if (pct >= 0.9) return 'quiz.result.amazing';
   if (pct >= 0.71) {
-    return pct >= 0.85
-      ? 'Parabéns! Desempenho fora de série — você está voando alto na Palavra!'
-      : 'Parabéns! Seu conhecimento está acima da média, continue assim!';
+    return pct >= 0.85 ? 'quiz.result.flying' : 'quiz.result.above';
   }
-  if (pct >= 0.6) return 'Muito bem! Você está afiado na Palavra, continue firme!';
-  if (pct > 0.5) return 'Quase lá! Pouco mais de leitura e você chega ao topo.';
-  return 'Não desanime! Leia um pouco mais a Bíblia e tente de novo — a prática leva à perfeição.';
+  if (pct >= 0.6) return 'quiz.result.sharp';
+  if (pct > 0.5) return 'quiz.result.almost';
+  return 'quiz.result.keep';
 }
 
+// Rótulos de métricas das medalhas (chave PT interna -> chave i18n).
+const METRIC_KEY = {
+  'Jornada iniciada': 'journey',
+  'Partidas perfeitas (geral)': 'perfectGeneral',
+  'Partidas perfeitas (acumulado)': 'perfectAccum',
+  'Perfeitas seguidas (geral)': 'streakGeneral',
+  'Perfeitas seguidas (Intermediário)': 'streakInter',
+  'Partidas completadas': 'matches',
+  'Acertos acumulados': 'hits',
+  'Dias diferentes': 'days',
+  'Perfeitas (Intermediário)': 'perfectInter',
+  'Perfeitas seguidas (Hard)': 'streakHard',
+  'Perfeitas (Hard)': 'perfectHard',
+};
+
 export default function QuizScreen() {
-  const { theme } = useApp();
+  const { theme, t } = useApp();
+  // t() com fallback para o texto PT (segurança caso falte alguma chave).
+  const tx = (key, fb) => {
+    const v = t(key);
+    return v === key ? fb : v;
+  };
+  const medalName = (medal) => tx(`quiz.medal.${medal.id}`, medal.name);
+  const medalDesc = (medal) => tx(`quiz.medal.${medal.id}.desc`, medal.description);
+  const metricLabel = (label) => {
+    const slug = METRIC_KEY[label];
+    return slug ? tx(`quiz.metric.${slug}`, label) : label;
+  };
   const [phase, setPhase] = useState('home');
   const [modeKey, setModeKey] = useState('tranquilo');
   const [questionCount, setQuestionCount] = useState(15);
@@ -184,8 +208,8 @@ export default function QuizScreen() {
   const showNewlyUnlocked = (list) => {
     if (!list || !list.length) return;
     Alert.alert(
-      'Medalha conquistada!',
-      `Você desbloqueou:\n\n${list.map((m) => m.name).join('\n')}`
+      t('quiz.medalUnlocked'),
+      `${t('quiz.unlockedPrefix')}\n\n${list.map((m) => medalName(m)).join('\n')}`
     );
   };
 
@@ -274,9 +298,9 @@ export default function QuizScreen() {
   };
 
   const confirmQuit = () => {
-    Alert.alert('Sair do quiz?', 'Sua partida atual será perdida.', [
-      { text: 'Continuar jogando', style: 'cancel' },
-      { text: 'Sair', style: 'destructive', onPress: goBackToSetup },
+    Alert.alert(t('quiz.quitTitle'), t('quiz.quitMsg'), [
+      { text: t('quiz.quitStay'), style: 'cancel' },
+      { text: t('quiz.quitLeave'), style: 'destructive', onPress: goBackToSetup },
     ]);
   };
 
@@ -291,21 +315,21 @@ export default function QuizScreen() {
 
   const renderCountdown = () => (
     <View style={styles.countdownWrap}>
-      <Text style={[styles.countdownHint, { color: theme.textMuted }]}>Prepare-se!</Text>
+      <Text style={[styles.countdownHint, { color: theme.textMuted }]}>{t('quiz.getReady')}</Text>
       <Animated.Text
         style={[
           styles.countdownText,
           { color: theme.primary, transform: [{ scale }] },
         ]}
       >
-        {count > 0 ? count : 'VAI!'}
+        {count > 0 ? count : t('quiz.go')}
       </Animated.Text>
       <TouchableOpacity
         style={[styles.countdownCancel, { borderColor: theme.border }]}
         onPress={goBackToSetup}
         activeOpacity={0.7}
       >
-        <Text style={[styles.countdownCancelText, { color: theme.textMuted }]}>Cancelar</Text>
+        <Text style={[styles.countdownCancelText, { color: theme.textMuted }]}>{t('quiz.cancel')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -313,10 +337,10 @@ export default function QuizScreen() {
   const renderAchievements = () => {
     const unlockedIds = achievements.map((a) => a.id);
     const levels = [
-      { key: 'Iniciante', color: '#169B4E' },
-      { key: 'Intermediário', color: '#D97706' },
-      { key: 'Avançado', color: '#DC2626' },
-      { key: 'Lendário', color: '#7C3AED' },
+      { key: 'Iniciante', labelKey: 'quiz.level.beginner', color: '#169B4E' },
+      { key: 'Intermediário', labelKey: 'quiz.level.intermediate', color: '#D97706' },
+      { key: 'Avançado', labelKey: 'quiz.level.advanced', color: '#DC2626' },
+      { key: 'Lendário', labelKey: 'quiz.level.legendary', color: '#7C3AED' },
     ];
     return (
       <View>
@@ -327,34 +351,33 @@ export default function QuizScreen() {
             activeOpacity={0.7}
           >
             <Ionicons name="arrow-back" size={16} color={theme.text} />
-            <Text style={[styles.achieveBackText, { color: theme.text }]}>Voltar</Text>
+            <Text style={[styles.achieveBackText, { color: theme.text }]}>{t('quiz.back')}</Text>
           </TouchableOpacity>
           <Text style={[styles.achieveCount, { color: theme.textMuted }]}>
-            {unlockedIds.length} de {MEDALS.length} selos
+            {t('quiz.sealsCount', { n: unlockedIds.length, total: MEDALS.length })}
           </Text>
         </View>
 
         <View style={[styles.hero, { backgroundColor: theme.primary }]}>
           <Ionicons name="medal-outline" size={44} color="#FFFFFF" />
-          <Text style={styles.heroTitle}>Suas Conquistas</Text>
+          <Text style={styles.heroTitle}>{t('quiz.achievements')}</Text>
           <Text style={styles.heroSubtitle}>
-            Seu progresso é rastreado offline e os selos são desbloqueados automaticamente a cada
-            partida concluída.
+            {t('quiz.achievementsDesc')}
           </Text>
         </View>
 
         <View style={styles.statsRow}>
           <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
             <Text style={[styles.statValue, { color: theme.primary }]}>{stats.matches}</Text>
-            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Partidas</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>{t('quiz.matches')}</Text>
           </View>
           <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
             <Text style={[styles.statValue, { color: theme.primary }]}>{stats.correct}</Text>
-            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Acertos</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>{t('quiz.hits')}</Text>
           </View>
           <View style={[styles.statCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
             <Text style={[styles.statValue, { color: theme.primary }]}>{stats.playedDays}</Text>
-            <Text style={[styles.statLabel, { color: theme.textMuted }]}>Dias ativos</Text>
+            <Text style={[styles.statLabel, { color: theme.textMuted }]}>{t('quiz.activeDays')}</Text>
           </View>
         </View>
 
@@ -362,11 +385,10 @@ export default function QuizScreen() {
           <View style={[styles.achieveEmpty, { borderColor: theme.border }]}>
             <Ionicons name="lock-closed-outline" size={26} color={theme.textMuted} />
             <Text style={[styles.achieveEmptyTitle, { color: theme.text }]}>
-              Nenhum selo ainda
+              {t('quiz.noSeals')}
             </Text>
             <Text style={[styles.achieveEmptyHint, { color: theme.textMuted }]}>
-              Complete partidas, responda com precisão e vença desafios para desbloquear suas
-              primeiras medalhas.
+              {t('quiz.noSealsHint')}
             </Text>
           </View>
         )}
@@ -378,7 +400,7 @@ export default function QuizScreen() {
             <View key={level.key}>
               <View style={styles.levelHeader}>
                 <View style={[styles.levelDot, { backgroundColor: level.color }]} />
-                <Text style={[styles.levelTitle, { color: theme.text }]}>{level.key}</Text>
+                <Text style={[styles.levelTitle, { color: theme.text }]}>{t(level.labelKey)}</Text>
                 <Text style={[styles.levelCount, { color: theme.textMuted }]}>
                   {unlockedCount}/{medals.length}
                 </Text>
@@ -421,10 +443,10 @@ export default function QuizScreen() {
                           { color: unlocked ? theme.text : theme.textMuted },
                         ]}
                       >
-                        {medal.name}
+                        {medalName(medal)}
                       </Text>
                       <Text numberOfLines={3} style={[styles.medalDesc, { color: theme.textMuted }]}>
-                        {medal.description}
+                        {medalDesc(medal)}
                       </Text>
                       <View
                         style={[
@@ -445,18 +467,17 @@ export default function QuizScreen() {
                           numberOfLines={1}
                           style={[styles.medalMetric, { color: theme.textMuted }]}
                         >
-                          {metric.label}: {Math.min(metric.current, metric.target)}/{metric.target}
-                        </Text>
+                          {metricLabel(metric.label)}: {Math.min(metric.current, metric.target)}/{metric.target}                        </Text>
                       ))}
                       {unlocked ? (
                         <View style={styles.medalLockRow}>
                           <Ionicons name="checkmark-circle" size={13} color={color} />
-                          <Text style={[styles.medalUnlockText, { color }]}>Conquistada</Text>
+                          <Text style={[styles.medalUnlockText, { color }]}>{t('quiz.unlocked')}</Text>
                         </View>
                       ) : (
                         <View style={styles.medalLockRow}>
                           <Ionicons name="lock-closed" size={12} color={theme.textMuted} />
-                          <Text style={[styles.medalLockText, { color: theme.textMuted }]}>Bloqueado</Text>
+                          <Text style={[styles.medalLockText, { color: theme.textMuted }]}>{t('quiz.locked')}</Text>
                         </View>
                       )}
                     </View>
@@ -474,13 +495,13 @@ export default function QuizScreen() {
     <View>
       <View style={[styles.hero, { backgroundColor: theme.primary }]}>
         <Ionicons name="help-circle" size={44} color="#FFFFFF" />
-        <Text style={styles.heroTitle}>Mini Quiz da Bíblia</Text>
+        <Text style={styles.heroTitle}>{t('quiz.setupTitle')}</Text>
         <Text style={styles.heroSubtitle}>
-          Escolha um modo, defina a quantidade e teste seus conhecimentos.
+          {t('quiz.setupDesc')}
         </Text>
       </View>
 
-      <Text style={[styles.sectionLabel, { color: theme.text }]}>Modo de jogo</Text>
+      <Text style={[styles.sectionLabel, { color: theme.text }]}>{t('quiz.gameMode')}</Text>
       <View style={styles.modesList}>
         {MODES.map((m) => {
           const active = modeKey === m.key;
@@ -503,12 +524,12 @@ export default function QuizScreen() {
               </View>
               <View style={styles.modeInfo}>
                 <View style={styles.modeTitleRow}>
-                  <Text style={[styles.modeTitle, { color: theme.text }]}>{m.label}</Text>
+                  <Text style={[styles.modeTitle, { color: theme.text }]}>{t(m.labelKey)}</Text>
                   {active && <Ionicons name="checkmark-circle" size={18} color={m.cor} />}
                 </View>
-                <Text style={[styles.modeDesc, { color: theme.textMuted }]}>{m.descricao}</Text>
+                <Text style={[styles.modeDesc, { color: theme.textMuted }]}>{t(m.descKey)}</Text>
                 <Text style={[styles.modeAvail, { color: m.cor }]}>
-                  {avail} {avail === 1 ? 'pergunta disponível' : 'perguntas disponíveis'}
+                  {t(avail === 1 ? 'quiz.availOne' : 'quiz.availMany', { n: avail })}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -516,7 +537,7 @@ export default function QuizScreen() {
         })}
       </View>
 
-      <Text style={[styles.sectionLabel, { color: theme.text }]}>Quantas perguntas?</Text>
+      <Text style={[styles.sectionLabel, { color: theme.text }]}>{t('quiz.howMany')}</Text>
       <View style={styles.countRow}>
         {COUNT_OPTIONS.map((value) => {
           const disabled = value > availCount;
@@ -551,7 +572,10 @@ export default function QuizScreen() {
       </View>
       {questionCount > availCount && (
         <Text style={[styles.availHint, { color: theme.textMuted }]}>
-          Neste modo só há {availCount} {availCount === 1 ? 'pergunta' : 'perguntas'} — a partida usará {availCount}.
+          {t('quiz.availHint', {
+            n: availCount,
+            palavra: t(availCount === 1 ? 'quiz.oneQuestion' : 'quiz.manyQuestions'),
+          })}
         </Text>
       )}
 
@@ -562,29 +586,29 @@ export default function QuizScreen() {
             size={20}
             color={soundOn ? theme.primary : theme.textMuted}
           />
-          <Text style={[styles.soundLabel, { color: theme.text }]}>Efeitos sonoros</Text>
+          <Text style={[styles.soundLabel, { color: theme.text }]}>{t('quiz.soundFx')}</Text>
           <Text
             style={[
               styles.soundState,
               { color: soundOn ? theme.primary : theme.textMuted },
             ]}
           >
-            {soundOn ? 'Ativados' : 'Desativados'}
+            {soundOn ? t('quiz.on') : t('quiz.off')}
           </Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity style={[styles.primaryButton, { backgroundColor: theme.primary }]} onPress={startQuiz}>
         <Ionicons name="play" size={18} color="#FFFFFF" />
-        <Text style={styles.primaryButtonText}>Iniciar Quiz</Text>
+        <Text style={styles.primaryButtonText}>{t('quiz.start')}</Text>
       </TouchableOpacity>
       <Text style={[styles.countdownNote, { color: theme.textMuted }]}>
-        Uma contagem regressiva de 3, 2, 1... dá o start da partida.
+        {t('quiz.countdownNote')}
       </Text>
 
       <View style={styles.sectionTitleRow}>
         <Ionicons name="medal-outline" size={18} color={isDark ? '#FFC107' : '#B45309'} />
-        <Text style={[styles.sectionTitle, { color: theme.text }]}>Conquistas</Text>
+        <Text style={[styles.sectionTitle, { color: theme.text }]}>{t('quiz.conquests')}</Text>
       </View>
       <TouchableOpacity
         style={[styles.achieveEntry, { backgroundColor: theme.surface, borderColor: theme.border }]}
@@ -595,9 +619,9 @@ export default function QuizScreen() {
           <Ionicons name="trophy" size={20} color="#169B4E" />
         </View>
         <View style={styles.achieveEntryInfo}>
-          <Text style={[styles.achieveEntryLabel, { color: theme.text }]}>Meus selos e medalhas</Text>
+          <Text style={[styles.achieveEntryLabel, { color: theme.text }]}>{t('quiz.mySeals')}</Text>
           <Text style={[styles.achieveEntryDesc, { color: theme.textMuted }]}>
-            {achievements.length} de {MEDALS.length} conquistados — tudo salvo offline.
+            {t('quiz.mySealsDesc', { n: achievements.length, total: MEDALS.length })}
           </Text>
         </View>
         <Ionicons name="chevron-forward" size={18} color={theme.textMuted} />
@@ -610,17 +634,17 @@ export default function QuizScreen() {
       <View style={styles.quitRow}>
         <TouchableOpacity style={[styles.quitButton, { borderColor: theme.border }]} onPress={confirmQuit} activeOpacity={0.7}>
           <Ionicons name="exit-outline" size={16} color={theme.textMuted} />
-          <Text style={[styles.quitText, { color: theme.textMuted }]}>Sair do quiz</Text>
+          <Text style={[styles.quitText, { color: theme.textMuted }]}>{t('quiz.quitQuiz')}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.progressHeader}>
         <View style={styles.progressModeRow}>
-        <Text style={[styles.progressMode, { color: mode.cor }]}>{mode.label}</Text>
+        <Text style={[styles.progressMode, { color: mode.cor }]}>{t(mode.labelKey)}</Text>
         <Text style={[styles.progressText, { color: theme.textMuted }]}>
-          • Pergunta {current + 1} de {total}
+          {t('quiz.questionOf', { cur: current + 1, total })}
         </Text>
       </View>
-        <Text style={[styles.progressScore, { color: theme.primary }]}>{score} pts</Text>
+        <Text style={[styles.progressScore, { color: theme.primary }]}>{t('quiz.pts', { n: score })}</Text>
       </View>
       <View style={[styles.progressTrack, { backgroundColor: isDark ? '#333' : '#E5E7EB' }]}>
         <View
@@ -683,7 +707,7 @@ export default function QuizScreen() {
 
       {selected !== null && (
         <TouchableOpacity style={[styles.nextButton, { backgroundColor: theme.primary }]} onPress={goNext}>
-          <Text style={styles.primaryButtonText}>{current + 1 >= total ? 'Ver resultado' : 'Próxima pergunta'}</Text>
+          <Text style={styles.primaryButtonText}>{current + 1 >= total ? t('quiz.seeResult') : t('quiz.nextQuestion')}</Text>
           <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
         </TouchableOpacity>
       )}
@@ -702,7 +726,7 @@ export default function QuizScreen() {
                 { color: selected === questions[current].correta ? '#16A34A' : '#DC2626' },
               ]}
             >
-              {selected === questions[current].correta ? 'Resposta certa!' : 'Resposta incorreta'}
+              {selected === questions[current].correta ? t('quiz.right') : t('quiz.wrong')}
             </Text>
           </View>
           <Text style={[styles.explainRef, { color: theme.textMuted }]}>{questions[current].referencia}</Text>
@@ -719,26 +743,26 @@ export default function QuizScreen() {
       <View>
         <View style={[styles.hero, { backgroundColor: theme.primary }]}>
           <Ionicons name={icon} size={44} color="#FFFFFF" />
-          <Text style={styles.heroTitle}>Você acertou {pct}%</Text>
+          <Text style={styles.heroTitle}>{t('quiz.youHit', { pct })}</Text>
           <Text style={styles.heroSubtitle}>
-            {score} de {maxScore} pontos máximos.
+            {t('quiz.scoreOf', { score, max: maxScore })}
           </Text>
-          <Text style={styles.heroMessage}>{resultMessage(score, maxScore)}</Text>
+          <Text style={styles.heroMessage}>{t(resultMessageKey(score, maxScore))}</Text>
         </View>
 
         <TouchableOpacity style={[styles.primaryButton, { backgroundColor: theme.primary }]} onPress={startQuiz}>
           <Ionicons name="refresh" size={18} color="#FFFFFF" />
-          <Text style={styles.primaryButtonText}>Jogar novamente</Text>
+          <Text style={styles.primaryButtonText}>{t('quiz.playAgain')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={goBackToSetup}>
           <Ionicons name="options-outline" size={18} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Trocar modo e quantidade</Text>
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>{t('quiz.changeMode')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.secondaryButton, { borderColor: theme.border }]} onPress={() => setPhase('achievements')}>
           <Ionicons name="medal-outline" size={18} color={theme.primary} />
-          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>Ver minhas conquistas</Text>
+          <Text style={[styles.secondaryButtonText, { color: theme.primary }]}>{t('quiz.seeConquests')}</Text>
         </TouchableOpacity>
       </View>
     );

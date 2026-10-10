@@ -11,9 +11,10 @@ import {
 
 import { useApp } from '../context/AppContext';
 import { getBooks } from '../data/books';
+import { getBookName } from '../data/bookNames';
 
 export default function FavoritesScreen({ navigation }) {
-  const { favorites, toggleFavorite, theme, t } = useApp();
+  const { favorites, toggleFavorite, theme, t, language } = useApp();
   const [sortOrder, setSortOrder] = useState('recent');
   const [deleteTarget, setDeleteTarget] = useState(null);
   const books = getBooks();
@@ -51,6 +52,15 @@ export default function FavoritesScreen({ navigation }) {
     const t = item.text;
     if (t && typeof t === 'object') return t.text ?? t.verse ?? '';
     return t ?? '';
+  };
+
+  // Referência rebuildada no idioma da interface (o snapshot salvo pode
+  // estar em outro idioma).
+  const resolveReference = (item) => {
+    if (item?.bookAbbrev && Number.isFinite(item.chapterIndex) && Number.isFinite(item.verseIndex)) {
+      return `${getBookName(item.bookAbbrev, language)} ${item.chapterIndex + 1}:${item.verseIndex + 1}`;
+    }
+    return item?.reference ?? '';
   };
 
   const openFavorite = (favorite) => {
@@ -118,7 +128,7 @@ export default function FavoritesScreen({ navigation }) {
               >
                 <View style={styles.referenceRow}>
                   <Text style={[styles.reference, { color: theme.primary }]}>
-                    {item.reference}
+                    {resolveReference(item)}
                   </Text>
                   <Text style={[styles.hint, { color: theme.textMuted }]}>
                     {t('favoritesHoldToDelete')}
@@ -156,7 +166,7 @@ export default function FavoritesScreen({ navigation }) {
               {t('favoritesDeleteTitle')}
             </Text>
             <Text style={[styles.modalSubtitle, { color: theme.textMuted }]}>
-              {deleteTarget?.reference}
+              {deleteTarget ? resolveReference(deleteTarget) : ''}
             </Text>
             <View style={styles.modalActions}>
               <TouchableOpacity

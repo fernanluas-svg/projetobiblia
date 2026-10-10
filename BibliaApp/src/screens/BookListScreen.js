@@ -2,10 +2,11 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getBooks } from '../data/books';
+import { getBookName } from '../data/bookNames';
 import { useApp } from '../context/AppContext';
 
 export default function BookListScreen({ navigation }) {
-  const { theme } = useApp();
+  const { theme, language } = useApp();
   const insets = useSafeAreaInsets();
   const books = getBooks();
   return (
@@ -23,7 +24,7 @@ export default function BookListScreen({ navigation }) {
             style={[styles.item, { borderBottomColor: theme.border }]}
             onPress={() => navigation.navigate('Read', { book: item })}
           >
-            <Text style={[styles.itemText, { color: theme.text }]}>{item.name}</Text>
+            <Text style={[styles.itemText, { color: theme.text }]}>{getBookName(item.abbrev, language)}</Text>
           </TouchableOpacity>
         )}
       />

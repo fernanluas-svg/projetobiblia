@@ -15,6 +15,7 @@ import Animated, {
 import { useApp, HIGHLIGHT_COLORS, HIGHLIGHT_ORDER, getFontFamily } from '../context/AppContext';
 import { getBook, getChapter, getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
+import { getBookName } from '../data/bookNames';
 import { makeChapterKey } from '../utils/chapterKey';
 import { AUDIO_VERSIONS, estimateVerseTimings, findActiveVerseIndex } from '../services/audioService';
 import FloatingAudioPlayer from '../components/FloatingAudioPlayer';
@@ -251,6 +252,7 @@ export default function ReadScreen({ navigation, route }) {
     textAlign,
     fontFamily,
     t,
+    language,
     isFavorite,
     toggleFavorite,
     isChapterRead,
@@ -539,17 +541,20 @@ export default function ReadScreen({ navigation, route }) {
     }
   }, [meta, chapterIndex, loading]);
 
+  // Nome de exibição no idioma da interface (a identidade segue abbrev).
+  const displayBookName = meta ? getBookName(meta.abbrev, language) : '';
+
   const buildVerse = (verseIndex) => {
     const raw = chapter[verseIndex];
     const text = typeof raw === 'object' && raw !== null ? (raw.text ?? raw.verse ?? '') : (raw ?? '');
     return {
       key: `${chapterKey}:${verseIndex}`,
-      bookName: meta.name,
+      bookName: displayBookName,
       bookAbbrev: meta.abbrev,
       chapterIndex,
       verseIndex,
       text,
-      reference: `${meta.name} ${chapterIndex + 1}:${verseIndex + 1}`,
+      reference: `${displayBookName} ${chapterIndex + 1}:${verseIndex + 1}`,
     };
   };
 
@@ -660,7 +665,7 @@ export default function ReadScreen({ navigation, route }) {
   const handleImageShare = () => {
     if (selectedIndexes.length === 0) return;
     const verses = buildSelectedVerses();
-    navigation.navigate('ImageShare', { verses, title: meta?.name ? `${meta.name} ${chapterIndex + 1}` : '' });
+    navigation.navigate('ImageShare', { verses, title: meta?.name ? `${displayBookName} ${chapterIndex + 1}` : '' });
   };
 
   const handleMultiHighlight = (colorName) => {
@@ -727,7 +732,7 @@ export default function ReadScreen({ navigation, route }) {
           >
             <Ionicons name="book-outline" size={15} color={theme.primary} style={styles.headerTitleIcon} />
             <Text style={[styles.headerTitleText, { color: theme.text }]} numberOfLines={1}>
-              {meta ? `${meta.name} ${chapterIndex + 1}` : ''}
+              {meta ? `${displayBookName} ${chapterIndex + 1}` : ''}
             </Text>
             <Ionicons name="chevron-down" size={14} color={theme.textMuted} style={styles.headerTitleChevron} />
           </TouchableOpacity>
@@ -795,8 +800,8 @@ export default function ReadScreen({ navigation, route }) {
               />
               <Text style={[styles.followText, { color: followAudio ? theme.primary : theme.textMuted }]}>
                 {followAudio
-                  ? `Narrando versículo ${activeAudioVerse >= 0 ? activeAudioVerse + 1 : '…'} · toque para não seguir`
-                  : 'Acompanhar narração'}
+                  ? t('read.followNarrating', { n: activeAudioVerse >= 0 ? activeAudioVerse + 1 : '…' })
+                  : t('read.followOff')}
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -912,7 +917,7 @@ export default function ReadScreen({ navigation, route }) {
           versionSigla={audioVersion}
           abbrev={meta.abbrev}
           chapterNumber={audioChapterNumber}
-          bookName={meta.name}
+          bookName={displayBookName}
           visible={audioVisible}
           onCollapse={() => setAudioVisible(false)}
           onChapterEnded={handleChapterEnded}
@@ -962,7 +967,7 @@ export default function ReadScreen({ navigation, route }) {
                 activeOpacity={0.7}
               >
                 <Text style={[styles.fullModalTitle, { color: theme.dark ? '#FFFFFF' : theme.text }]} numberOfLines={1}>
-                  {selectedMeta?.name}
+                  {selectedMeta ? getBookName(selectedMeta.abbrev, language) : ''}
                 </Text>
               </TouchableOpacity>
 
@@ -989,7 +994,7 @@ export default function ReadScreen({ navigation, route }) {
               >
                 <Ionicons name="arrow-back" size={16} color={theme.text} />
                 <Text style={[styles.backChaptersText, { color: theme.text }]}>
-                  Voltar para Capítulos
+                  {t('read.backToChapters')}
                 </Text>
               </TouchableOpacity>
             ) : null}
@@ -1027,7 +1032,7 @@ export default function ReadScreen({ navigation, route }) {
                             ]}
                             numberOfLines={1}
                           >
-                            {book.name}
+                            {getBookName(book.abbrev, language)}
                           </Text>
                         </TouchableOpacity>
                       );
@@ -1153,7 +1158,7 @@ export default function ReadScreen({ navigation, route }) {
         >
           <View style={styles.selectionHeader}>
             <Text style={[styles.selectionCount, { color: theme.textMuted }]}>
-              {selectedCount} selecionado{selectedCount === 1 ? '' : 's'}
+              {t(selectedCount === 1 ? 'read.selectedOne' : 'read.selectedMany', { n: selectedCount })}
             </Text>
             <TouchableOpacity
               onPress={exitSelection}
@@ -1168,7 +1173,7 @@ export default function ReadScreen({ navigation, route }) {
             <TouchableOpacity style={styles.selectionAction} onPress={handleMultiFavorite}>
               <Ionicons name={allSelectedFavorite ? 'star' : 'star-outline'} size={24} color="#FFC107" />
               <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>
-                {allSelectedFavorite ? 'Desfavoritar' : 'Favoritar'}
+                {allSelectedFavorite ? t('read.unfavorite') : t('read.favorite')}
               </Text>
             </TouchableOpacity>
 
@@ -1179,18 +1184,18 @@ export default function ReadScreen({ navigation, route }) {
                 color={copied ? theme.activeGreen : theme.text}
               />
               <Text style={[styles.selectionActionLabel, { color: copied ? theme.activeGreen : theme.textMuted }]}>
-                {copied ? 'Copiado!' : 'Copiar'}
+                {copied ? t('read.copied') : t('read.copy')}
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.selectionAction} onPress={handleMultiShare}>
               <Ionicons name="share-social-outline" size={24} color={theme.text} />
-              <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>Compartilhar</Text>
+              <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>{t('read.share')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.selectionAction} onPress={handleImageShare}>
               <Ionicons name="image-outline" size={24} color={theme.primary} />
-              <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>Imagem</Text>
+              <Text style={[styles.selectionActionLabel, { color: theme.textMuted }]}>{t('read.image')}</Text>
             </TouchableOpacity>
           </View>
 

@@ -1,9 +1,33 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Dicionário mínimo local: este componente vive fora do AppProvider,
+// então lê o idioma persistido diretamente para não exibir PT fixo.
+const STRINGS = {
+  'pt-BR': {
+    title: 'Ops, algo deu errado',
+    message:
+      'Encontramos um erro inesperado ao carregar o aplicativo. Pedimos desculpas pelo transtorno.',
+    retry: 'Tentar novamente',
+  },
+  en: {
+    title: 'Oops, something went wrong',
+    message:
+      'We found an unexpected error while loading the app. Sorry for the trouble.',
+    retry: 'Try again',
+  },
+  es: {
+    title: 'Ups, algo salió mal',
+    message:
+      'Encontramos un error inesperado al cargar la aplicación. Pedimos disculpas por las molestias.',
+    retry: 'Intentar de nuevo',
+  },
+};
 
 export class ErrorBoundary extends React.Component {
-  state = { hasError: false, error: null };
+  state = { hasError: false, error: null, language: 'pt-BR' };
 
   static getDerivedStateFromError(error) {
     return { hasError: true, error };
@@ -11,6 +35,14 @@ export class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('ErrorBoundary capturou um erro:', error, errorInfo);
+    AsyncStorage.getItem('@bibliaapp/language').then((raw) => {
+      try {
+        const parsed = raw ? JSON.parse(raw) : null;
+        if (parsed && STRINGS[parsed]) this.setState({ language: parsed });
+      } catch (e) {
+        // mantém pt-BR
+      }
+    }).catch(() => {});
   }
 
   handleReset = () => {
@@ -19,15 +51,16 @@ export class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      const s = STRINGS[this.state.language] ?? STRINGS['pt-BR'];
       return (
         <View style={styles.container}>
           <View style={styles.card}>
             <View style={styles.iconContainer}>
               <Ionicons name="alert-circle-outline" size={64} color="#C94A6E" />
             </View>
-            <Text style={styles.title}>Ops, algo deu errado</Text>
+            <Text style={styles.title}>{s.title}</Text>
             <Text style={styles.message}>
-              Encontramos um erro inesperado ao carregar o aplicativo. Pedimos desculpas pelo transtorno.
+              {s.message}
             </Text>
             {this.state.error?.message ? (
               <Text style={styles.errorDetail} selectable>
@@ -36,7 +69,7 @@ export class ErrorBoundary extends React.Component {
             ) : null}
             <TouchableOpacity style={styles.button} onPress={this.handleReset} activeOpacity={0.8}>
               <Ionicons name="refresh-outline" size={20} color="#FFFFFF" style={styles.buttonIcon} />
-              <Text style={styles.buttonText}>Tentar novamente</Text>
+              <Text style={styles.buttonText}>{s.retry}</Text>
             </TouchableOpacity>
           </View>
         </View>

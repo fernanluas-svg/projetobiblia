@@ -20,6 +20,7 @@ import { useApp } from '../context/AppContext';
 import { getTranslation } from '../data/translations';
 import { getBooks } from '../data/books';
 import { getBookMeta } from '../data/bookMeta';
+import { getBookName } from '../data/bookNames';
 import {
   buildAudioUrl,
   downloadAudio,
@@ -40,7 +41,7 @@ function formatTime(seconds) {
 }
 
 export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumber, visible = false, onCollapse, onChapterEnded, autoPlay = false, onAutoPlayConsumed, onPlaybackProgress, bookName }) {
-  const { theme, t } = useApp();
+  const { theme, t, language } = useApp();
   const insets = useSafeAreaInsets();
   const [uri, setUri] = useState(null);
   const [isLocal, setIsLocal] = useState(false);
@@ -109,11 +110,11 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
       };
       if (chapterNumber < total) {
         const n = chapterNumber + 1;
-        return { abbrev, chapterNumber: n, bookName: list[idx]?.name ?? abbrev, uri: nextOf(abbrev, n) };
+        return { abbrev, chapterNumber: n, bookName: getBookName(abbrev, language), uri: nextOf(abbrev, n) };
       }
       if (idx < list.length - 1) {
         const nb = list[idx + 1];
-        return { abbrev: nb.abbrev, chapterNumber: 1, bookName: nb.name, uri: nextOf(nb.abbrev, 1) };
+        return { abbrev: nb.abbrev, chapterNumber: 1, bookName: getBookName(nb.abbrev, language), uri: nextOf(nb.abbrev, 1) };
       }
       return null;
     } catch (e) {
@@ -237,12 +238,15 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uri]);
 
+  const chapterWord = language === 'en' ? 'Chapter' : 'Capítulo';
+  const lockTitle = (name, num) => (name ? `${name} ${num}` : `${chapterWord} ${num}`);
+
   const activateLockScreen = (title) => {
     try {
       player.setActiveForLockScreen?.(true, {
         title,
         artist: versionSigla,
-        albumTitle: 'Bíblia Sagrada',
+        albumTitle: t('appTitle'),
       });
     } catch (e) {
       // ignora: plataforma sem suporte
@@ -253,7 +257,7 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
   useEffect(() => {
     if (autoPlayPendingRef.current && status.isLoaded && uri) {
       autoPlayPendingRef.current = false;
-      activateLockScreen(bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`);
+      activateLockScreen(lockTitle(bookName, chapterNumber));
       player.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -290,7 +294,7 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
       chainedPlayRef.current = false;
       const m = pendingMetaRef.current;
       pendingMetaRef.current = null;
-      activateLockScreen(m ? `${m.bookName} ${m.chapterNumber}` : (bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`));
+      activateLockScreen(m ? `${m.bookName} ${m.chapterNumber}` : lockTitle(bookName, chapterNumber));
       player.play();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -327,7 +331,7 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
 
   // Ativa controles de lockscreen/notificação (obrigatório no Android para
   // sustentar o background além de ~3 min). Mantém ativo enquanto toca.
-  const lockScreenTitle = bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`;
+  const lockScreenTitle = lockTitle(bookName, chapterNumber);
   useEffect(() => {
     if (!uri || !status.isLoaded) return;
     if (status.playing) {
@@ -335,7 +339,7 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
         player.setActiveForLockScreen?.(true, {
           title: lockScreenTitle,
           artist: versionSigla,
-          albumTitle: 'Bíblia Sagrada',
+          albumTitle: t('appTitle'),
         });
       } catch (e) {
         // ignora: plataforma sem suporte
@@ -371,9 +375,9 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
     } else {
       try {
         player.setActiveForLockScreen?.(true, {
-          title: bookName ? `${bookName} ${chapterNumber}` : `Capítulo ${chapterNumber}`,
+          title: lockTitle(bookName, chapterNumber),
           artist: versionSigla,
-          albumTitle: 'Bíblia Sagrada',
+          albumTitle: t('appTitle'),
         });
       } catch (e) {
         // ignora
@@ -523,7 +527,7 @@ export default function FloatingAudioPlayer({ versionSigla, abbrev, chapterNumbe
           onPress={handleTogglePlay}
           disabled={!uri}
           activeOpacity={0.8}
-          accessibilityLabel={isPlaying ? 'Pause' : 'Play'}
+          accessibilityLabel={isPlaying ? t('audio.pause') : t('audio.play')}
         >
           {status.isBuffering ? (
             <ActivityIndicator size="small" color="#FFFFFF" />
