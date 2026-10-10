@@ -4,6 +4,7 @@ import { File, Directory, Paths } from 'expo-file-system';
 import { getTranslation, translationDownloadUrl } from '../data/translations';
 import { bookList } from '../data/bookList';
 import { loadBook } from '../data/booksIndex';
+import { KJV_TITLES } from '../data/kjvTitles';
 
 const storageKey = (sigla) => `@bibliaapp/translation/${sigla}`;
 const REV_KEY = '@bibliaapp/translationRevs';
@@ -190,28 +191,59 @@ async function getEmbeddedBookChapters(abbrev) {
 // Os títulos editoriais existem somente na NVI embutida; para manter a
 // consistência visual, mesclamos os títulos da versão embutida sobre a
 // tradução ativa, na mesma posição (capítulo/versículo).
+function applyTitles(chapters, getTitle) {
+  return chapters.map((chapter, chapterIdx) => {
+    if (!Array.isArray(chapter)) return chapter;
+    return chapter.map((verse, verseIdx) => {
+      const title = getTitle(chapterIdx, verseIdx);
+      if (!title) return verse;
+      if (verse == null) return verse;
+      if (typeof verse === 'object') {
+        return { ...verse, title };
+      }
+      return { text: verse, title };
+    });
+  });
+}
+
 async function mergeEmbeddedTitles(abbrev, chapters) {
   try {
     const embeddedChapters = await getEmbeddedBookChapters(abbrev);
-
-    return chapters.map((chapter, chapterIdx) => {
-      const embeddedChapter = embeddedChapters[chapterIdx] ?? [];
-      return chapter.map((verse, verseIdx) => {
-        const embeddedVerse = embeddedChapter[verseIdx];
-        const title =
-          embeddedVerse && typeof embeddedVerse === 'object' && embeddedVerse.title
-            ? embeddedVerse.title
-            : null;
-        if (!title) return verse;
-        if (verse == null) return verse;
-        if (typeof verse === 'object') {
-          return { ...verse, title };
-        }
-        return { text: verse, title };
-      });
+    return applyTitles(chapters, (chapterIdx, verseIdx) => {
+      const embeddedVerse = (embeddedChapters[chapterIdx] ?? [])[verseIdx];
+      return embeddedVerse && typeof embeddedVerse === 'object' && embeddedVerse.title
+        ? embeddedVerse.title
+        : null;
     });
   } catch (e) {
     console.warn(`[Translation] Falha ao mesclar títulos embutidos para ${abbrev}:`, e);
+    return chapters;
+  }
+}
+
+// Títulos de seção em inglês (dataset JWBickel/KJV_Pericopes, mesma
+// posição capítulo/versículo). Mapa preguiçoso: "abbrev:ch:v" -> título.
+let kjvTitleMap = null;
+function getKjvTitleMap() {
+  if (!kjvTitleMap) {
+    kjvTitleMap = new Map();
+    Object.entries(KJV_TITLES ?? {}).forEach(([abbrev, list]) => {
+      (list ?? []).forEach(([ch, v, title]) => {
+        if (title) kjvTitleMap.set(`${abbrev}:${ch}:${v}`, title);
+      });
+    });
+  }
+  return kjvTitleMap;
+}
+
+function mergeKjvTitles(abbrev, chapters) {
+  try {
+    const map = getKjvTitleMap();
+    return applyTitles(chapters, (chapterIdx, verseIdx) =>
+      map.get(`${abbrev}:${chapterIdx}:${verseIdx}`) ?? null
+    );
+  } catch (e) {
+    console.warn(`[Translation] Falha ao mesclar títulos KJV para ${abbrev}:`, e);
     return chapters;
   }
 }
@@ -255,19 +287,26 @@ export async function loadTranslatedBook(sigla, abbrev) {
   // Títulos de seção no idioma da versão:
   // 1) Se o arquivo já traz títulos nativos (ex.: RV1960 "study" em
   //    espanhol), eles prevalecem — mesma posição entre os versículos.
-  // 2) Versões em português sem títulos (ACF, ARA...) herdam os títulos
+  // 2) KJV usa o mapa de títulos em inglês (dataset JWBickel/KJV_Pericopes).
+  // 3) Versões em português sem títulos (ACF, ARA...) herdam os títulos
   //    editoriais da NVI embutida.
-  // 3) Versões em outro idioma sem títulos nativos (ex.: KJV) ficam sem
-  //    subtítulos — nunca exibir português no meio do texto estrangeiro.
+  // 4) Qualquer outro idioma sem títulos nativos fica sem subtítulos —
+  //    nunca exibir português no meio do texto estrangeiro.
   const hasNativeTitles = chapters.some(
     (chapter) =>
       Array.isArray(chapter) &&
       chapter.some((v) => v && typeof v === 'object' && v.title)
   );
-  const mergedChapters =
-    hasNativeTitles || (meta.language && meta.language !== 'pt')
-      ? chapters
-      : await mergeEmbeddedTitles(abbrev, chapters);
+  let mergedChapters;
+  if (hasNativeTitles) {
+    mergedChapters = chapters;
+  } else if (meta.language === 'en') {
+    mergedChapters = mergeKjvTitles(abbrev, chapters);
+  } else if (!meta.language || meta.language === 'pt') {
+    mergedChapters = await mergeEmbeddedTitles(abbrev, chapters);
+  } else {
+    mergedChapters = chapters;
+  }
 
   return {
     abbrev,
