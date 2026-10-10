@@ -117,6 +117,8 @@ function getGreeting(t) {
 export default function HomeScreen({ navigation }) {
   const { lastRead, readChapters, loaded, theme, t, activeVersion } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
+  const [votdText, setVotdText] = useState(verseOfTheDay.texto);
+  const [votdRef, setVotdRef] = useState(verseOfTheDay.referencia);
   // Versículo do dia no idioma da versão selecionada (KJV/RV1960/ACF...).
   // Sem versão baixada ou fora do ar: mantém o texto padrão em português.
   // A referência usa o nome do livro na língua da versão + selo da sigla.
