@@ -10,6 +10,7 @@ import LottieView from 'lottie-react-native';
 
 import { useApp } from '../context/AppContext';
 import versiculosData from '../data/versiculosPopulares.json';
+import votdI18n from '../data/versiculosPopulares.i18n.json';
 import { getBooks, getBook } from '../data/books';
 
 const SPECIAL_DATES = {
@@ -115,18 +116,25 @@ function getGreeting(t) {
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, readChapters, loaded, theme, t, activeVersion } = useApp();
+  const { lastRead, readChapters, loaded, theme, t, activeVersion, language } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
-  const [votdText, setVotdText] = useState(verseOfTheDay.texto);
-  const [votdRef, setVotdRef] = useState(verseOfTheDay.referencia);
-  // Versículo do dia no idioma da versão selecionada (KJV/RV1960/ACF...).
-  // Sem versão baixada ou fora do ar: mantém o texto padrão em português.
+  // Texto-base do card no idioma do app (pt padrão; en/es embutidos).
+  // Com versão ativa, o texto ao vivo da versão prevalece (efeito abaixo).
+  const votdBase = useMemo(() => {
+    const tr = votdI18n?.[verseOfTheDay.id]?.[language];
+    return tr ?? { texto: verseOfTheDay.texto, referencia: verseOfTheDay.referencia };
+  }, [verseOfTheDay, language]);
+  const [votdText, setVotdText] = useState(votdBase.texto);
+  const [votdRef, setVotdRef] = useState(votdBase.referencia);
+  // Versículo do dia: sem versão ativa, usa o texto no idioma do app;
+  // com versão ativa (KJV/RV1960/ACF...), usa o texto ao vivo da versão.
+  // Sem versão baixada ou fora do ar: mantém o texto no idioma do app.
   // A referência usa o nome do livro na língua da versão + selo da sigla.
   useEffect(() => {
     let active = true;
     if (!activeVersion) {
-      setVotdText(verseOfTheDay.texto);
-      setVotdRef(verseOfTheDay.referencia);
+      setVotdText(votdBase.texto);
+      setVotdRef(votdBase.referencia);
       return undefined;
     }
     (async () => {
@@ -144,10 +152,10 @@ export default function HomeScreen({ navigation }) {
         }
         if (!active) return;
         // Sem texto na versão (fora do ar ou arquivo ausente): mantém o
-        // português mas exibe o selo da versão para o estado ficar visível.
+        // texto no idioma do app mas exibe o selo da versão para o estado ficar visível.
         if (!parts.length) {
-          setVotdText(verseOfTheDay.texto);
-          setVotdRef(`${verseOfTheDay.referencia} · ${activeVersion}`);
+          setVotdText(votdBase.texto);
+          setVotdRef(`${votdBase.referencia} · ${activeVersion}`);
           return;
         }
         const range = endV > startV ? `${verseOfTheDay.capitulo}:${startV}-${endV}` : `${verseOfTheDay.capitulo}:${startV}`;
@@ -156,15 +164,15 @@ export default function HomeScreen({ navigation }) {
         setVotdRef(`${bookName} ${range} · ${activeVersion}`);
       } catch (e) {
         if (active) {
-          setVotdText(verseOfTheDay.texto);
-          setVotdRef(`${verseOfTheDay.referencia} · ${activeVersion}`);
+          setVotdText(votdBase.texto);
+          setVotdRef(`${votdBase.referencia} · ${activeVersion}`);
         }
       }
     })();
     return () => {
       active = false;
     };
-  }, [activeVersion, verseOfTheDay]);
+  }, [activeVersion, verseOfTheDay, votdBase]);
   const [showExit, setShowExit] = useState(false);
   const showExitRef = useRef(false);
   const lastBackRef = useRef(0);
