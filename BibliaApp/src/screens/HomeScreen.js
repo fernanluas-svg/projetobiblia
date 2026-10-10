@@ -10,7 +10,7 @@ import LottieView from 'lottie-react-native';
 
 import { useApp } from '../context/AppContext';
 import versiculosData from '../data/versiculosPopulares.json';
-import { getBooks } from '../data/books';
+import { getBooks, getBook } from '../data/books';
 
 const SPECIAL_DATES = {
   '01-01': 12,   // Ano Novo → João 3:16
@@ -115,8 +115,47 @@ function getGreeting(t) {
 }
 
 export default function HomeScreen({ navigation }) {
-  const { lastRead, readChapters, loaded, theme, t } = useApp();
+  const { lastRead, readChapters, loaded, theme, t, activeVersion } = useApp();
   const verseOfTheDay = useMemo(() => getVerseOfTheDay(), []);
+  // Versículo do dia no idioma da versão selecionada (KJV/RV1960/ACF...).
+  // Sem versão baixada ou fora do ar: mantém o texto padrão em português.
+  // A referência usa o nome do livro na língua da versão + selo da sigla.
+  useEffect(() => {
+    let active = true;
+    if (!activeVersion) {
+      setVotdText(verseOfTheDay.texto);
+      setVotdRef(verseOfTheDay.referencia);
+      return undefined;
+    }
+    (async () => {
+      try {
+        const m = String(verseOfTheDay.referencia ?? '').match(/(\d+):(\d+)(?:-(\d+))?\s*$/);
+        const startV = verseOfTheDay.versiculo;
+        const endV = m?.[3] ? Number(m[3]) : startV;
+        const book = await getBook(verseOfTheDay.abbrev);
+        const chapter = book?.chapters?.[verseOfTheDay.capitulo - 1] ?? [];
+        const parts = [];
+        for (let v = startV; v <= endV; v += 1) {
+          const raw = chapter[v - 1];
+          const text = typeof raw === 'object' && raw !== null ? (raw.text ?? '') : (raw ?? '');
+          if (String(text).trim()) parts.push(String(text).trim());
+        }
+        if (!active || !parts.length) return;
+        const range = endV > startV ? `${verseOfTheDay.capitulo}:${startV}-${endV}` : `${verseOfTheDay.capitulo}:${startV}`;
+        const bookName = book?.name ?? verseOfTheDay.referencia.replace(/\s*\d+:\d+(-\d+)?\s*$/, '');
+        setVotdText(parts.join(' '));
+        setVotdRef(`${bookName} ${range} · ${activeVersion}`);
+      } catch (e) {
+        if (active) {
+          setVotdText(verseOfTheDay.texto);
+          setVotdRef(`${verseOfTheDay.referencia} · ${activeVersion}`);
+        }
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [activeVersion, verseOfTheDay]);
   const [showExit, setShowExit] = useState(false);
   const showExitRef = useRef(false);
   const lastBackRef = useRef(0);
@@ -259,9 +298,9 @@ export default function HomeScreen({ navigation }) {
             <Ionicons name="chevron-forward" size={16} color="#cde8da" style={styles.verseChevron} />
           </View>
           <Text style={styles.verseQuote}>
-            "{verseOfTheDay.texto}"
+            "{votdText}"
           </Text>
-          <Text style={styles.verseRef}>{verseOfTheDay.referencia}</Text>
+          <Text style={styles.verseRef}>{votdRef}</Text>
         </TouchableOpacity>
 
         <View style={styles.sectionHeaderRow}>
