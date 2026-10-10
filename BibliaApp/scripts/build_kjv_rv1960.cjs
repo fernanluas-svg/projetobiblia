@@ -154,7 +154,13 @@ async function buildRV1960() {
     const vers = [...(data?.vers ?? [])].sort((a, b) => a.number - b.number);
     if (!vers.length) throw new Error(`RV1960 vazio: ${url}`);
     if (!names.has(abbrev) && data?.name) names.set(abbrev, data.name);
-    chaptersByBook.get(abbrev)[ch - 1] = vers.map((v) => String(v.verse ?? '').trim());
+    // Preserva os subtítulos de seção nativos em espanhol (campo "study")
+    // como title — mesma posição entre os versículos.
+    chaptersByBook.get(abbrev)[ch - 1] = vers.map((v) => {
+      const text = String(v.verse ?? '').trim();
+      const study = typeof v.study === 'string' ? v.study.trim() : '';
+      return study ? { text, title: study } : text;
+    });
   });
   const out = CANON.map(([abbrev, count]) => {
     const chapters = chaptersByBook.get(abbrev);

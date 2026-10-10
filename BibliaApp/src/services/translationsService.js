@@ -6,6 +6,25 @@ import { bookList } from '../data/bookList';
 import { loadBook } from '../data/booksIndex';
 
 const storageKey = (sigla) => `@bibliaapp/translation/${sigla}`;
+const REV_KEY = '@bibliaapp/translationRevs';
+
+async function storedRevs() {
+  try {
+    return (await AsyncStorage.getItem(REV_KEY).then((r) => JSON.parse(r))) ?? {};
+  } catch (e) {
+    return {};
+  }
+}
+
+async function recordRev(sigla) {
+  try {
+    const revs = await storedRevs();
+    revs[sigla] = getTranslation(sigla)?.rev ?? 1;
+    await AsyncStorage.setItem(REV_KEY, JSON.stringify(revs));
+  } catch (e) {
+    // ignora falha de escrita
+  }
+}
 
 // Traduções baixadas ficam em arquivos no diretório de documentos do app.
 // AsyncStorage tem limite de ~6 MB por banco no Android; cada tradução tem
@@ -64,6 +83,7 @@ export async function downloadTranslation(sigla) {
     file.create({ overwrite: true, intermediates: true });
     file.write(text);
     console.log(`[Translation] Tradução ${sigla} salva com sucesso em ${file.uri} (${data.length} livros).`);
+    await recordRev(sigla);
     return true;
   } catch (err) {
     console.error(`[Translation] Exceção capturada ao baixar tradução ${sigla}:`, err);
@@ -200,6 +220,23 @@ export async function loadTranslatedBook(sigla, abbrev) {
   const meta = getTranslation(sigla);
   if (!meta || meta.embedded) return null;
 
+  // Migração de formato: se o arquivo em disco é de uma revisão anterior
+  // (ex.: RV1960 sem os títulos nativos em espanhol), remove e baixa de
+  // novo uma única vez.
+  const wantRev = meta.rev ?? 1;
+  const revs = await storedRevs();
+  if ((revs[sigla] ?? 1) < wantRev) {
+    console.log(`[Translation] Migrando ${sigla} para rev ${wantRev}...`);
+    await removeTranslation(sigla);
+    try {
+      await downloadTranslation(sigla);
+    } catch (e) {
+      console.warn(`[Translation] Falha ao migrar ${sigla}:`, e?.message ?? e);
+      return null;
+    }
+    await recordRev(sigla);
+  }
+
   const data = await getTranslationData(sigla);
   if (!data) return null;
 
@@ -214,7 +251,23 @@ export async function loadTranslatedBook(sigla, abbrev) {
     console.warn(`[Translation] Livro ${abbrev} sem capítulos em ${sigla}; caindo para embutida.`);
     return null;
   }
-  const mergedChapters = await mergeEmbeddedTitles(abbrev, chapters);
+
+  // Títulos de seção no idioma da versão:
+  // 1) Se o arquivo já traz títulos nativos (ex.: RV1960 "study" em
+  //    espanhol), eles prevalecem — mesma posição entre os versículos.
+  // 2) Versões em português sem títulos (ACF, ARA...) herdam os títulos
+  //    editoriais da NVI embutida.
+  // 3) Versões em outro idioma sem títulos nativos (ex.: KJV) ficam sem
+  //    subtítulos — nunca exibir português no meio do texto estrangeiro.
+  const hasNativeTitles = chapters.some(
+    (chapter) =>
+      Array.isArray(chapter) &&
+      chapter.some((v) => v && typeof v === 'object' && v.title)
+  );
+  const mergedChapters =
+    hasNativeTitles || (meta.language && meta.language !== 'pt')
+      ? chapters
+      : await mergeEmbeddedTitles(abbrev, chapters);
 
   return {
     abbrev,

@@ -50,6 +50,7 @@ export const TRANSLATIONS = [
     publisher: '',
     language: 'en',
     domainPublic: true,
+    rev: 2,
     url: `${DATA_BASE_URL}/KJV.json`,
   },
   {
@@ -58,6 +59,7 @@ export const TRANSLATIONS = [
     year: '1960',
     publisher: '',
     language: 'es',
+    rev: 2,
     url: `${DATA_BASE_URL}/RV1960.json`,
   },
 ];
